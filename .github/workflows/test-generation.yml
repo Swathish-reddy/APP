@@ -1,0 +1,113 @@
+name: Generate and Upload Reports
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install openpyxl
+
+      - name: Generate Reports
+        run: python scripts/generate_reports.py
+
+      - name: Verify Reports
+        run: |
+          ls -la reports/
+          # A simple check to ensure reports exist
+          test -f reports/Selenium_Website_TestCases.xlsx
+          test -f reports/Execution_Summary.pdf
+
+      - name: Upload selenium-web-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: selenium-web-report
+          path: reports/Selenium_Website_TestCases.xlsx
+
+      - name: Upload appium-android-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: appium-android-report
+          path: reports/Appium_Android_TestCases.xlsx
+
+      - name: Upload api-unit-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-unit-report
+          path: reports/API_Unit_TestCases.xlsx
+
+      - name: Upload validation-test-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-test-report
+          path: reports/Validation_TestCases.xlsx
+          
+      - name: Upload validation-checklist
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation-checklist
+          path: reports/Validation_Checklist.xlsx
+
+      - name: Upload deployment-test-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-test-report
+          path: reports/Deployment_TestCases.xlsx
+
+      - name: Upload performance-test-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: performance-test-report
+          path: reports/Performance_TestCases.xlsx
+
+      - name: Upload master-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: master-report
+          path: reports/Master_Execution_Report.xlsx
+
+      - name: Upload coverage-report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: reports/Coverage_Report.xlsx
+
+      - name: Upload summary-dashboard
+        uses: actions/upload-artifact@v4
+        with:
+          name: summary-dashboard
+          path: reports/Summary_Dashboard.xlsx
+          
+      - name: Upload requirement-traceability-matrix
+        uses: actions/upload-artifact@v4
+        with:
+          name: requirement-traceability-matrix
+          path: reports/Requirement_Traceability_Matrix.xlsx
+          
+      - name: Upload bug-report-template
+        uses: actions/upload-artifact@v4
+        with:
+          name: bug-report-template
+          path: reports/Bug_Report_Template.xlsx
+
+      - name: Upload PDF Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: pdf-reports
+          path: |
+            reports/Execution_Summary.pdf
+            reports/Test_Coverage_Report.pdf
