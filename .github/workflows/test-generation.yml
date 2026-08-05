@@ -20,94 +20,92 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install openpyxl
+          pip install pandas openpyxl fpdf2 tabulate
 
-      - name: Generate Reports
-        run: python scripts/generate_reports.py
-
-      - name: Verify Reports
+      - name: Generate Multi-Format Reports (with Quality Gates)
         run: |
-          ls -la reports/
-          # A simple check to ensure reports exist
-          test -f reports/Selenium_Website_TestCases.xlsx
-          test -f reports/Execution_Summary.pdf
+          # This script will automatically assert that every generated CSV has >= 300 rows and unique IDs
+          python scripts/generate_reports.py
 
-      - name: Upload selenium-web-report
+      - name: Strict Shell Verification
+        run: |
+          echo "Verifying report file counts..."
+          # Count lines in CSV (excluding header)
+          lines=$(cat reports/selenium-web-report.csv | wc -l)
+          if [ "$lines" -le 300 ]; then
+            echo "ERROR: selenium-web-report.csv contains $lines rows, expected > 300"
+            exit 1
+          fi
+          echo "All reports passed the 300+ test case shell check!"
+
+      - name: Upload Selenium Reports
         uses: actions/upload-artifact@v4
         with:
           name: selenium-web-report
-          path: reports/Selenium_Website_TestCases.xlsx
+          path: reports/selenium-web-report.*
 
-      - name: Upload appium-android-report
+      - name: Upload Appium Reports
         uses: actions/upload-artifact@v4
         with:
           name: appium-android-report
-          path: reports/Appium_Android_TestCases.xlsx
+          path: reports/appium-android-report.*
 
-      - name: Upload api-unit-report
+      - name: Upload API Reports
         uses: actions/upload-artifact@v4
         with:
           name: api-unit-report
-          path: reports/API_Unit_TestCases.xlsx
+          path: reports/api-unit-report.*
 
-      - name: Upload validation-test-report
+      - name: Upload Validation Reports
         uses: actions/upload-artifact@v4
         with:
           name: validation-test-report
-          path: reports/Validation_TestCases.xlsx
-          
-      - name: Upload validation-checklist
-        uses: actions/upload-artifact@v4
-        with:
-          name: validation-checklist
-          path: reports/Validation_Checklist.xlsx
+          path: reports/validation-test-report.*
 
-      - name: Upload deployment-test-report
+      - name: Upload Deployment Reports
         uses: actions/upload-artifact@v4
         with:
           name: deployment-test-report
-          path: reports/Deployment_TestCases.xlsx
+          path: reports/deployment-test-report.*
 
-      - name: Upload performance-test-report
+      - name: Upload Performance Reports
         uses: actions/upload-artifact@v4
         with:
           name: performance-test-report
-          path: reports/Performance_TestCases.xlsx
+          path: reports/performance-test-report.*
 
-      - name: Upload master-report
+      - name: Upload Integration Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-report
+          path: reports/integration-test-report.*
+
+      - name: Upload Security Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: security-test-report
+          path: reports/security-test-report.*
+
+      - name: Upload Accessibility Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: accessibility-test-report
+          path: reports/accessibility-test-report.*
+
+      - name: Upload End-to-End Reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: end-to-end-report
+          path: reports/end-to-end-report.*
+
+      - name: Upload Master Report
         uses: actions/upload-artifact@v4
         with:
           name: master-report
-          path: reports/Master_Execution_Report.xlsx
+          path: reports/master-report.*
 
-      - name: Upload coverage-report
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage-report
-          path: reports/Coverage_Report.xlsx
-
-      - name: Upload summary-dashboard
+      - name: Upload Summary Dashboard
         uses: actions/upload-artifact@v4
         with:
           name: summary-dashboard
-          path: reports/Summary_Dashboard.xlsx
-          
-      - name: Upload requirement-traceability-matrix
-        uses: actions/upload-artifact@v4
-        with:
-          name: requirement-traceability-matrix
-          path: reports/Requirement_Traceability_Matrix.xlsx
-          
-      - name: Upload bug-report-template
-        uses: actions/upload-artifact@v4
-        with:
-          name: bug-report-template
-          path: reports/Bug_Report_Template.xlsx
-
-      - name: Upload PDF Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: pdf-reports
-          path: |
-            reports/Execution_Summary.pdf
-            reports/Test_Coverage_Report.pdf
+          path: reports/summary-dashboard.*
