@@ -2,6 +2,6 @@ import ClientComponent from './client';
 export function generateStaticParams() {
   return [{ id: '1' }, { id: '2' }, { id: '3' }];
 }
-export default function Page(props: any) {
-  return <ClientComponent {...props} />;
+export default function Page({ params }: { params: any }) {
+  return <ClientComponent params={params} />;
 }

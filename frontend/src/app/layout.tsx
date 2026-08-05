@@ -1,18 +1,10 @@
 import type { Metadata } from "next";
-import { Outfit, Inter, Geist } from "next/font/google";
+// Removed next/font/google
 import "./globals.css";
 import { cn } from "@/lib/utils";
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-const outfit = Outfit({
-  variable: "--font-outfit",
-  subsets: ["latin"],
-  display: "swap",
-});
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
+const geist = { variable: "--font-sans" };
+const outfit = { variable: "--font-outfit" };
+const inter = { variable: "--font-inter" };
 import { ThemeProvider } from "@/components/ThemeProvider";
 export const metadata: Metadata = {
   title:

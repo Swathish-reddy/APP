@@ -20,3 +20,10 @@ Thumbs.db
 *.apk
 *.aab
 *.ipa
+
+frontend/android/jdk-17.0.2/
+frontend/android/build/
+frontend/android/app/build/
+frontend/android/.gradle/
+CognivueX-release.apk
+cognivuex-release.keystore
