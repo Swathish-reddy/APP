@@ -24,6 +24,7 @@ export interface Meal {
 }
 
 export interface NutritionPlan {
+  program?: string;
   daily_plan?: {
     breakfast?: Meal;
     lunch?: Meal;
@@ -31,17 +32,21 @@ export interface NutritionPlan {
     dinner?: Meal;
   };
   goals?: {
+    target_calories?: number;
+    hydration_liters?: number;
     macros_percent?: Record<string, number>;
   };
   impact?: Record<string, string>;
 }
 
 export interface GroceryList {
-  items?: { name: string; category: string; reason: string }[];
+  items?: { name: string; category: string; reason: string; amount?: string }[];
+  estimated_cost?: string;
 }
 
 export interface NutritionCompliance {
   adherence_percent?: number;
+  current_adherence_avg?: number;
   status?: string;
 }
 

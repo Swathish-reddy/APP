@@ -19,7 +19,7 @@ export default function RiskRadar({ data }: RiskRadarProps) {
     fullMark: 100,
   }));
   return (
-    <div className="w-full h-full min-h-[300px] flex items-center justify-center p-4 bg-white/5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg">
+    <div className="w-full h-full min-h-[300px] flex items-center justify-center p-4 bg-card/5 rounded-2xl backdrop-blur-sm border border-white/10 shadow-lg">
       {" "}
       <ResponsiveContainer width="100%" height={300}>
         {" "}

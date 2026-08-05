@@ -1,21 +1,7 @@
-"use client";
-import React from "react";
-import { AIIntelligenceDashboard } from "@/components/intelligence/AIIntelligenceDashboard";
-
-export default function IntelligencePage({ 
-  params,
-  patientId: propPatientId,
-}: { 
-  params?: any;
-  patientId?: string;
-}) {
-  // Safe unwrap for Next.js 15+ route params, while supporting direct prop injection
-  const resolvedParams = params ? React.use(params as Promise<any>) : null;
-  const patientId = propPatientId || resolvedParams?.id;
-
-  return (
-    <div className="p-6">
-      {patientId ? <AIIntelligenceDashboard patientId={patientId} /> : <div>Loading...</div>}
-    </div>
-  );
+import ClientComponent from './client';
+export function generateStaticParams() {
+  return [{ id: '1' }, { id: '2' }, { id: '3' }];
+}
+export default function Page(props: any) {
+  return <ClientComponent {...props} />;
 }

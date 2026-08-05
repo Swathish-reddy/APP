@@ -118,7 +118,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
         </div>{" "}
         <div className="flex items-center space-x-3">
           {" "}
-          <label className="flex items-center space-x-2 bg-white border border-slate-300 hover:bg-slate-50 text-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer disabled:opacity-70">
+          <label className="flex items-center space-x-2 bg-card border border-slate-300 hover:bg-slate-50 text-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer disabled:opacity-70">
             {" "}
             <UploadCloud className="h-4 w-4" />
             <span>Upload Report</span>{" "}
@@ -133,7 +133,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
           <button
             onClick={triggerFusion}
             disabled={isFusing}
-            className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-70"
+            className="flex items-center space-x-2 bg-indigo-600 hover:bg-indigo-700 text-foreground px-4 py-2 rounded-lg text-sm font-medium transition-colors disabled:opacity-70"
           >
             {" "}
             {isFusing && !uploadStatus ? (
@@ -150,10 +150,10 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
           </button>{" "}
         </div>{" "}
       </div>{" "}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {" "}
         {}{" "}
-        <div className="lg:col-span-2 bg-white border border-slate-200 rounded-2xl shadow-sm p-8 relative flex items-center justify-center overflow-hidden">
+        <div className="lg:col-span-2 bg-card border border-slate-200 rounded-2xl shadow-sm p-4 md:p-8 relative flex items-center justify-center overflow-hidden">
           {" "}
           {}{" "}
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4=')] opacity-50"></div>{" "}
@@ -161,7 +161,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
             {" "}
             {}{" "}
             <motion.div
-              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-4 flex items-center justify-center z-20 cursor-pointer transition-colors ${activeNode === "core" ? "border-indigo-500 bg-indigo-50 shadow-[0_0_40px_-10px_rgba(99,102,241,0.5)]" : "border-slate-300 bg-white hover:border-indigo-400"}`}
+              className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 rounded-full border-4 flex items-center justify-center z-20 cursor-pointer transition-colors ${activeNode === "core" ? "border-indigo-500 bg-indigo-50 shadow-[0_0_40px_-10px_rgba(99,102,241,0.5)]" : "border-slate-300 bg-card hover:border-indigo-400"}`}
               animate={{ scale: isFusing ? [1, 1.1, 1] : 1 }}
               transition={{ repeat: isFusing ? Infinity : 0, duration: 1 }}
               onClick={() => setActiveNode("core")}
@@ -199,7 +199,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
                   </svg>{" "}
                   {}{" "}
                   <motion.div
-                    className={`absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 flex flex-col items-center justify-center cursor-pointer bg-white z-10 transition-all ${isActive ? `border-${node.color.split("-")[1]}-500 shadow-md scale-110` : "border-slate-200 hover:border-slate-400"}`}
+                    className={`absolute w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 flex flex-col items-center justify-center cursor-pointer bg-card z-10 transition-all ${isActive ? `border-${node.color.split("-")[1]}-500 shadow-md scale-110` : "border-slate-200 hover:border-slate-400"}`}
                     style={{
                       left: `calc(50% + ${x}px)`,
                       top: `calc(50% + ${y}px)`,
@@ -227,7 +227,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
           />{" "}
         </div>{" "}
         {}{" "}
-        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
+        <div className="bg-card border border-slate-200 rounded-2xl shadow-sm overflow-hidden flex flex-col">
           {" "}
           <div className="p-5 border-b border-slate-100 bg-slate-50/50">
             {" "}
@@ -305,7 +305,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
                       )}
                     </>
                   ) : (
-                    <div className="text-center p-6 text-muted-foreground">
+                    <div className="text-center p-4 md:p-6 text-muted-foreground">
                       <p>No lab data found for this patient.</p>
                       <p className="text-sm mt-2">Upload a medical report to generate insights.</p>
                     </div>
@@ -381,7 +381,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
                   <p className="text-xs text-muted-foreground mb-4">
                     Raw extracted parameters awaiting fusion:
                   </p>{" "}
-                  <div className="grid grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {" "}
                     {Object.entries(
                       nodes.find((n: any) => n.id === activeNode)?.data || {},

@@ -37,7 +37,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
     }, 2000);
   };
 
-  if (loading) return <div className="p-8 text-center text-muted-foreground animate-pulse">Loading medical reports...</div>;
+  if (loading) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Loading medical reports...</div>;
 
   return (
     <div className="space-y-6">
@@ -56,7 +56,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Left column: Report List */}
-        <div className="w-full md:w-1/3 space-y-3">
+        <div className="w-full md:w-full md:w-full lg:w-1/3 space-y-3">
           {reports.map((report) => (
             <Card 
               key={report.id} 
@@ -70,10 +70,10 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
                     <h4 className="font-semibold text-sm line-clamp-1">{report.file_name}</h4>
                     <p className="text-xs text-muted-foreground mt-1">{report.report_type || "Lab Report"}</p>
                   </div>
-                  <FileText className="w-4 h-4 text-slate-400 shrink-0" />
+                  <FileText className="w-4 h-4 text-muted-foreground shrink-0" />
                 </div>
                 <div className="mt-3 flex items-center justify-between text-[10px] uppercase font-bold tracking-wider">
-                  <span className="text-slate-500">{new Date(report.upload_date).toLocaleDateString()}</span>
+                  <span className="text-muted-foreground">{new Date(report.upload_date).toLocaleDateString()}</span>
                   {report.abnormalities && Object.keys(report.abnormalities).length > 0 ? (
                     <span className="text-amber-600 bg-amber-50 px-2 py-0.5 rounded flex items-center">
                       <AlertTriangle className="w-3 h-3 mr-1" /> Flags
@@ -88,7 +88,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
             </Card>
           ))}
           {reports.length === 0 && (
-            <div className="p-8 text-center text-muted-foreground border border-dashed rounded-xl">
+            <div className="p-4 md:p-8 text-center text-muted-foreground border border-dashed rounded-xl">
               No reports available for analysis.
             </div>
           )}
@@ -97,14 +97,14 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
         {/* Right column: Analysis View */}
         <div className="w-full md:w-2/3">
           {selectedReport ? (
-            <Card className="h-full border-none shadow-md bg-white/50 dark:bg-slate-900/50 backdrop-blur">
-              <CardContent className="p-6">
+            <Card className="h-full border-none shadow-md bg-card/50 dark:bg-card/50 backdrop-blur">
+              <CardContent className="p-4 md:p-6">
                 <div className="flex justify-between items-center mb-6 pb-4 border-b">
                   <div>
                     <h2 className="text-xl font-bold">{selectedReport.file_name}</h2>
                     <p className="text-sm text-muted-foreground">Uploaded on {new Date(selectedReport.upload_date).toLocaleString()}</p>
                   </div>
-                  <Button onClick={runAnalysis} disabled={analyzing} className="bg-blue-600 hover:bg-blue-700 text-white gap-2">
+                  <Button onClick={runAnalysis} disabled={analyzing} className="bg-blue-600 hover:bg-blue-700 text-foreground gap-2">
                     {analyzing ? <Activity className="w-4 h-4 animate-spin" /> : <Stethoscope className="w-4 h-4" />}
                     {analyzing ? "Analyzing..." : "Re-Analyze"}
                   </Button>
@@ -123,14 +123,14 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
                   <div className="space-y-6 animate-in fade-in duration-500">
                     {/* Summary */}
                     <div>
-                      <h4 className="text-sm font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider mb-2">Clinical Summary</h4>
-                      <p className="text-sm text-slate-600 dark:text-slate-400 bg-slate-50 dark:bg-slate-800/50 p-4 rounded-xl leading-relaxed">
+                      <h4 className="text-sm font-bold text-slate-800 dark:text-foreground uppercase tracking-wider mb-2">Clinical Summary</h4>
+                      <p className="text-sm text-slate-600 dark:text-muted-foreground bg-slate-50 dark:bg-muted/50 p-4 rounded-xl leading-relaxed">
                         {selectedReport.ai_summary || "Routine analysis completed. No critical anomalies detected in the provided parameters. Continued monitoring recommended."}
                       </p>
                     </div>
 
                     {/* Abnormalities */}
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/10 p-4 rounded-xl">
                         <h4 className="text-sm font-bold text-red-600 dark:text-red-400 uppercase tracking-wider flex items-center mb-3">
                           <AlertTriangle className="w-4 h-4 mr-2" /> Abnormal Findings
@@ -138,14 +138,14 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
                         {selectedReport.abnormalities && Object.keys(selectedReport.abnormalities).length > 0 ? (
                           <ul className="space-y-2">
                             {Object.entries(selectedReport.abnormalities).map(([key, val]: [string, any], i) => (
-                              <li key={i} className="flex justify-between items-center text-sm bg-white dark:bg-slate-900 p-2 rounded shadow-sm border border-red-100 dark:border-red-900/20">
-                                <span className="font-medium text-slate-700 dark:text-slate-300 capitalize">{key.replace('_', ' ')}</span>
+                              <li key={i} className="flex justify-between items-center text-sm bg-card dark:bg-card p-2 rounded shadow-sm border border-red-100 dark:border-red-900/20">
+                                <span className="font-medium text-slate-700 dark:text-foreground capitalize">{key.replace('_', ' ')}</span>
                                 <span className="text-red-600 dark:text-red-400 font-bold">{val}</span>
                               </li>
                             ))}
                           </ul>
                         ) : (
-                          <p className="text-sm text-slate-500 dark:text-slate-400 italic">No abnormal markers detected in this specific report.</p>
+                          <p className="text-sm text-muted-foreground dark:text-muted-foreground italic">No abnormal markers detected in this specific report.</p>
                         )}
                       </div>
 
@@ -153,7 +153,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
                         <h4 className="text-sm font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider flex items-center mb-3">
                           <Pill className="w-4 h-4 mr-2" /> AI Recommendations
                         </h4>
-                        <ul className="space-y-2 text-sm text-slate-700 dark:text-slate-300">
+                        <ul className="space-y-2 text-sm text-slate-700 dark:text-foreground">
                           {selectedReport.abnormalities && Object.keys(selectedReport.abnormalities).length > 0 ? (
                             <>
                               <li className="flex gap-2 items-start"><span className="text-indigo-500 mt-1">•</span> Clinical correlation required.</li>

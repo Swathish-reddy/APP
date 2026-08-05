@@ -65,7 +65,7 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
             Clinical Decision Intelligence Center
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -78,7 +78,7 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[700px]">
         {/* Left Column - Core Recommendations */}
-        <div className="lg:col-span-4 bg-white/60 dark:bg-slate-900/60 border rounded-2xl p-4 shadow-sm backdrop-blur-md h-full flex flex-col">
+        <div className="lg:col-span-4 bg-card/60 dark:bg-card/60 border rounded-2xl p-4 shadow-sm backdrop-blur-md h-full flex flex-col">
           <RecommendationPanel
             recommendations={recommendations}
             onSelectRec={setSelectedRec}
@@ -87,25 +87,25 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
         </div>
 
         {/* Right Column - Deep Dive Tools */}
-        <div className="lg:col-span-8 bg-white/60 dark:bg-slate-900/60 border rounded-2xl p-4 shadow-sm backdrop-blur-md h-full flex flex-col">
+        <div className="lg:col-span-8 bg-card/60 dark:bg-card/60 border rounded-2xl p-4 shadow-sm backdrop-blur-md h-full flex flex-col">
           <Tabs defaultValue="xai" className="h-full flex flex-col">
-            <TabsList className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2 mb-4 bg-transparent w-full h-auto">
-              <TabsTrigger value="xai" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg shadow-sm">
+            <TabsList className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-cols-6 gap-2 mb-4 bg-transparent w-full h-auto">
+              <TabsTrigger value="xai" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Explainable AI
               </TabsTrigger>
-              <TabsTrigger value="action" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg shadow-sm">
+              <TabsTrigger value="action" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Action Plan
               </TabsTrigger>
-              <TabsTrigger value="pathways" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg shadow-sm">
+              <TabsTrigger value="pathways" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Pathways
               </TabsTrigger>
-              <TabsTrigger value="reports" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg shadow-sm">
+              <TabsTrigger value="reports" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Reports AI
               </TabsTrigger>
-              <TabsTrigger value="doctors" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg shadow-sm">
+              <TabsTrigger value="doctors" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Find Doctors
               </TabsTrigger>
-              <TabsTrigger value="hospitals" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-white rounded-lg shadow-sm">
+              <TabsTrigger value="hospitals" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Hospitals
               </TabsTrigger>
             </TabsList>

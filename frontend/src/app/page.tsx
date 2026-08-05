@@ -163,10 +163,10 @@ export default function Home() {
           <>
             {" "}
             {}{" "}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
               {" "}
               {}{" "}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
+              <div className="bg-card rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
                 {" "}
                 <div className="flex justify-between items-start mb-4">
                   {" "}
@@ -223,7 +223,7 @@ export default function Home() {
                 <div className="absolute -bottom-4 -right-4 h-24 w-24 bg-emerald-500/5 rounded-full blur-2xl group-hover:bg-emerald-500/10 transition-colors"></div>{" "}
               </div>{" "}
               {}{" "}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-card rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                 {" "}
                 <div className="flex justify-between items-start mb-4">
                   {" "}
@@ -236,7 +236,7 @@ export default function Home() {
                 </div>{" "}
                 <div className="flex items-end space-x-2">
                   {" "}
-                  <span className="text-3xl font-extrabold text-foreground">
+                  <span className="text-2xl md:text-3xl font-extrabold text-foreground">
                     {patientDetails?.metrics?.biological_age || 42}
                   </span>{" "}
                   <span className="text-sm text-muted-foreground mb-1">
@@ -261,7 +261,7 @@ export default function Home() {
                 </p>{" "}
               </div>{" "}
               {}{" "}
-              <div className="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
+              <div className="bg-card rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow">
                 {" "}
                 <div className="flex justify-between items-start mb-4">
                   {" "}
@@ -274,7 +274,7 @@ export default function Home() {
                 </div>{" "}
                 <div className="flex items-end space-x-2">
                   {" "}
-                  <span className="text-3xl font-extrabold text-foreground">
+                  <span className="text-2xl md:text-3xl font-extrabold text-foreground">
                     {patientDetails?.metrics?.life_expectancy || 84.5}
                   </span>{" "}
                   <span className="text-sm text-muted-foreground mb-1">
@@ -293,12 +293,12 @@ export default function Home() {
                 </p>{" "}
               </div>{" "}
               {}{" "}
-              <div className="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
+              <div className="bg-card rounded-2xl p-4 border border-slate-200 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between">
                 {" "}
                 <span className="text-sm font-semibold text-muted-foreground mb-2 block">
                   Wellness Index
                 </span>{" "}
-                <div className="grid grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {" "}
                   <div className="bg-slate-50 p-2 rounded-lg flex items-center space-x-2">
                     {" "}
@@ -344,10 +344,10 @@ export default function Home() {
               </div>{" "}
             </div>{" "}
             {}{" "}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {" "}
               {}{" "}
-              <div className="lg:col-span-2 bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[500px]">
+              <div className="lg:col-span-2 bg-card rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[500px]">
                 {" "}
                 <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
                   {" "}
@@ -381,14 +381,13 @@ export default function Home() {
                     >
                       {" "}
                       <Canvas shadows camera={{ position: [0, 0, 5], fov: 50 }}>
-                        {" "}
-                        <Stage environment="city" intensity={0.5}>
-                          {" "}
+                        <ambientLight intensity={0.8} />
+                        <directionalLight position={[10, 10, 5]} intensity={1} />
+                        <Stage intensity={0.5} environment={null}>
                           <Center>
-                            {" "}
-                            <HumanoidPlaceholder />{" "}
-                          </Center>{" "}
-                        </Stage>{" "}
+                            <HumanoidPlaceholder />
+                          </Center>
+                        </Stage>
                         <OrbitControls
                           autoRotate
                           autoRotateSpeed={1}
@@ -400,21 +399,21 @@ export default function Home() {
                   {}{" "}
                   <div className="absolute top-6 right-6 space-y-3">
                     {" "}
-                    <div className="bg-white/90 backdrop-blur border border-slate-200 px-3 py-2 rounded-lg shadow-sm flex items-center space-x-2">
+                    <div className="bg-card/90 backdrop-blur border border-slate-200 px-3 py-2 rounded-lg shadow-sm flex items-center space-x-2">
                       {" "}
                       <div className="h-2 w-2 rounded-full bg-red-500 animate-pulse"></div>{" "}
                       <span className="text-xs font-semibold text-foreground">
                         Heart (Elevated Risk)
                       </span>{" "}
                     </div>{" "}
-                    <div className="bg-white/90 backdrop-blur border border-slate-200 px-3 py-2 rounded-lg shadow-sm flex items-center space-x-2">
+                    <div className="bg-card/90 backdrop-blur border border-slate-200 px-3 py-2 rounded-lg shadow-sm flex items-center space-x-2">
                       {" "}
                       <div className="h-2 w-2 rounded-full bg-emerald-500"></div>{" "}
                       <span className="text-xs font-semibold text-foreground">
                         Kidney (Optimal)
                       </span>{" "}
                     </div>{" "}
-                    <div className="bg-white/90 backdrop-blur border border-slate-200 px-3 py-2 rounded-lg shadow-sm flex items-center space-x-2">
+                    <div className="bg-card/90 backdrop-blur border border-slate-200 px-3 py-2 rounded-lg shadow-sm flex items-center space-x-2">
                       {" "}
                       <div className="h-2 w-2 rounded-full bg-emerald-500"></div>{" "}
                       <span className="text-xs font-semibold text-foreground">
@@ -428,7 +427,7 @@ export default function Home() {
               <div className="space-y-6 flex flex-col h-[500px]">
                 {" "}
                 {}{" "}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex-1 flex flex-col">
+                <div className="bg-card rounded-2xl border border-slate-200 shadow-sm p-5 flex-1 flex flex-col">
                   {" "}
                   <h3 className="font-bold text-foreground mb-1">
                     Disease Risk Radar
@@ -475,7 +474,7 @@ export default function Home() {
                   </div>{" "}
                 </div>{" "}
                 {}{" "}
-                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-5 flex-1 flex flex-col overflow-hidden">
+                <div className="bg-card rounded-2xl border border-slate-200 shadow-sm p-5 flex-1 flex flex-col overflow-hidden">
                   {" "}
                   <h3 className="font-bold text-foreground mb-1 flex items-center">
                     {" "}

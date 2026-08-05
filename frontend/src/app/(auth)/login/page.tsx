@@ -38,7 +38,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-4 md:px-6 lg:px-4 md:px-8">
       {" "}
       <div className="max-w-md w-full space-y-8 glass-card p-10 rounded-2xl">
         {" "}
@@ -51,7 +51,7 @@ export default function LoginPage() {
               <Activity className="h-8 w-8" />{" "}
             </div>{" "}
           </div>{" "}
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-foreground font-display">
+          <h2 className="mt-6 text-center text-2xl md:text-3xl font-extrabold text-foreground font-display">
             {" "}
             Sign in to CogniVueX{" "}
           </h2>{" "}
@@ -88,7 +88,7 @@ export default function LoginPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2.5 border border-border placeholder-muted-foreground text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm bg-white"
+                className="appearance-none relative block w-full px-3 py-2.5 border border-border placeholder-muted-foreground text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm bg-card"
                 placeholder="name@example.com"
               />{" "}
             </div>{" "}
@@ -103,7 +103,7 @@ export default function LoginPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="appearance-none relative block w-full px-3 py-2.5 border border-border placeholder-muted-foreground text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm bg-white"
+                className="appearance-none relative block w-full px-3 py-2.5 border border-border placeholder-muted-foreground text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary focus:z-10 sm:text-sm bg-card"
                 placeholder="••••••••"
               />{" "}
             </div>{" "}
@@ -113,7 +113,7 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+              className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-lg text-foreground bg-primary hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary disabled:opacity-50 disabled:cursor-not-allowed transition-all"
             >
               {" "}
               {loading ? "Signing in..." : "Sign in"}{" "}

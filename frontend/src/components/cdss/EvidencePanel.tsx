@@ -62,7 +62,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
           <h4 className="flex items-center gap-2 font-medium text-sm text-indigo-700 dark:text-indigo-400 mb-2">
             <Info className="w-4 h-4" /> AI Interpretation
           </h4>
-          <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+          <p className="text-sm font-medium text-slate-700 dark:text-foreground">
             {xai.natural_language_explanation}
           </p>
         </div>
@@ -99,7 +99,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
         )}
 
         {/* Factors Breakdown */}
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <h4 className="font-semibold text-xs text-muted-foreground uppercase tracking-wider flex items-center text-red-500">
               <TrendingUp className="w-4 h-4 mr-1" /> Elevating Factors
@@ -107,7 +107,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
             <div className="space-y-2">
               {xai.top_features?.map((f: any, i: number) => (
                 <div key={i} className="flex justify-between items-center bg-red-50 dark:bg-red-950/20 px-3 py-2 rounded-lg border border-red-100 dark:border-red-900/30">
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{f.name}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-foreground">{f.name}</span>
                   <span className="text-xs font-bold text-red-600 dark:text-red-400">{f.impact}</span>
                 </div>
               ))}
@@ -124,7 +124,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
             <div className="space-y-2">
               {xai.negative_factors?.map((f: any, i: number) => (
                 <div key={i} className="flex justify-between items-center bg-emerald-50 dark:bg-emerald-950/20 px-3 py-2 rounded-lg border border-emerald-100 dark:border-emerald-900/30">
-                  <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{f.name}</span>
+                  <span className="text-xs font-medium text-slate-700 dark:text-foreground">{f.name}</span>
                   <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400">{f.impact}</span>
                 </div>
               ))}
@@ -137,7 +137,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
 
         {/* Risk Comparison */}
         {xai.risk_comparison && (
-          <div className="bg-slate-50 dark:bg-slate-900/50 p-4 rounded-xl border">
+          <div className="bg-slate-50 dark:bg-card/50 p-4 rounded-xl border">
             <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-wider flex items-center">
               <AlertCircle className="w-4 h-4 mr-2" /> Cohort Comparison
             </h4>
@@ -147,7 +147,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
                   <span className="font-medium">Patient Risk</span>
                   <span className="font-bold text-red-500">{xai.risk_comparison.patient_risk}%</span>
                 </div>
-                <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
+                <div className="w-full bg-slate-200 dark:bg-muted rounded-full h-2">
                   <div className="bg-red-500 h-2 rounded-full" style={{ width: `${Math.min(100, xai.risk_comparison.patient_risk)}%` }}></div>
                 </div>
               </div>
@@ -156,7 +156,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
                   <span className="font-medium text-muted-foreground">Population Average</span>
                   <span className="font-bold text-blue-500">{xai.risk_comparison.population_average}%</span>
                 </div>
-                <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-2">
+                <div className="w-full bg-slate-200 dark:bg-muted rounded-full h-2">
                   <div className="bg-blue-500 h-2 rounded-full" style={{ width: `${Math.min(100, xai.risk_comparison.population_average)}%` }}></div>
                 </div>
               </div>

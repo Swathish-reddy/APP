@@ -23,15 +23,15 @@ export default function EmergencyMap() {
   }, []);
 
   return (
-    <div className="bg-slate-900/60 border border-slate-800 rounded-xl p-0 relative overflow-hidden h-full min-h-[220px]">
+    <div className="bg-card/60 border border-border rounded-xl p-0 relative overflow-hidden h-full min-h-[220px]">
       {/* Radar Background */}
-      <div className="absolute inset-0 bg-slate-950">
+      <div className="absolute inset-0 bg-background">
         {/* Grid lines */}
         <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(rgba(30, 41, 59, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(30, 41, 59, 0.5) 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
         
         {/* Radar Circles */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square rounded-full border border-slate-800 opacity-50"></div>
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] aspect-square rounded-full border border-slate-700 opacity-60"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] aspect-square rounded-full border border-border opacity-50"></div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] aspect-square rounded-full border border-border opacity-60"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[40%] aspect-square rounded-full border border-blue-900/50 opacity-80"></div>
         
         {/* Radar Sweep Animation */}
@@ -41,7 +41,7 @@ export default function EmergencyMap() {
       {/* Central Node (Hospital) */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 flex flex-col items-center">
         <div className="w-4 h-4 bg-blue-500 rounded-sm shadow-[0_0_15px_rgba(59,130,246,1)] flex items-center justify-center">
-          <Crosshair className="w-3 h-3 text-white" />
+          <Crosshair className="w-3 h-3 text-foreground" />
         </div>
       </div>
 
@@ -56,8 +56,8 @@ export default function EmergencyMap() {
             <div className={`w-3 h-3 rounded-full ${amb.criticality === 'High' ? 'bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)] animate-pulse' : 'bg-orange-500'}`}></div>
             <div className={`absolute -inset-2 rounded-full border ${amb.criticality === 'High' ? 'border-red-500/50 animate-ping' : 'border-orange-500/30'} opacity-75`}></div>
           </div>
-          <div className="mt-1 bg-slate-900/90 border border-slate-700 rounded px-1.5 py-0.5 text-[8px] whitespace-nowrap backdrop-blur-sm shadow-xl">
-            <span className={amb.criticality === 'High' ? 'text-red-400 font-bold' : 'text-slate-300'}>{amb.id}</span>
+          <div className="mt-1 bg-card/90 border border-border rounded px-1.5 py-0.5 text-[8px] whitespace-nowrap backdrop-blur-sm shadow-xl">
+            <span className={amb.criticality === 'High' ? 'text-red-400 font-bold' : 'text-foreground'}>{amb.id}</span>
           </div>
         </div>
       ))}
@@ -66,18 +66,18 @@ export default function EmergencyMap() {
       <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent pointer-events-none"></div>
       
       <div className="relative z-20 flex flex-col justify-between items-start h-full p-4 pointer-events-none">
-        <h3 className="text-white font-bold text-sm flex items-center bg-slate-900/80 px-2 py-1 rounded backdrop-blur border border-slate-800">
+        <h3 className="text-foreground font-bold text-sm flex items-center bg-card/80 px-2 py-1 rounded backdrop-blur border border-border">
           <MapIcon className="w-4 h-4 mr-2 text-blue-400" /> Interactive Tracker
         </h3>
         
-        <div className="mt-auto bg-slate-900/90 backdrop-blur-md border border-slate-700 p-3 rounded-lg w-full flex items-center justify-between pointer-events-auto">
+        <div className="mt-auto bg-card/90 backdrop-blur-md border border-border p-3 rounded-lg w-full flex items-center justify-between pointer-events-auto">
           <div>
-            <p className="text-[10px] text-slate-400 font-semibold uppercase">{ambulances[0]?.id}</p>
-            <p className="text-sm text-white font-bold">{ambulances[0]?.eta} away</p>
+            <p className="text-[10px] text-muted-foreground font-semibold uppercase">{ambulances[0]?.id}</p>
+            <p className="text-sm text-foreground font-bold">{ambulances[0]?.eta} away</p>
           </div>
           <div className="text-right">
             <p className="text-xs text-red-400 font-bold uppercase">{ambulances[0]?.code}</p>
-            <p className="text-[10px] text-slate-400">ETA Sync Active</p>
+            <p className="text-[10px] text-muted-foreground">ETA Sync Active</p>
           </div>
         </div>
       </div>

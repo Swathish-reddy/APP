@@ -44,12 +44,26 @@ async def build_patient_dict(patient: Patient, db: AsyncSession) -> Dict[str, An
     except Exception as e:
         print(f"Error enriching patient with documents in risk: {e}")
 
+    # Fetch Medical History, Medications, and Allergies
+    from app.db.models import MedicalHistory, Medication, Allergy
+    med_hist_res = await db.execute(select(MedicalHistory).where(MedicalHistory.patient_id == patient.patient_id))
+    med_hist = [{"disease_name": h.disease_name, "status": h.status} for h in med_hist_res.scalars().all()]
+    
+    meds_res = await db.execute(select(Medication).where(Medication.patient_id == patient.patient_id))
+    meds = [{"medicine_name": m.medicine_name, "dosage": m.dosage} for m in meds_res.scalars().all()]
+    
+    algs_res = await db.execute(select(Allergy).where(Allergy.patient_id == patient.patient_id))
+    allergies = [{"allergen": a.allergen, "severity": a.severity} for a in algs_res.scalars().all()]
+
     return {
         "age": patient.age or 45,
         "bmi": patient.bmi or 24,
         "gender": patient.gender,
         "labs": labs,
-        "vitals": vitals
+        "vitals": vitals,
+        "medical_history": med_hist,
+        "medications": meds,
+        "allergies": allergies
     }
 
 @router.get("/{patient_id}/fusion")
@@ -59,10 +73,17 @@ async def get_risk_fusion(patient_id: int, db: AsyncSession = Depends(get_db), c
     """
     result_pat = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
     patient = result_pat.scalars().first()
-    if not patient:
-        raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
-        
-    patient_dict = await build_patient_dict(patient, db)
+    
+    if patient:
+        patient_dict = await build_patient_dict(patient, db)
+    else:
+        from app.db.db import patients_db
+        mock_id = f"P{patient_id}"
+        if mock_id in patients_db:
+            patient_dict = patients_db[mock_id]
+        else:
+            raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
+
     result = run_multi_model_fusion(patient_dict)
     return result
 
@@ -73,10 +94,17 @@ async def get_organ_risks(patient_id: int, db: AsyncSession = Depends(get_db), c
     """
     result_pat = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
     patient = result_pat.scalars().first()
-    if not patient:
-        raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
-        
-    patient_dict = await build_patient_dict(patient, db)
+    
+    if patient:
+        patient_dict = await build_patient_dict(patient, db)
+    else:
+        from app.db.db import patients_db
+        mock_id = f"P{patient_id}"
+        if mock_id in patients_db:
+            patient_dict = patients_db[mock_id]
+        else:
+            raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
+            
     return generate_organ_risk_scores(patient_dict)
 
 @router.get("/{patient_id}/xai/{disease_name}")
@@ -86,10 +114,16 @@ async def get_prediction_xai(patient_id: int, disease_name: str, db: AsyncSessio
     """
     result_pat = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
     patient = result_pat.scalars().first()
-    if not patient:
-        raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
-        
-    patient_dict = await build_patient_dict(patient, db)
+    
+    if patient:
+        patient_dict = await build_patient_dict(patient, db)
+    else:
+        from app.db.db import patients_db
+        mock_id = f"P{patient_id}"
+        if mock_id in patients_db:
+            patient_dict = patients_db[mock_id]
+        else:
+            raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
     
     mapping = {
         "cv": "Cardiovascular Risk",
@@ -110,10 +144,16 @@ async def get_patient_predict(patient_id: int, disease: str, db: AsyncSession = 
     """
     result_pat = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
     patient = result_pat.scalars().first()
-    if not patient:
-        raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
-        
-    patient_dict = await build_patient_dict(patient, db)
+    
+    if patient:
+        patient_dict = await build_patient_dict(patient, db)
+    else:
+        from app.db.db import patients_db
+        mock_id = f"P{patient_id}"
+        if mock_id in patients_db:
+            patient_dict = patients_db[mock_id]
+        else:
+            raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
     
     mapping = {
         "cv": "Cardiovascular Risk",

@@ -42,7 +42,7 @@ export default function LeftPanelQueue() {
   }, []);
 
   const renderCase = (c: Case) => (
-    <div key={c.id} className="group relative bg-slate-900/40 border border-slate-700/50 p-4 rounded-xl hover:bg-slate-800/80 hover:border-slate-600 transition-all cursor-pointer overflow-hidden">
+    <div key={c.id} className="group relative bg-card/40 border border-border/50 p-4 rounded-xl hover:bg-muted/80 hover:border-slate-600 transition-all cursor-pointer overflow-hidden">
       {/* Background glow if critical */}
       {c.triage === 'ESI-1' && (
         <div className="absolute top-0 left-0 w-1 h-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
@@ -53,10 +53,10 @@ export default function LeftPanelQueue() {
       
       <div className="flex justify-between items-start mb-2 pl-2">
         <div>
-          <h3 className="text-white font-semibold text-sm group-hover:text-blue-400 transition-colors">
+          <h3 className="text-foreground font-semibold text-sm group-hover:text-blue-400 transition-colors">
             {c.name || c.id}
           </h3>
-          <p className="text-slate-400 text-xs mt-0.5">{c.reason}</p>
+          <p className="text-muted-foreground text-xs mt-0.5">{c.reason}</p>
         </div>
         <div className={`text-[10px] font-bold px-2 py-1 rounded-md ${
           c.triage === 'ESI-1' ? 'bg-red-500/20 text-red-400 border border-red-500/30' :
@@ -68,7 +68,7 @@ export default function LeftPanelQueue() {
       </div>
       
       <div className="flex items-center justify-between mt-3 pl-2 text-xs">
-        <div className="flex items-center text-slate-500">
+        <div className="flex items-center text-muted-foreground">
           <Clock className="w-3 h-3 mr-1" />
           {c.time_in || c.eta}
         </div>
@@ -80,10 +80,10 @@ export default function LeftPanelQueue() {
   );
 
   return (
-    <div className="h-full flex flex-col bg-slate-900/60 border border-slate-800/80 rounded-2xl backdrop-blur-md overflow-hidden">
+    <div className="h-full flex flex-col bg-card/60 border border-border/80 rounded-2xl backdrop-blur-md overflow-hidden">
       {/* Header */}
-      <div className="p-4 border-b border-slate-800 bg-slate-900/50">
-        <h2 className="text-lg font-bold text-white flex items-center">
+      <div className="p-4 border-b border-border bg-card/50">
+        <h2 className="text-lg font-bold text-foreground flex items-center">
           <Activity className="w-5 h-5 mr-2 text-blue-500" />
           Live Queue
         </h2>
@@ -91,36 +91,36 @@ export default function LeftPanelQueue() {
         {/* Search & Filter */}
         <div className="mt-4 flex gap-2">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
             <input 
               type="text" 
               placeholder="Search ID, Name..." 
-              className="w-full bg-slate-800/50 border border-slate-700 text-sm text-white rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-blue-500 transition-colors"
+              className="w-full bg-muted/50 border border-border text-sm text-foreground rounded-lg pl-9 pr-3 py-2 focus:outline-none focus:border-blue-500 transition-colors"
             />
           </div>
-          <button className="p-2 bg-slate-800/50 border border-slate-700 rounded-lg text-slate-400 hover:text-white hover:bg-slate-700 transition-colors">
+          <button className="p-2 bg-muted/50 border border-border rounded-lg text-muted-foreground hover:text-foreground hover:bg-slate-700 transition-colors">
             <Filter className="w-4 h-4" />
           </button>
         </div>
       </div>
 
       {/* Tabs */}
-      <div className="flex border-b border-slate-800 bg-slate-900/30">
+      <div className="flex border-b border-border bg-card/30">
         <button 
           onClick={() => setActiveTab('critical')}
-          className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${activeTab === 'critical' ? 'border-red-500 text-red-500' : 'border-transparent text-slate-400 hover:text-slate-300'}`}
+          className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${activeTab === 'critical' ? 'border-red-500 text-red-500' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           CRITICAL ({data.critical.length})
         </button>
         <button 
           onClick={() => setActiveTab('waiting')}
-          className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${activeTab === 'waiting' ? 'border-orange-500 text-orange-500' : 'border-transparent text-slate-400 hover:text-slate-300'}`}
+          className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${activeTab === 'waiting' ? 'border-orange-500 text-orange-500' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           WAITING ({data.waiting.length})
         </button>
         <button 
           onClick={() => setActiveTab('incoming')}
-          className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${activeTab === 'incoming' ? 'border-blue-500 text-blue-500' : 'border-transparent text-slate-400 hover:text-slate-300'}`}
+          className={`flex-1 py-3 text-xs font-semibold text-center border-b-2 transition-colors ${activeTab === 'incoming' ? 'border-blue-500 text-blue-500' : 'border-transparent text-muted-foreground hover:text-foreground'}`}
         >
           INCOMING ({data.incoming.length})
         </button>
@@ -131,7 +131,7 @@ export default function LeftPanelQueue() {
         {loading ? (
           <div className="space-y-3">
             {[1,2,3].map(i => (
-              <div key={i} className="h-24 bg-slate-800/50 rounded-xl animate-pulse"></div>
+              <div key={i} className="h-24 bg-muted/50 rounded-xl animate-pulse"></div>
             ))}
           </div>
         ) : (
@@ -141,7 +141,7 @@ export default function LeftPanelQueue() {
             {activeTab === 'incoming' && data.incoming.map(renderCase)}
             
             {data[activeTab as keyof typeof data].length === 0 && (
-              <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-2">
+              <div className="h-full flex flex-col items-center justify-center text-muted-foreground space-y-2">
                 <CheckCircle2 className="w-8 h-8 opacity-20" />
                 <p className="text-sm">No cases in this queue.</p>
               </div>

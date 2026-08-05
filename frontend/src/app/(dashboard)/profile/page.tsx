@@ -38,31 +38,31 @@ export default function ProfilePage() {
     );
   }
   return (
-    <div className="min-h-screen bg-slate-50 p-6">
+    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
       {" "}
       <div className="max-w-4xl mx-auto space-y-6">
         {" "}
         <div className="flex justify-between items-center">
           {" "}
-          <h1 className="text-3xl font-bold text-foreground font-display">
+          <h1 className="text-2xl md:text-3xl font-bold text-foreground font-display">
             Account Profile
           </h1>{" "}
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 px-4 py-2 bg-white text-red-600 rounded-lg shadow-sm border border-red-100 hover:bg-red-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-card text-red-600 rounded-lg shadow-sm border border-red-100 hover:bg-red-50 transition-colors"
           >
             {" "}
             <LogOut className="w-4 h-4" /> <span>Logout</span>{" "}
           </button>{" "}
         </div>{" "}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {" "}
           <div className="col-span-1 space-y-6">
             {" "}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="glass-panel rounded-xl p-6 flex flex-col items-center"
+              className="glass-panel rounded-xl p-4 md:p-6 flex flex-col items-center"
             >
               {" "}
               <div className="w-24 h-24 bg-sky-100 rounded-full flex items-center justify-center mb-4 text-sky-600">
@@ -84,7 +84,7 @@ export default function ProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="glass-panel rounded-xl p-6"
+              className="glass-panel rounded-xl p-4 md:p-6"
             >
               {" "}
               <h3 className="text-lg font-medium text-foreground mb-4 flex items-center gap-2">
@@ -118,13 +118,13 @@ export default function ProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="glass-panel rounded-xl p-6"
+              className="glass-panel rounded-xl p-4 md:p-6"
             >
               {" "}
               <h3 className="text-lg font-medium text-foreground mb-6">
                 Personal Information
               </h3>{" "}
-              <div className="grid grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {" "}
                 <div>
                   {" "}
@@ -165,7 +165,7 @@ export default function ProfilePage() {
               </div>{" "}
               <div className="mt-8">
                 {" "}
-                <button className="dark px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
+                <button className="dark px-4 py-2 bg-card text-foreground text-sm font-medium rounded-lg hover:bg-muted transition-colors">
                   {" "}
                   Edit Profile{" "}
                 </button>{" "}

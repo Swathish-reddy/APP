@@ -30,12 +30,12 @@ export default function HealthScoreWidget({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center p-6 bg-slate-900/50 border border-slate-800 rounded-3xl shadow-xl backdrop-blur-xl",
+        "relative flex flex-col items-center justify-center p-4 md:p-6 bg-card/50 border border-border rounded-3xl shadow-xl backdrop-blur-xl",
         className,
       )}
     >
       {" "}
-      <h3 className="text-sm font-medium text-slate-400 mb-2 tracking-wide uppercase">
+      <h3 className="text-sm font-medium text-muted-foreground mb-2 tracking-wide uppercase">
         Health Score
       </h3>{" "}
       <div className="relative h-48 w-48">
@@ -69,15 +69,15 @@ export default function HealthScoreWidget({
         {}{" "}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {" "}
-          <span className="text-5xl font-bold tracking-tight text-white">
+          <span className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
             {score}
           </span>{" "}
-          <span className="text-xs font-medium text-slate-400 mt-1 uppercase tracking-widest">
+          <span className="text-xs font-medium text-muted-foreground mt-1 uppercase tracking-widest">
             {status}
           </span>{" "}
         </div>{" "}
       </div>{" "}
-      <p className="text-xs text-slate-400 mt-4 text-center max-w-[200px]">
+      <p className="text-xs text-muted-foreground mt-4 text-center max-w-[200px]">
         {" "}
         Based on vitals, lifestyle, and medical history{" "}
       </p>{" "}

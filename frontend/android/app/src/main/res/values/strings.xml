@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">CognivueX</string>
+    <string name="title_activity_main">CognivueX</string>
+    <string name="package_name">com.cognivuex.app</string>
+    <string name="custom_url_scheme">com.cognivuex.app</string>
+</resources>

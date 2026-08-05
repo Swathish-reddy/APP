@@ -35,38 +35,38 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-sm">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-sm">
         <motion.div 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="bg-slate-900 border border-slate-700 rounded-2xl p-6 w-full max-w-md shadow-2xl relative"
+          className="bg-card border border-border rounded-2xl p-4 md:p-6 w-full max-w-md shadow-2xl relative"
         >
-          <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-white">
+          <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
           </button>
           
           {step === 1 && (
             <>
-              <h2 className="text-xl font-bold text-white mb-2 flex items-center">
+              <h2 className="text-xl font-bold text-foreground mb-2 flex items-center">
                 <UserPlus className="w-5 h-5 mr-2 text-indigo-400" />
                 Follow-up Appointment
               </h2>
-              <p className="text-sm text-slate-400 mb-6">Select a recommended specialist based on the AI Action Plan.</p>
+              <p className="text-sm text-muted-foreground mb-6">Select a recommended specialist based on the AI Action Plan.</p>
               
               <div className="space-y-3 mb-6">
                 {doctors.map(doc => (
                   <div 
                     key={doc.id}
                     onClick={() => setSelectedDoctor(doc.id)}
-                    className={`p-4 rounded-xl border cursor-pointer transition-colors ${selectedDoctor === doc.id ? 'bg-indigo-500/20 border-indigo-500' : 'bg-slate-800/50 border-slate-700 hover:bg-slate-800'}`}
+                    className={`p-4 rounded-xl border cursor-pointer transition-colors ${selectedDoctor === doc.id ? 'bg-indigo-500/20 border-indigo-500' : 'bg-muted/50 border-border hover:bg-muted'}`}
                   >
                     <div className="flex justify-between items-start">
                       <div>
-                        <h3 className="text-white font-semibold flex items-center">
-                          <Stethoscope className="w-4 h-4 mr-2 text-slate-400" /> {doc.name}
+                        <h3 className="text-foreground font-semibold flex items-center">
+                          <Stethoscope className="w-4 h-4 mr-2 text-muted-foreground" /> {doc.name}
                         </h3>
-                        <p className="text-xs text-slate-400 mt-1">{doc.spec} • {doc.rating} ★</p>
+                        <p className="text-xs text-muted-foreground mt-1">{doc.spec} • {doc.rating} ★</p>
                       </div>
                       <span className="text-xs bg-emerald-500/20 text-emerald-400 px-2 py-1 rounded font-medium">{doc.available}</span>
                     </div>
@@ -77,7 +77,7 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
               <button 
                 disabled={!selectedDoctor}
                 onClick={() => setStep(2)}
-                className="w-full py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-white font-bold rounded-xl transition-colors"
+                className="w-full py-3 bg-blue-600 hover:bg-blue-500 disabled:opacity-50 text-foreground font-bold rounded-xl transition-colors"
               >
                 Continue
               </button>
@@ -86,18 +86,18 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
 
           {step === 2 && (
             <>
-              <h2 className="text-xl font-bold text-white mb-2 flex items-center">
+              <h2 className="text-xl font-bold text-foreground mb-2 flex items-center">
                 <Calendar className="w-5 h-5 mr-2 text-indigo-400" />
                 Select Time Slot
               </h2>
-              <p className="text-sm text-slate-400 mb-6">Available slots for {doctors.find(d => d.id === selectedDoctor)?.name}</p>
+              <p className="text-sm text-muted-foreground mb-6">Available slots for {doctors.find(d => d.id === selectedDoctor)?.name}</p>
               
-              <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                 {timeSlots.map(time => (
                   <div 
                     key={time}
                     onClick={() => setSelectedTime(time)}
-                    className={`p-3 rounded-lg border text-center cursor-pointer transition-colors ${selectedTime === time ? 'bg-indigo-500/20 border-indigo-500 text-white font-bold' : 'bg-slate-800/50 border-slate-700 text-slate-300 hover:bg-slate-800'}`}
+                    className={`p-3 rounded-lg border text-center cursor-pointer transition-colors ${selectedTime === time ? 'bg-indigo-500/20 border-indigo-500 text-foreground font-bold' : 'bg-muted/50 border-border text-foreground hover:bg-muted'}`}
                   >
                     <Clock className="w-4 h-4 inline-block mr-1 opacity-70" /> {time}
                   </div>
@@ -105,13 +105,13 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
               </div>
 
               <div className="flex gap-3">
-                <button onClick={() => setStep(1)} className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition-colors">
+                <button onClick={() => setStep(1)} className="flex-1 py-3 bg-muted hover:bg-slate-700 text-foreground font-bold rounded-xl transition-colors">
                   Back
                 </button>
                 <button 
                   disabled={!selectedTime}
                   onClick={handleBook}
-                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold rounded-xl transition-colors"
+                  className="flex-1 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-foreground font-bold rounded-xl transition-colors"
                 >
                   Confirm Booking
                 </button>
@@ -122,8 +122,8 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
           {step === 3 && (
             <div className="py-8 flex flex-col items-center justify-center text-center">
               <CheckCircle2 className="w-16 h-16 text-emerald-500 mb-4 animate-[scale-in_0.3s_ease-out]" />
-              <p className="text-white font-bold text-lg">Appointment Confirmed</p>
-              <p className="text-sm text-slate-400 mt-2">Notification sent to patient and doctor.</p>
+              <p className="text-foreground font-bold text-lg">Appointment Confirmed</p>
+              <p className="text-sm text-muted-foreground mt-2">Notification sent to patient and doctor.</p>
             </div>
           )}
 

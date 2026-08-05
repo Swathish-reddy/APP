@@ -21,41 +21,41 @@ export const DietIntelligenceReport = ({
   }, [patientId]);
   if (!dietData) return null;
   return (
-    <div className="dark bg-slate-900/40 border border-slate-800 rounded-3xl p-6 mb-6">
+    <div className="dark bg-card/40 border border-border rounded-3xl p-4 md:p-6 mb-6">
       {" "}
-      <h3 className="text-xl font-bold text-white flex items-center gap-2 mb-4">
+      <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
         {" "}
         <Utensils className="w-6 h-6 text-green-400" /> AI Diet
         Intelligence{" "}
       </h3>{" "}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {" "}
-        <div className="dark bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+        <div className="dark bg-muted/50 p-4 rounded-xl border border-border/50">
           {" "}
           <p className="text-muted-foreground text-xs uppercase mb-1 font-semibold flex items-center gap-1">
             {" "}
             <Flame className="w-3 h-3 text-orange-400" /> Caloric Targets{" "}
           </p>{" "}
-          <p className="text-slate-200 text-sm whitespace-pre-wrap">
+          <p className="text-foreground text-sm whitespace-pre-wrap">
             {dietData["3_daily_energy_requirements"]?.target_calories} kcal/day
           </p>{" "}
         </div>{" "}
-        <div className="dark bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+        <div className="dark bg-muted/50 p-4 rounded-xl border border-border/50">
           {" "}
           <p className="text-muted-foreground text-xs uppercase mb-1 font-semibold">
             Macronutrient Ratio
           </p>{" "}
-          <p className="text-slate-200 text-sm whitespace-pre-wrap">
+          <p className="text-foreground text-sm whitespace-pre-wrap">
             Protein: {dietData["4_macronutrient_requirements"]?.protein}, Carbs: {dietData["4_macronutrient_requirements"]?.carbs}, Fats: {dietData["4_macronutrient_requirements"]?.fats}
           </p>{" "}
         </div>{" "}
-        <div className="dark bg-slate-800/50 p-4 rounded-xl border border-slate-700/50">
+        <div className="dark bg-muted/50 p-4 rounded-xl border border-border/50">
           {" "}
           <p className="text-muted-foreground text-xs uppercase mb-1 font-semibold flex items-center gap-1">
             {" "}
             <Droplet className="w-3 h-3 text-blue-400" /> Hydration{" "}
           </p>{" "}
-          <p className="text-slate-200 text-sm whitespace-pre-wrap">
+          <p className="text-foreground text-sm whitespace-pre-wrap">
             {dietData["11_hydration_plan"]}
           </p>{" "}
         </div>{" "}
@@ -64,16 +64,16 @@ export const DietIntelligenceReport = ({
           <p className="text-green-400 text-xs uppercase mb-2 font-semibold">
             Clinical Dietary Restrictions (Foods to Avoid)
           </p>{" "}
-          <p className="text-slate-200 text-sm whitespace-pre-wrap">
+          <p className="text-foreground text-sm whitespace-pre-wrap">
             {dietData["10_foods_to_avoid"]?.join(", ")}
           </p>{" "}
         </div>{" "}
-        <div className="dark bg-slate-800/50 p-4 rounded-xl border border-slate-700/50 md:col-span-3">
+        <div className="dark bg-muted/50 p-4 rounded-xl border border-border/50 md:col-span-3">
           {" "}
           <p className="text-muted-foreground text-xs uppercase mb-2 font-semibold">
             Suggested Meal Plan
           </p>{" "}
-          <p className="text-slate-200 text-sm whitespace-pre-wrap">
+          <p className="text-foreground text-sm whitespace-pre-wrap">
             {dietData["8_personalized_meal_plan"]}
           </p>{" "}
         </div>{" "}

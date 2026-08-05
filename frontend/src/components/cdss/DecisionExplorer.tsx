@@ -7,11 +7,11 @@ export const DecisionExplorer: React.FC<DecisionExplorerProps> = ({
   pathways,
 }) => {
   return (
-    <Card className="h-full border-muted bg-slate-50/50 dark:bg-slate-900/50 relative overflow-hidden">
+    <Card className="h-full border-muted bg-slate-50/50 dark:bg-card/50 relative overflow-hidden">
       {" "}
       {}{" "}
-      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />{" "}
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />{" "}
+      <div className="absolute top-0 right-0 w-full md:w-64 h-64 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10 pointer-events-none" />{" "}
+      <div className="absolute bottom-0 left-0 w-full md:w-64 h-64 bg-blue-500/5 rounded-full blur-3xl -ml-10 -mb-10 pointer-events-none" />{" "}
       <CardHeader>
         {" "}
         <CardTitle>Treatment Pathway</CardTitle>{" "}

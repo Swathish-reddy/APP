@@ -51,7 +51,7 @@ export default function XAIModule({ patientId }: { patientId: string }) {
           </p>{" "}
         </div>{" "}
       </div>{" "}
-      <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+      <div className="bg-card rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6">
         {" "}
         <h3 className="font-bold text-lg text-foreground mb-4 flex items-center">
           {" "}
@@ -76,7 +76,7 @@ export default function XAIModule({ patientId }: { patientId: string }) {
                 <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                   Calculated Risk Score
                 </span>{" "}
-                <span className="text-3xl font-black text-rose-600">
+                <span className="text-2xl md:text-3xl font-black text-rose-600">
                   {predictionData.risk_score.toFixed(1)}%
                 </span>{" "}
               </div>{" "}

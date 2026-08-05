@@ -104,14 +104,14 @@ export default function PopulationPage() {
     ([k, v]) => ({ name: k, value: v as number }),
   );
   return (
-    <div className="min-h-screen bg-[#030712] text-slate-200 p-6 space-y-6">
+    <div className="min-h-screen bg-[#030712] text-foreground p-4 md:p-6 space-y-6">
       {" "}
       {}{" "}
       <div className="flex items-end justify-between">
         {" "}
         <div>
           {" "}
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
             {" "}
             <BrainCircuit className="w-8 h-8 text-cyan-400" /> Health
             Intelligence & Research Command Center{" "}
@@ -122,7 +122,7 @@ export default function PopulationPage() {
         </div>{" "}
         <div className="flex items-center gap-3">
           {" "}
-          <div className="dark bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-center">
+          <div className="dark bg-card border border-border rounded-xl px-4 py-2 text-center">
             {" "}
             <p className="text-2xl font-bold text-cyan-400">
               {analytics?.population_size}
@@ -131,7 +131,7 @@ export default function PopulationPage() {
               Active Patients
             </p>{" "}
           </div>{" "}
-          <div className="dark bg-slate-900 border border-slate-700 rounded-xl px-4 py-2 text-center">
+          <div className="dark bg-card border border-border rounded-xl px-4 py-2 text-center">
             {" "}
             <p className="text-2xl font-bold text-emerald-400">
               {analytics?.population_health_score}
@@ -143,13 +143,13 @@ export default function PopulationPage() {
         </div>{" "}
       </div>{" "}
       {}{" "}
-      <div className="dark flex gap-1 bg-slate-900/60 border border-slate-800 rounded-xl p-1 w-fit">
+      <div className="dark flex gap-1 bg-card/60 border border-border rounded-xl p-1 w-fit">
         {" "}
         {tabs.map((t) => (
           <button
             key={t.id}
             onClick={() => setActiveTab(t.id)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === t.id ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30" : "text-muted-foreground hover:text-slate-200"}`}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${activeTab === t.id ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/30" : "text-muted-foreground hover:text-foreground"}`}
           >
             {" "}
             {t.icon} {t.label}{" "}
@@ -161,7 +161,7 @@ export default function PopulationPage() {
         <div className="space-y-6">
           {" "}
           {}{" "}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {" "}
             {[
               {
@@ -188,7 +188,7 @@ export default function PopulationPage() {
             ].map((k, i) => (
               <div
                 key={i}
-                className="dark bg-slate-900 border border-slate-800 rounded-xl p-4"
+                className="dark bg-card border border-border rounded-xl p-4"
               >
                 {" "}
                 <p className="text-xs text-muted-foreground mb-1">
@@ -201,12 +201,12 @@ export default function PopulationPage() {
             ))}{" "}
           </div>{" "}
           {}{" "}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6">
             {" "}
             {}{" "}
-            <div className="dark bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <div className="dark bg-card border border-border rounded-2xl p-5">
               {" "}
-              <h3 className="font-semibold text-slate-200 mb-4">
+              <h3 className="font-semibold text-foreground mb-4">
                 Disease Risk Distribution
               </h3>{" "}
               <ResponsiveContainer width="100%" height={260}>
@@ -238,9 +238,9 @@ export default function PopulationPage() {
               </ResponsiveContainer>{" "}
             </div>{" "}
             {}{" "}
-            <div className="dark bg-slate-900 border border-slate-800 rounded-2xl p-5">
+            <div className="dark bg-card border border-border rounded-2xl p-5">
               {" "}
-              <h3 className="font-semibold text-slate-200 mb-4">
+              <h3 className="font-semibold text-foreground mb-4">
                 Population Age Distribution
               </h3>{" "}
               <ResponsiveContainer width="100%" height={260}>
@@ -277,9 +277,9 @@ export default function PopulationPage() {
             </div>{" "}
           </div>{" "}
           {}{" "}
-          <div className="dark bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div className="dark bg-card border border-border rounded-2xl p-5">
             {" "}
-            <h3 className="font-semibold text-slate-200 mb-4">
+            <h3 className="font-semibold text-foreground mb-4">
               Regional Health Breakdown
             </h3>{" "}
             <div className="overflow-x-auto">
@@ -288,7 +288,7 @@ export default function PopulationPage() {
                 {" "}
                 <thead>
                   {" "}
-                  <tr className="text-muted-foreground text-xs uppercase border-b border-slate-800">
+                  <tr className="text-muted-foreground text-xs uppercase border-b border-border">
                     {" "}
                     <th className="text-left pb-3">Region</th>{" "}
                     <th className="text-center pb-3">Patients</th>{" "}
@@ -302,7 +302,7 @@ export default function PopulationPage() {
                     ([region, data]: any, i: number) => (
                       <tr
                         key={i}
-                        className="border-b border-slate-800/50 hover:bg-slate-800/30 transition-colors"
+                        className="border-b border-border/50 hover:bg-muted/30 transition-colors"
                       >
                         {" "}
                         <td className="py-3 font-medium text-muted-foreground">
@@ -336,17 +336,17 @@ export default function PopulationPage() {
       {activeTab === "surveillance" && (
         <div className="space-y-6">
           {" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {" "}
             {surveillance?.signals?.map((sig: any, i: number) => (
               <div
                 key={i}
-                className={`bg-slate-900 border rounded-2xl p-4 ${sig.severity.includes("🔴") ? "border-red-500/30" : sig.severity.includes("🟡") ? "border-amber-500/30" : "border-emerald-500/30"}`}
+                className={`bg-card border rounded-2xl p-4 ${sig.severity.includes("🔴") ? "border-red-500/30" : sig.severity.includes("🟡") ? "border-amber-500/30" : "border-emerald-500/30"}`}
               >
                 {" "}
                 <div className="flex justify-between items-start mb-2">
                   {" "}
-                  <h4 className="font-semibold text-slate-200">
+                  <h4 className="font-semibold text-foreground">
                     {sig.disease}
                   </h4>{" "}
                   <span className="text-xs">{sig.severity}</span>{" "}
@@ -370,9 +370,9 @@ export default function PopulationPage() {
             ))}{" "}
           </div>{" "}
           {}{" "}
-          <div className="dark bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div className="dark bg-card border border-border rounded-2xl p-5">
             {" "}
-            <h3 className="font-semibold text-slate-200 mb-4">
+            <h3 className="font-semibold text-foreground mb-4">
               7-Week Disease Trend Tracking
             </h3>{" "}
             <ResponsiveContainer width="100%" height={300}>
@@ -426,18 +426,18 @@ export default function PopulationPage() {
       {activeTab === "operations" && (
         <div className="space-y-6">
           {" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
             {" "}
             {operations?.hospitals?.map((h: any, i: number) => (
               <div
                 key={i}
-                className="dark bg-slate-900 border border-slate-800 rounded-2xl p-5"
+                className="dark bg-card border border-border rounded-2xl p-5"
               >
                 {" "}
-                <h4 className="font-semibold text-slate-200 mb-4">
+                <h4 className="font-semibold text-foreground mb-4">
                   {h.hospital}
                 </h4>{" "}
-                <div className="grid grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   {" "}
                   {[
                     {
@@ -468,7 +468,7 @@ export default function PopulationPage() {
                           : "text-emerald-400",
                     },
                   ].map((kpi, j) => (
-                    <div key={j} className="dark bg-slate-800/50 rounded-xl p-3">
+                    <div key={j} className="dark bg-muted/50 rounded-xl p-3">
                       {" "}
                       <p className="text-xs text-muted-foreground">
                         {kpi.label}
@@ -486,7 +486,7 @@ export default function PopulationPage() {
                     <span>Bed Utilization</span>
                     <span>{h.bed_utilization_pct}%</span>{" "}
                   </div>{" "}
-                  <div className="dark h-2 bg-slate-800 rounded-full overflow-hidden">
+                  <div className="dark h-2 bg-muted rounded-full overflow-hidden">
                     {" "}
                     <div
                       className={`h-full rounded-full transition-all ${h.bed_utilization_pct > 85 ? "bg-red-500" : "bg-emerald-500"}`}
@@ -503,7 +503,7 @@ export default function PopulationPage() {
       {activeTab === "outcomes" && (
         <div className="space-y-6">
           {" "}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {" "}
             {[
               {
@@ -533,7 +533,7 @@ export default function PopulationPage() {
             ].map((k, i) => (
               <div
                 key={i}
-                className="dark bg-slate-900 border border-slate-800 rounded-xl p-4"
+                className="dark bg-card border border-border rounded-xl p-4"
               >
                 {" "}
                 <p className="text-xs text-muted-foreground mb-1">
@@ -546,9 +546,9 @@ export default function PopulationPage() {
             ))}{" "}
           </div>{" "}
           {}{" "}
-          <div className="dark bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div className="dark bg-card border border-border rounded-2xl p-5">
             {" "}
-            <h3 className="font-semibold text-slate-200 mb-4">
+            <h3 className="font-semibold text-foreground mb-4">
               Medication Effectiveness Analysis
             </h3>{" "}
             <div className="space-y-4">
@@ -557,7 +557,7 @@ export default function PopulationPage() {
                 ([med, data]: any, i) => (
                   <div
                     key={i}
-                    className="border border-slate-800 rounded-xl p-4"
+                    className="border border-border rounded-xl p-4"
                   >
                     {" "}
                     <div className="flex justify-between items-center mb-2">
@@ -572,7 +572,7 @@ export default function PopulationPage() {
                         </span>
                       </span>{" "}
                     </div>{" "}
-                    <div className="dark h-2 bg-slate-800 rounded-full overflow-hidden mb-2">
+                    <div className="dark h-2 bg-muted rounded-full overflow-hidden mb-2">
                       {" "}
                       <div
                         className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full"

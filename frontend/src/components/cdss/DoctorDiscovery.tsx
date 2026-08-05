@@ -32,7 +32,7 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
     fetchData();
   }, []);
 
-  if (loading) return <div className="p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
+  if (loading) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
 
   if (selectedDoctor) {
     return <AppointmentBooking doctor={selectedDoctor} patientId={patientId} onBack={() => setSelectedDoctor(null)} />;
@@ -56,7 +56,7 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
           </p>
         </div>
         
-        <div className="flex bg-slate-100 dark:bg-slate-800 p-1 rounded-lg">
+        <div className="flex bg-slate-100 dark:bg-muted p-1 rounded-lg">
           <Button 
             variant={view === "list" ? "default" : "ghost"} 
             size="sm" 
@@ -81,24 +81,24 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
         <input 
           type="text"
           placeholder="Search by specialty, condition, or doctor name..."
-          className="w-full pl-9 pr-4 py-3 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm shadow-sm"
+          className="w-full pl-9 pr-4 py-3 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm shadow-sm"
           value={search}
           onChange={e => setSearch(e.target.value)}
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredDoctors.map(doc => (
-          <Card key={doc.id} className="overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow bg-white/50 dark:bg-slate-900/50 backdrop-blur">
+          <Card key={doc.id} className="overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow bg-card/50 dark:bg-card/50 backdrop-blur">
             <CardContent className="p-0">
               <div className="p-5">
                 <div className="flex justify-between items-start mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-lg shadow-inner">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-foreground font-bold text-lg shadow-inner">
                       {doc.name.replace('Dr. ', '').charAt(0)}
                     </div>
                     <div>
-                      <h3 className="font-bold text-base text-slate-900 dark:text-white leading-tight">{doc.name}</h3>
+                      <h3 className="font-bold text-base text-slate-900 dark:text-foreground leading-tight">{doc.name}</h3>
                       <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">{doc.specialization}</p>
                     </div>
                   </div>
@@ -137,11 +137,11 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
                 </div>
               </div>
               
-              <div className="bg-slate-50 dark:bg-slate-800/50 p-3 flex justify-between items-center border-t border-slate-100 dark:border-slate-800">
+              <div className="bg-slate-50 dark:bg-muted/50 p-3 flex justify-between items-center border-t border-slate-100 dark:border-border">
                 <div className="text-sm font-bold text-slate-900 dark:text-slate-100">
                   ${doc.consultation_fee} <span className="text-[10px] text-muted-foreground font-normal">/ consult</span>
                 </div>
-                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white rounded-lg px-4" onClick={() => setSelectedDoctor(doc)}>
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-foreground rounded-lg px-4" onClick={() => setSelectedDoctor(doc)}>
                   Book Visit
                 </Button>
               </div>

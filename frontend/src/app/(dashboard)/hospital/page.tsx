@@ -58,7 +58,7 @@ export default function HospitalCommandCenter() {
       };
 
       ws.onerror = (error) => {
-        console.error("WebSocket error:", error);
+        console.warn("WebSocket error:", error);
         ws.close();
       };
     };
@@ -111,7 +111,7 @@ export default function HospitalCommandCenter() {
       animate="show"
     >
       {/* HEADER SECTION (NASA/Tesla Mission Control Style) */}
-      <motion.div variants={itemVariants} className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 bg-slate-900/80 border border-slate-700/50 p-6 rounded-3xl backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+      <motion.div variants={itemVariants} className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 bg-card/80 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-2xl shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500"></div>
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl"></div>
         
@@ -120,7 +120,7 @@ export default function HospitalCommandCenter() {
             <ActivitySquare className="w-10 h-10 text-cyan-400" />
           </div>
           <div>
-            <h1 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight flex items-center gap-4">
+            <h1 className="text-2xl md:text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight flex items-center gap-4">
               Operations Command Center
               {connectionStatus === "connected" ? (
                 <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
@@ -139,15 +139,15 @@ export default function HospitalCommandCenter() {
                 </div>
               )}
             </h1>
-            <p className="text-slate-400 mt-1.5 font-medium text-sm tracking-wide">
+            <p className="text-muted-foreground mt-1.5 font-medium text-sm tracking-wide">
               CognivueX Real-Time Hospital Intelligence • {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </p>
           </div>
         </div>
 
-        <div className="relative z-10 flex flex-wrap items-center gap-4 xl:gap-8 bg-slate-950/50 p-4 rounded-2xl border border-slate-800">
+        <div className="relative z-10 flex flex-wrap items-center gap-4 xl:gap-8 bg-background/50 p-4 rounded-2xl border border-border">
           <div className="flex flex-col">
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1.5">Emergency Status</span>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1.5">Emergency Status</span>
             <div className={`flex items-center gap-2.5 px-4 py-2 rounded-xl border shadow-lg backdrop-blur-md transition-colors ${isEmergency ? "bg-red-500/10 border-red-500/30 text-red-400 shadow-[0_0_15px_rgba(239,68,68,0.2)]" : "bg-emerald-500/10 border-emerald-500/30 text-emerald-400"}`}>
               {isEmergency ? <AlertTriangle className="w-4 h-4 animate-pulse" /> : <ShieldAlert className="w-4 h-4" />}
               <span className="text-sm font-bold tracking-widest uppercase">{data?.emergency_status}</span>
@@ -155,7 +155,7 @@ export default function HospitalCommandCenter() {
           </div>
           <div className="w-px h-10 bg-slate-700/50 hidden sm:block"></div>
           <div className="flex flex-col">
-            <span className="text-[10px] text-slate-400 uppercase font-bold tracking-widest mb-1.5">Global AI Confidence</span>
+            <span className="text-[10px] text-muted-foreground uppercase font-bold tracking-widest mb-1.5">Global AI Confidence</span>
             <div className="flex items-center gap-2.5 bg-indigo-500/10 border border-indigo-500/30 px-4 py-2 rounded-xl shadow-lg backdrop-blur-md">
               <Zap className="w-4 h-4 text-indigo-400" />
               <span className="text-sm font-bold text-indigo-300">
@@ -182,7 +182,7 @@ export default function HospitalCommandCenter() {
           <motion.div variants={itemVariants}>
             <CapacityIntelligence data={data} />
           </motion.div>
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
             <WorkforceIntelligence data={data} />
             <ResourceManagement data={data} />
           </motion.div>

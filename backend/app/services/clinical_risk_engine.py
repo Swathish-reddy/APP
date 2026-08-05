@@ -38,6 +38,12 @@ def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
     labs = patient.get("labs", {})
     age = patient.get("age", 45)
     bmi = patient.get("bmi", 24)
+    med_history = patient.get("medical_history", [])
+    meds = patient.get("medications", [])
+    
+    # Extract condition names
+    conditions = [c.get("disease_name", "").lower() for c in med_history]
+    med_names = [m.get("medicine_name", "").lower() for m in meds]
     
     risk = 10.0 # base risk
     
@@ -47,6 +53,8 @@ def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
         if sys_bp > 130: risk += (sys_bp - 130) * 0.8
         if ldl > 100: risk += (ldl - 100) * 0.5
         risk += (age - 40) * 0.5
+        if "hypertension" in conditions: risk += 20
+        if "statin" in " ".join(med_names): risk -= 10 # Protected by meds
         
     elif disease_name == "Diabetes Risk":
         hba1c = labs.get("hba1c", 5.0)
@@ -54,12 +62,16 @@ def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
         if hba1c > 5.7: risk += (hba1c - 5.7) * 15.0
         if glucose > 100: risk += (glucose - 100) * 0.5
         if bmi > 25: risk += (bmi - 25) * 1.5
+        if "diabetes" in conditions: risk += 30
+        if "metformin" in " ".join(med_names): risk -= 15
         
     elif disease_name == "Kidney Disease Risk":
         egfr = labs.get("egfr", 90)
         creatinine = labs.get("creatinine", 0.9)
         if egfr < 90: risk += (90 - egfr) * 0.8
         if creatinine > 1.2: risk += (creatinine - 1.2) * 20.0
+        if "diabetes" in conditions: risk += 10
+        if "hypertension" in conditions: risk += 10
         
     elif disease_name == "Liver Disease Risk":
         ast = labs.get("ast", 25)
@@ -67,14 +79,17 @@ def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
         if ast > 40: risk += (ast - 40) * 0.5
         if alt > 40: risk += (alt - 40) * 0.5
         if bmi > 30: risk += (bmi - 30) * 1.0
+        if "hepatitis" in conditions: risk += 25
         
     elif disease_name == "Respiratory Risk":
         spo2 = vitals.get("spo2", 98)
         if spo2 < 95: risk += (95 - spo2) * 5.0
+        if "asthma" in conditions or "copd" in conditions: risk += 25
         
     elif disease_name == "Neurological Risk":
         risk += (age - 50) * 0.5 if age > 50 else 0
         if vitals.get("systolic_bp", 120) > 140: risk += 10
+        if "stroke" in conditions: risk += 35
         
     return min(100.0, max(0.0, risk))
 

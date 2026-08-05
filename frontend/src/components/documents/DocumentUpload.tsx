@@ -64,99 +64,96 @@ export default function DocumentUpload({
     }
   };
   return (
-    <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-      {" "}
+    <div className="bg-card border border-border/80 rounded-3xl p-4 md:p-6 shadow-2xl backdrop-blur-xl w-full">
       <div
-        className="border-2 border-dashed border-slate-300 rounded-xl p-8 flex flex-col items-center justify-center text-center cursor-pointer hover:border-blue-500 hover:bg-slate-50 transition-colors"
+        className="border-2 border-dashed border-border rounded-2xl p-10 flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-500/5 transition-all group relative overflow-hidden"
         onDragOver={(e) => e.preventDefault()}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
-        {" "}
-        <UploadCloud className="w-12 h-12 text-blue-500 mb-4" />{" "}
-        <h3 className="text-lg font-medium text-foreground mb-1">
-          Drag & Drop Documents
-        </h3>{" "}
-        <p className="text-sm text-muted-foreground mb-4">
-          Support for any file format up to 20MB
-        </p>{" "}
-        <button className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-foreground rounded-lg text-sm font-medium transition-colors">
-          {" "}
-          Browse Files{" "}
-        </button>{" "}
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+        <UploadCloud className="w-14 h-14 text-muted-foreground mb-4 group-hover:text-emerald-400 group-hover:-translate-y-1 transition-all" />
+        <h3 className="text-xl font-bold text-foreground mb-2 relative z-10">
+          Drop Medical Records Here
+        </h3>
+        <p className="text-sm text-muted-foreground mb-6 relative z-10">
+          Supports securely encrypted PDF, DICOM, JPEG up to 20MB
+        </p>
+        <button className="px-4 md:px-6 py-2.5 bg-muted hover:bg-slate-700 border border-border hover:border-slate-600 text-foreground rounded-xl text-sm font-semibold transition-all relative z-10 shadow-lg">
+          Browse Files
+        </button>
         <input
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
           className="hidden"
           multiple
-        />{" "}
-      </div>{" "}
+        />
+      </div>
+
       {files.length > 0 && (
-        <div className="mt-6 space-y-3">
-          {" "}
-          <h4 className="text-sm font-medium text-foreground">
-            Selected Files
-          </h4>{" "}
-          {files.map((file, i) => (
-            <div
-              key={i}
-              className="flex items-center justify-between bg-slate-50 p-3 rounded-lg border border-slate-200"
-            >
-              {" "}
-              <div className="flex items-center gap-3">
-                {" "}
-                <File className="w-5 h-5 text-blue-500" />{" "}
-                <div>
-                  {" "}
-                  <p className="text-sm text-foreground font-medium">
-                    {file.name}
-                  </p>{" "}
-                  <p className="text-xs text-muted-foreground">
-                    {(file.size / 1024 / 1024).toFixed(2)} MB
-                  </p>{" "}
-                </div>{" "}
-              </div>{" "}
-              <button
-                onClick={() => removeFile(i)}
-                className="text-muted-foreground hover:text-red-500 transition-colors"
+        <div className="mt-8 space-y-4">
+          <h4 className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
+            Selected Documents
+          </h4>
+          <div className="space-y-3">
+            {files.map((file, i) => (
+              <div
+                key={i}
+                className="flex items-center justify-between bg-background/50 p-4 rounded-2xl border border-border hover:border-emerald-500/30 transition-colors"
               >
-                {" "}
-                <X className="w-4 h-4" />{" "}
-              </button>{" "}
-            </div>
-          ))}{" "}
+                <div className="flex items-center gap-4">
+                  <div className="p-2.5 rounded-xl bg-muted border border-border">
+                    <File className="w-5 h-5 text-emerald-400" />
+                  </div>
+                  <div>
+                    <p className="text-sm text-foreground font-semibold mb-0.5">
+                      {file.name}
+                    </p>
+                    <p className="text-[11px] text-muted-foreground font-medium">
+                      {(file.size / 1024 / 1024).toFixed(2)} MB
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    removeFile(i);
+                  }}
+                  className="p-2 text-muted-foreground hover:text-red-400 hover:bg-red-500/10 rounded-xl transition-all border border-transparent hover:border-red-500/20"
+                >
+                  <X className="w-4 h-4" />
+                </button>
+              </div>
+            ))}
+          </div>
+          
           {error && (
-            <div className="flex items-center gap-2 text-red-400 text-sm mt-2">
-              {" "}
-              <AlertCircle className="w-4 h-4" /> {error}{" "}
+            <div className="flex items-center gap-2 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-red-400 text-sm mt-4">
+              <AlertCircle className="w-4 h-4" /> {error}
             </div>
-          )}{" "}
-          <div className="flex justify-end mt-4">
-            {" "}
+          )}
+
+          <div className="flex justify-end mt-6 pt-6 border-t border-border/80">
             <button
               onClick={handleUpload}
               disabled={isUploading}
-              className="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl flex items-center gap-2 disabled:opacity-50 transition-colors shadow-md"
+              className="px-4 md:px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold rounded-xl flex items-center gap-2 disabled:opacity-50 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5"
             >
-              {" "}
               {isUploading ? (
                 <>
-                  {" "}
-                  <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>{" "}
-                  Uploading {uploadProgress}%{" "}
+                  <div className="w-4 h-4 border-2 border-slate-950 border-t-transparent rounded-full animate-spin"></div>
+                  Uploading {uploadProgress}%
                 </>
               ) : (
                 <>
-                  {" "}
-                  <UploadCloud className="w-4 h-4" /> Upload {files.length}{" "}
-                  Files{" "}
+                  <UploadCloud className="w-4 h-4" /> Upload {files.length} Files
                 </>
-              )}{" "}
-            </button>{" "}
-          </div>{" "}
+              )}
+            </button>
+          </div>
         </div>
-      )}{" "}
+      )}
     </div>
   );
 }

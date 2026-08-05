@@ -78,7 +78,7 @@ def run_clinical_chatbot(message: str, patient_context: Dict[str, Any] = None) -
         "- *'Tell me about my profile twin status'*"
     )
 
-def query_chatbot(message: str, patient_context: Dict[str, Any] = None) -> str:
+def query_chatbot(message: str, patient_context: Dict[str, Any] = None, history: List[Dict[str, str]] = None) -> str:
     """
     Primary endpoint for clinical chat.
     Uses Gemini API if key is set, otherwise falls back to clinical rules classifier.
@@ -88,45 +88,52 @@ def query_chatbot(message: str, patient_context: Dict[str, Any] = None) -> str:
     if HAS_GEMINI and api_key:
         try:
             genai.configure(api_key=api_key)
-            # Use gemini-1.5-flash or gemini-pro
-            model = genai.GenerativeModel('gemini-1.5-flash')
             
-            # Format custom context instructions
-            context_prompt = ""
+            system_instruction = (
+                "You are the CognivueX AI Assistant, a production-grade, enterprise-level healthcare AI copilot.\n"
+                "You must behave like ChatGPT, Microsoft Copilot, or Claude while remaining specialized for CognivueX healthcare intelligence.\n"
+                "NEVER respond with generic or repetitive template answers like 'You asked about...' or 'I can explain platform functionality...'. Answer directly and naturally.\n"
+                "You understand context, reason intelligently, and perform platform actions where authorized.\n"
+                "PLATFORM KNOWLEDGE: You know every CognivueX feature including Dashboard, Risk Prediction, Future Disease Timeline, Digital Twin, What-If Simulator, Lab Reports, Analytics, Medication Center, Doctor Intelligence, Emergency Center, Wearables, Appointments, Medical History, AI Insights, Health Score, Recommendations, Profile, Settings, Notifications, Documents, Hospital Dashboard, Admin Panel, User Management, Permissions, Security, Cloud Sync, Offline Mode, Export, Import.\n"
+                "If the user asks to open or navigate to a module, you MUST trigger a platform action by outputting a JSON object containing an 'action' field.\n"
+                "REPORT UNDERSTANDING: Explain lab findings, identify abnormal values, compare previous reports, highlight improvements/deteriorations, explain medical terminology. Never fabricate values.\n"
+                "DIGITAL TWIN & SIMULATOR: Explain Digital Twin simulations, scenario comparisons, health forecasts, disease progression, medication/lifestyle impact, risk evolution, and confidence scores.\n"
+                "REASONING: Reason before responding. Understand the objective, select the correct module, retrieve relevant data, and generate personalized answers.\n"
+                "OUTPUT FORMAT: Return a JSON object formatted exactly like this:\n"
+                "{\n"
+                '  "message": "Your conversational response in Markdown formatting",\n'
+                '  "action": {"type": "NAVIGATE", "target": "/dashboard"} // ONLY include this if the user asks to navigate somewhere. Otherwise, omit the "action" key or set it to null. Valid targets are like "/dashboard", "/risk-center", "/simulator", "/analytics", "/medications", "/documents".\n'
+                "}\n"
+                "Always return valid JSON. Do not wrap the JSON in Markdown block ticks (e.g. ```json).\n\n"
+            )
+            
             if patient_context:
-                context_prompt = (
-                    f"You are CogniVueX AI Digital Twin Engine, an enterprise-grade medical artificial intelligence system "
-                    f"responsible for creating, maintaining, and continuously updating a personalized digital twin of every patient.\n"
-                    f"Your role is NOT to simply display medical reports.\n"
-                    f"Your primary objective is to build a living computational model of a patient's physiology, diseases, "
-                    f"laboratory values, medications, lifestyle, genetics, wearable data, imaging findings, environmental factors, "
-                    f"and historical medical records.\n\n"
-                    f"The Digital Twin must behave exactly like the patient's virtual body. Every new piece of data should update the twin.\n"
-                    f"The Digital Twin must continuously simulate disease progression, treatment outcomes, organ interactions, and future health states.\n"
-                    f"Never fabricate medical values. Whenever data is unavailable clearly state: 'Insufficient data available.' instead of guessing.\n\n"
-                    f"SYSTEM GOALS:\n"
-                    f"Create a complete virtual patient, update continuously, simulate physiological responses, predict future diseases, "
-                    f"estimate treatment outcomes, explain every recommendation, show confidence scores, detect anomalies, "
-                    f"estimate biological age, estimate life expectancy, predict hospitalization/mortality risks, predict organ deterioration, "
-                    f"predict medication effectiveness, compare treatments, and support clinicians.\n\n"
-                    f"OUTPUT FORMAT:\n"
-                    f"Always structure output into:\n"
-                    f"1. Digital Twin Summary\n2. Overall Health Score\n3. Organ Health\n4. Disease Risk Radar\n"
-                    f"5. Biological Age\n6. Life Expectancy\n7. Current Alerts\n8. Predicted Diseases\n9. AI Recommendations\n"
-                    f"10. What-If Simulations\n11. Medication Analysis\n12. Lifestyle Analysis\n13. Explainable AI\n"
-                    f"14. Confidence Scores\n15. Future Timeline\n16. Suggested Next Tests\n17. Export Ready Data\n\n"
-                    f"SYSTEM BEHAVIOR:\n"
-                    f"Always behave like an AI physician assistant. Never diagnose with certainty. Always provide probabilities. "
-                    f"Never invent laboratory values. Never replace licensed medical advice. Explain all predictions clearly. "
-                    f"Prioritize patient safety. Keep outputs professional, concise, and clinically interpretable.\n\n"
-                    f"Here is the patient digital twin data to analyze: {json.dumps(patient_context)}.\n\n"
-                )
+                system_instruction += f"Here is the patient digital twin data to analyze: {json.dumps(patient_context)}.\n"
+            
+            model = genai.GenerativeModel('gemini-1.5-flash', system_instruction=system_instruction)
+            
+            gemini_history = []
+            if history:
+                for msg in history:
+                    # skip assistant messages that aren't valid JSON to prevent crash in parsing
+                    role = "user" if msg["role"] == "user" else "model"
+                    content = msg["content"]
+                    gemini_history.append({"role": role, "parts": [content]})
+            
+            chat_session = model.start_chat(history=gemini_history)
+            response = chat_session.send_message(message)
+            
+            # Clean up the response in case Gemini wrapped it in markdown json block
+            res_text = response.text.strip()
+            if res_text.startswith("```json"):
+                res_text = res_text[7:]
+            if res_text.startswith("```"):
+                res_text = res_text[3:]
+            if res_text.endswith("```"):
+                res_text = res_text[:-3]
                 
-            full_prompt = f"{context_prompt}User Patient Query: {message}"
-            response = model.generate_content(full_prompt)
-            return response.text
+            return res_text.strip()
         except Exception as e:
-            # Fallback to local rule engine if API call fails
             print(f"Gemini API execution error: {e}. Falling back to rule-engine.")
             return run_clinical_chatbot(message, patient_context)
     else:

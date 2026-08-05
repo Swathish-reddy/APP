@@ -84,7 +84,7 @@ export function AIHelpAssistant({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: 50, scale: 0.95 }}
           transition={{ type: "spring", stiffness: 300, damping: 25 }}
-          className={`fixed z-50 bottom-24 right-6 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border border-slate-200 dark:border-slate-700 shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ${isExpanded ? "w-[80vw] h-[80vh] max-w-4xl" : "w-[400px] h-[600px]"}`}
+          className={`fixed z-50 bottom-24 right-6 bg-card/80 dark:bg-card/80 backdrop-blur-xl border border-slate-200 dark:border-border shadow-2xl rounded-2xl flex flex-col overflow-hidden transition-all duration-300 ${isExpanded ? "w-[80vw] h-[80vh] max-w-4xl" : "w-[400px] h-[600px]"}`}
           style={{
             resize: isExpanded ? "none" : "both",
             minWidth: 300,
@@ -93,7 +93,7 @@ export function AIHelpAssistant({
         >
           {" "}
           {}{" "}
-          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white cursor-move">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground cursor-move">
             {" "}
             <div className="flex items-center gap-2 font-bold">
               {" "}
@@ -103,7 +103,7 @@ export function AIHelpAssistant({
               {" "}
               <button
                 onClick={clearChat}
-                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-card/20 rounded-lg transition-colors"
                 title="Clear Chat"
               >
                 {" "}
@@ -111,7 +111,7 @@ export function AIHelpAssistant({
               </button>{" "}
               <button
                 onClick={() => setIsExpanded(!isExpanded)}
-                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-card/20 rounded-lg transition-colors"
               >
                 {" "}
                 {isExpanded ? (
@@ -122,7 +122,7 @@ export function AIHelpAssistant({
               </button>{" "}
               <button
                 onClick={onClose}
-                className="p-1.5 hover:bg-white/20 rounded-lg transition-colors"
+                className="p-1.5 hover:bg-card/20 rounded-lg transition-colors"
               >
                 {" "}
                 <X className="w-4 h-4" />{" "}
@@ -141,7 +141,7 @@ export function AIHelpAssistant({
               >
                 {" "}
                 <div
-                  className={`p-3 rounded-2xl whitespace-pre-wrap text-sm relative group ${msg.role === "user" ? "bg-blue-600 text-white rounded-br-sm" : "bg-slate-100 dark:bg-slate-800 text-foreground rounded-bl-sm border border-slate-200 dark:border-slate-700"}`}
+                  className={`p-3 rounded-2xl whitespace-pre-wrap text-sm relative group ${msg.role === "user" ? "bg-blue-600 text-foreground rounded-br-sm" : "bg-slate-100 dark:bg-muted text-foreground rounded-bl-sm border border-slate-200 dark:border-border"}`}
                 >
                   {" "}
                   {msg.content}{" "}
@@ -162,7 +162,7 @@ export function AIHelpAssistant({
               </motion.div>
             ))}{" "}
             {isTyping && (
-              <div className="flex gap-1 ml-2 items-center bg-slate-100 dark:bg-slate-800 w-fit p-3 rounded-2xl rounded-bl-sm border border-slate-200 dark:border-slate-700">
+              <div className="flex gap-1 ml-2 items-center bg-slate-100 dark:bg-muted w-fit p-3 rounded-2xl rounded-bl-sm border border-slate-200 dark:border-border">
                 {" "}
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce" />{" "}
                 <div className="w-2 h-2 bg-blue-500 rounded-full animate-bounce delay-100" />{" "}
@@ -172,13 +172,13 @@ export function AIHelpAssistant({
             <div ref={messagesEndRef} />{" "}
           </div>{" "}
           {}{" "}
-          <div className="p-3 border-t border-slate-200 dark:border-slate-800 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2">
+          <div className="p-3 border-t border-slate-200 dark:border-border overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-2">
             {" "}
             {QUICK_ACTIONS.map((action) => (
               <button
                 key={action}
                 onClick={() => handleSend(action)}
-                className="px-3 py-1.5 bg-slate-100 dark:bg-slate-800 text-foreground dark:text-muted-foreground text-xs font-medium rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-slate-700 shrink-0"
+                className="px-3 py-1.5 bg-slate-100 dark:bg-muted text-foreground dark:text-muted-foreground text-xs font-medium rounded-full hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors border border-slate-200 dark:border-border shrink-0"
               >
                 {" "}
                 {action}{" "}
@@ -186,7 +186,7 @@ export function AIHelpAssistant({
             ))}{" "}
           </div>{" "}
           {}{" "}
-          <div className="p-4 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800 flex gap-2">
+          <div className="p-4 bg-slate-50 dark:bg-card border-t border-slate-200 dark:border-border flex gap-2">
             {" "}
             <input
               type="text"
@@ -194,12 +194,12 @@ export function AIHelpAssistant({
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSend(input)}
               placeholder="Ask the AI Assistant..."
-              className="flex-1 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl px-4 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+              className="flex-1 bg-card dark:bg-muted border border-slate-300 dark:border-border rounded-xl px-4 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
             />{" "}
             <button
               onClick={() => handleSend(input)}
               disabled={!input.trim()}
-              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-white p-2 rounded-xl transition-colors shrink-0"
+              className="bg-blue-600 hover:bg-blue-700 disabled:opacity-50 text-foreground p-2 rounded-xl transition-colors shrink-0"
             >
               {" "}
               <Send className="w-5 h-5" />{" "}

@@ -23,7 +23,7 @@ export const HospitalRecommendations = ({ patientId }: { patientId: string }) =>
     fetchHospitals();
   }, []);
 
-  if (loading) return <div className="p-8 text-center text-muted-foreground animate-pulse">Scanning nearby healthcare facilities...</div>;
+  if (loading) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Scanning nearby healthcare facilities...</div>;
 
   return (
     <div className="space-y-4">
@@ -34,9 +34,9 @@ export const HospitalRecommendations = ({ patientId }: { patientId: string }) =>
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {hospitals.map(hosp => (
-          <Card key={hosp.id} className="border-none shadow-sm hover:shadow-md transition-shadow bg-white/50 dark:bg-slate-900/50 backdrop-blur">
+          <Card key={hosp.id} className="border-none shadow-sm hover:shadow-md transition-shadow bg-card/50 dark:bg-card/50 backdrop-blur">
             <CardContent className="p-5">
               <div className="flex justify-between items-start mb-3">
                 <h4 className="font-bold text-foreground leading-tight max-w-[75%]">{hosp.name}</h4>
@@ -56,7 +56,7 @@ export const HospitalRecommendations = ({ patientId }: { patientId: string }) =>
                     <Activity className="w-3 h-3 mr-1" /> ICU
                   </span>
                 )}
-                <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider px-2 py-1 bg-slate-100 text-slate-600 dark:bg-slate-800 rounded">
+                <span className="inline-flex items-center text-[10px] uppercase font-bold tracking-wider px-2 py-1 bg-slate-100 text-slate-600 dark:bg-muted rounded">
                   {hosp.rating} Stars
                 </span>
               </div>
@@ -70,11 +70,11 @@ export const HospitalRecommendations = ({ patientId }: { patientId: string }) =>
                 </div>
               )}
               
-              <div className="flex gap-2 pt-4 border-t border-slate-100 dark:border-slate-800">
+              <div className="flex gap-2 pt-4 border-t border-slate-100 dark:border-border">
                 <Button size="sm" variant="outline" className="flex-1 text-xs h-8">
                   <Phone className="w-3 h-3 mr-1" /> Call
                 </Button>
-                <Button size="sm" className="flex-1 text-xs h-8 bg-indigo-600 hover:bg-indigo-700 text-white">
+                <Button size="sm" className="flex-1 text-xs h-8 bg-indigo-600 hover:bg-indigo-700 text-foreground">
                   <Navigation2 className="w-3 h-3 mr-1" /> Navigate
                 </Button>
               </div>

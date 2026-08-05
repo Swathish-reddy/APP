@@ -28,6 +28,7 @@ router = APIRouter()
 class ChatPayload(BaseModel):
     message: str
     mode: Optional[str] = "patient"  # "patient" | "clinician"
+    history: Optional[list] = []
 
 async def get_enriched_patient(patient_id: str, db: AsyncSession):
     if patient_id not in patients_db:
@@ -72,6 +73,18 @@ async def get_enriched_patient(patient_id: str, db: AsyncSession):
                             patient["symptoms"].append(symptom)
                             
         patient["reports_data"] = reports_data
+        
+        # Add newly extracted medical history, meds, and allergies from DB
+        from app.db.models import MedicalHistory, Medication, Allergy
+        med_hist_res = await db.execute(select(MedicalHistory).where(MedicalHistory.patient_id == pid_int))
+        patient["medical_history"] = [h.disease_name for h in med_hist_res.scalars().all()]
+        
+        meds_res = await db.execute(select(Medication).where(Medication.patient_id == pid_int))
+        patient["medications"] = [m.medicine_name for m in meds_res.scalars().all()]
+        
+        algs_res = await db.execute(select(Allergy).where(Allergy.patient_id == pid_int))
+        patient["allergies"] = [a.allergen for a in algs_res.scalars().all()]
+        
     except Exception as e:
         print(f"Error enriching patient with documents: {e}")
         patient["reports_data"] = []
@@ -135,5 +148,15 @@ async def chat_with_assistant(patient_id: str, payload: ChatPayload, db: AsyncSe
     fusion = run_ai_fusion(patient)
     enriched_patient = {**patient, "ai_predictions": fusion.get("predictions", {})}
     
-    response = query_chatbot(payload.message, patient_context=enriched_patient)
+    response = query_chatbot(payload.message, patient_context=enriched_patient, history=payload.history)
+    
+    # Parse structured JSON if possible (for module actions)
+    try:
+        import json
+        if isinstance(response, str) and response.strip().startswith("{") and response.strip().endswith("}"):
+            parsed = json.loads(response)
+            return {"response": parsed.get("message", response), "action": parsed.get("action", None), "mode": payload.mode}
+    except Exception:
+        pass
+        
     return {"response": response, "mode": payload.mode}

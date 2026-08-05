@@ -78,7 +78,7 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
         </div>
         <div className="flex gap-4 mt-8">
           <Button variant="outline" onClick={onBack}>Back to Discovery</Button>
-          <Button className="bg-blue-600 hover:bg-blue-700 text-white">Add to Calendar</Button>
+          <Button className="bg-blue-600 hover:bg-blue-700 text-foreground">Add to Calendar</Button>
         </div>
       </div>
     );
@@ -90,11 +90,11 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
         <ChevronLeft className="w-4 h-4 mr-1" /> Back
       </Button>
 
-      <Card className="border-none shadow-md overflow-hidden bg-white/80 dark:bg-slate-900/80 backdrop-blur">
+      <Card className="border-none shadow-md overflow-hidden bg-card/80 dark:bg-card/80 backdrop-blur">
         <CardContent className="p-0 flex flex-col md:flex-row">
           {/* Left Side: Doctor Info */}
-          <div className="bg-slate-50 dark:bg-slate-800 p-8 md:w-1/3 border-r border-slate-200 dark:border-slate-700">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-3xl shadow-inner mb-4">
+          <div className="bg-slate-50 dark:bg-muted p-4 md:p-8 md:w-full md:w-full lg:w-1/3 border-r border-slate-200 dark:border-border">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-foreground font-bold text-2xl md:text-3xl shadow-inner mb-4">
               {doctor.name.replace('Dr. ', '').charAt(0)}
             </div>
             <h2 className="text-xl font-bold text-foreground">{doctor.name}</h2>
@@ -102,16 +102,16 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
             
             <div className="mt-6 space-y-3">
               <div className="flex items-center text-sm text-muted-foreground">
-                <Building2 className="w-4 h-4 mr-3 text-slate-400" />
+                <Building2 className="w-4 h-4 mr-3 text-muted-foreground" />
                 {doctor.hospital || "Independent Practice"}
               </div>
               <div className="flex items-center text-sm text-muted-foreground">
-                <Calendar className="w-4 h-4 mr-3 text-slate-400" />
+                <Calendar className="w-4 h-4 mr-3 text-muted-foreground" />
                 {doctor.experience_years} Years Experience
               </div>
             </div>
 
-            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-border">
               <div className="flex justify-between items-center text-sm mb-2">
                 <span className="text-muted-foreground">Consultation Fee</span>
                 <span className="font-bold text-foreground">${doctor.consultation_fee}</span>
@@ -120,7 +120,7 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
           </div>
 
           {/* Right Side: Booking Flow */}
-          <div className="p-8 md:w-2/3">
+          <div className="p-4 md:p-8 md:w-2/3">
             <h3 className="text-lg font-bold mb-6">Book Appointment</h3>
             
             <div className="space-y-8">
@@ -132,7 +132,7 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
                     <button 
                       key={i}
                       onClick={() => setSelectedDate(d.date)}
-                      className={`flex-shrink-0 w-16 h-20 rounded-xl border flex flex-col items-center justify-center transition-all ${selectedDate === d.date ? 'bg-blue-600 border-blue-600 text-white shadow-md' : 'bg-card text-foreground hover:border-blue-300'}`}
+                      className={`flex-shrink-0 w-16 h-20 rounded-xl border flex flex-col items-center justify-center transition-all ${selectedDate === d.date ? 'bg-blue-600 border-blue-600 text-foreground shadow-md' : 'bg-card text-foreground hover:border-blue-300'}`}
                     >
                       <span className="text-xs font-medium opacity-80">{d.month}</span>
                       <span className="text-xl font-bold my-0.5">{d.dateNum}</span>
@@ -146,12 +146,12 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
               {selectedDate && (
                 <div className="animate-in fade-in duration-300">
                   <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">Available Slots</label>
-                  <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
                     {times.map((t: string, i: number) => (
                       <button 
                         key={i}
                         onClick={() => setSelectedTime(t)}
-                        className={`py-2 px-3 rounded-lg border text-sm font-medium transition-all ${selectedTime === t ? 'bg-indigo-600 border-indigo-600 text-white shadow-md' : 'bg-card text-foreground hover:border-indigo-300'}`}
+                        className={`py-2 px-3 rounded-lg border text-sm font-medium transition-all ${selectedTime === t ? 'bg-indigo-600 border-indigo-600 text-foreground shadow-md' : 'bg-card text-foreground hover:border-indigo-300'}`}
                       >
                         {t}
                       </button>
@@ -164,7 +164,7 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
               {selectedTime && (
                 <div className="animate-in fade-in duration-300">
                   <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">Consultation Type</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <button 
                       onClick={() => setConsultType("Video")}
                       className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${consultType === "Video" ? 'bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400' : 'bg-card text-muted-foreground hover:border-emerald-300'}`}
@@ -192,10 +192,10 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
 
               {/* Confirm */}
               {consultType && (
-                <div className="pt-4 border-t border-slate-200 dark:border-slate-800 flex justify-end animate-in fade-in duration-300">
+                <div className="pt-4 border-t border-slate-200 dark:border-border flex justify-end animate-in fade-in duration-300">
                   <Button 
                     size="lg" 
-                    className="bg-slate-900 dark:bg-white text-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 shadow-xl px-8"
+                    className="bg-card dark:bg-card text-foreground dark:text-slate-900 hover:bg-muted dark:hover:bg-slate-100 shadow-xl px-4 md:px-8"
                     onClick={handleBook}
                     disabled={booking}
                   >

@@ -15,79 +15,75 @@ export default function XAIExplanationPanel({
   const { feature_importance, interpretation } = prediction.xai;
   const features = Object.entries(feature_importance);
   return (
-    <div className="dark bg-slate-900/50 rounded-2xl p-5 border border-slate-700/50 shadow-xl backdrop-blur-md">
-      {" "}
-      <div className="flex items-center gap-3 mb-4 border-b border-slate-700/50 pb-3">
-        {" "}
-        <div className="p-2 bg-indigo-500/20 rounded-lg">
-          {" "}
-          <BrainCircuit className="w-5 h-5 text-indigo-400" />{" "}
-        </div>{" "}
+    <div className="dark relative overflow-hidden bg-gradient-to-br from-slate-900 to-cyan-950 rounded-3xl p-6 border border-cyan-500/20 shadow-2xl backdrop-blur-xl">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-cyan-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-blue-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+
+      <div className="relative z-10 flex items-center gap-4 mb-6 border-b border-cyan-500/20 pb-4">
+        <div className="p-3 bg-cyan-500/20 rounded-xl border border-cyan-500/30 shadow-inner">
+          <BrainCircuit className="w-6 h-6 text-cyan-300 drop-shadow-md" />
+        </div>
         <div>
-          {" "}
-          <h3 className="text-white font-semibold flex items-center gap-2">
-            {" "}
-            AI Explanation{" "}
-            <Info className="w-4 h-4 text-muted-foreground" />{" "}
-          </h3>{" "}
-          <p className="text-sm text-muted-foreground">
-            Why {prediction.disease} risk is {prediction.risk_score}%
-          </p>{" "}
-        </div>{" "}
-      </div>{" "}
-      <div className="dark mb-6 bg-slate-800/50 p-4 rounded-xl text-sm text-muted-foreground leading-relaxed border border-slate-700/50">
-        {" "}
-        {interpretation}{" "}
-      </div>{" "}
-      <h4 className="text-sm font-medium text-muted-foreground mb-3 uppercase tracking-wider">
-        Feature Importance (SHAP)
-      </h4>{" "}
-      <div className="space-y-3">
-        {" "}
-        {features.map(([feature, val], idx) => {
-          const isRisk = val > 0;
-          const absVal = Math.abs(val);
-          const maxVal = Math.max(...features.map((f) => Math.abs(f[1])));
-          const widthPercent = (absVal / (maxVal || 1)) * 100;
-          return (
-            <motion.div
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: idx * 0.1 }}
-              key={feature}
-              className="flex items-center gap-3"
-            >
-              {" "}
-              <div
-                className="w-32 text-xs font-medium text-muted-foreground truncate"
-                title={feature}
+          <h3 className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-blue-300 flex items-center gap-2 drop-shadow-sm">
+            AI Explanation
+            <Info className="w-5 h-5 text-cyan-400/70" />
+          </h3>
+          <p className="text-sm font-bold text-cyan-100/70 tracking-wide mt-1">
+            Why {prediction.disease} risk is <span className="text-cyan-300">{prediction.risk_score}%</span>
+          </p>
+        </div>
+      </div>
+      
+      <div className="relative z-10 mb-8 bg-white/5 p-5 rounded-2xl text-base text-cyan-50 font-medium leading-relaxed border border-white/10 shadow-lg backdrop-blur-sm">
+        {interpretation}
+      </div>
+      
+      <div className="relative z-10">
+        <h4 className="text-sm font-black text-cyan-300/80 mb-4 uppercase tracking-widest drop-shadow-sm">
+          Feature Importance (SHAP)
+        </h4>
+        <div className="space-y-4">
+          {features.map(([feature, val], idx) => {
+            const isRisk = val > 0;
+            const absVal = Math.abs(val);
+            const maxVal = Math.max(...features.map((f) => Math.abs(f[1])));
+            const widthPercent = (absVal / (maxVal || 1)) * 100;
+            return (
+              <motion.div
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                key={feature}
+                className="flex items-center gap-4 bg-white/5 p-3 rounded-xl border border-white/5 hover:bg-white/10 transition-colors"
               >
-                {" "}
-                {feature}{" "}
-              </div>{" "}
-              <div className="dark flex-1 flex items-center h-2 bg-slate-800 rounded-full overflow-hidden">
-                {" "}
                 <div
-                  className={`h-full rounded-full ${isRisk ? "bg-rose-500" : "bg-emerald-500"}`}
-                  style={{ width: `${Math.max(widthPercent, 2)}%` }}
-                />{" "}
-              </div>{" "}
-              <div
-                className={`w-16 text-right text-xs font-mono flex justify-end items-center gap-1 ${isRisk ? "text-rose-400" : "text-emerald-400"}`}
-              >
-                {" "}
-                {isRisk ? (
-                  <TrendingUp className="w-3 h-3" />
-                ) : (
-                  <TrendingDown className="w-3 h-3" />
-                )}{" "}
-                {val > 0 ? "+" : ""}
-                {val.toFixed(1)}{" "}
-              </div>{" "}
-            </motion.div>
-          );
-        })}{" "}
-      </div>{" "}
+                  className="w-40 text-sm font-bold text-cyan-50 truncate drop-shadow-sm"
+                  title={feature}
+                >
+                  {feature}
+                </div>
+                <div className="flex-1 flex items-center h-2.5 bg-black/40 rounded-full overflow-hidden shadow-inner">
+                  <div
+                    className={`h-full rounded-full shadow-lg ${isRisk ? "bg-gradient-to-r from-rose-500 to-rose-400" : "bg-gradient-to-r from-emerald-500 to-emerald-400"}`}
+                    style={{ width: `${Math.max(widthPercent, 2)}%` }}
+                  />
+                </div>
+                <div
+                  className={`w-20 text-right text-sm font-black font-mono flex justify-end items-center gap-1 drop-shadow-sm ${isRisk ? "text-rose-300" : "text-emerald-300"}`}
+                >
+                  {isRisk ? (
+                    <TrendingUp className="w-4 h-4" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4" />
+                  )}
+                  {val > 0 ? "+" : ""}
+                  {val.toFixed(1)}
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

@@ -35,10 +35,10 @@ export default function AlertCenter() {
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, scale: 0.9 }}
-            className="pointer-events-auto bg-red-600/90 backdrop-blur-xl border-2 border-red-500 text-white p-4 rounded-2xl shadow-[0_0_40px_rgba(220,38,38,0.6)] flex items-center min-w-[400px]"
+            className="pointer-events-auto bg-red-600/90 backdrop-blur-xl border-2 border-red-500 text-foreground p-4 rounded-2xl shadow-[0_0_40px_rgba(220,38,38,0.6)] flex items-center min-w-[400px]"
           >
-            <div className="bg-white/20 p-3 rounded-full mr-4">
-              <AlertTriangle className="w-8 h-8 text-white animate-pulse" />
+            <div className="bg-card/20 p-3 rounded-full mr-4">
+              <AlertTriangle className="w-8 h-8 text-foreground animate-pulse" />
             </div>
             <div className="flex-1">
               <h3 className="font-black text-xl tracking-wide uppercase">{alert.title}</h3>
@@ -46,7 +46,7 @@ export default function AlertCenter() {
             </div>
             <button 
               onClick={() => dismissAlert(alert.id)}
-              className="ml-4 p-2 hover:bg-white/20 rounded-full transition-colors"
+              className="ml-4 p-2 hover:bg-card/20 rounded-full transition-colors"
             >
               <X className="w-6 h-6" />
             </button>

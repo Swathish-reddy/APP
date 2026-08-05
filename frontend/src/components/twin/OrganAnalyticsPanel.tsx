@@ -22,7 +22,7 @@ export default function OrganAnalyticsPanel({
 }: OrganAnalyticsPanelProps) {
   if (!organName || !twinState) {
     return (
-      <div className="dark h-full min-h-[500px] flex flex-col items-center justify-center bg-slate-900/50 border border-slate-800 rounded-2xl p-6 text-center">
+      <div className="dark h-full min-h-[500px] flex flex-col items-center justify-center bg-card/50 border border-border rounded-2xl p-4 md:p-6 text-center">
         {" "}
         <Activity className="w-12 h-12 text-foreground mb-4" />{" "}
         <h3 className="text-lg font-medium text-muted-foreground">
@@ -78,128 +78,116 @@ export default function OrganAnalyticsPanel({
     return false;
   });
   return (
-    <div className="dark h-full bg-slate-900/50 border border-slate-800 rounded-2xl p-6 flex flex-col">
-      {" "}
-      {}{" "}
-      <div className="flex justify-between items-start mb-8">
-        {" "}
+    <div className="dark h-full bg-gradient-to-br from-slate-900/90 to-slate-800/95 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-6 flex flex-col shadow-2xl relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+      
+      <div className="relative z-10 flex justify-between items-start mb-8">
         <div>
-          {" "}
-          <h2 className="text-2xl font-bold text-white mb-1">
+          <h2 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 mb-1 drop-shadow-lg">
             {organName} Analytics
-          </h2>{" "}
+          </h2>
           <span
-            className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${status.bg} ${status.color}`}
+            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-black uppercase tracking-widest shadow-md ${status.bg} ${status.color} border border-current/20`}
           >
-            {" "}
-            {status.text}{" "}
-          </span>{" "}
-        </div>{" "}
+            {status.text}
+          </span>
+        </div>
         <div className="text-right">
-          {" "}
-          <div className="text-4xl font-black text-white">{score}</div>{" "}
-          <div className="text-xs text-muted-foreground uppercase tracking-wide font-bold">
+          <div className="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-300 drop-shadow-md">
+            {score}
+          </div>
+          <div className="text-xs text-indigo-200/80 uppercase tracking-widest font-black mt-1">
             Health Score
-          </div>{" "}
-        </div>{" "}
-      </div>{" "}
-      {}{" "}
-      <div className="mb-8">
-        {" "}
-        <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4 flex items-center gap-2">
-          {" "}
-          <TrendingUp className="w-4 h-4" /> 12-Month Trajectory{" "}
-        </h3>{" "}
+          </div>
+        </div>
+      </div>
+
+      <div className="relative z-10 mb-8">
+        <h3 className="text-sm font-black text-indigo-300/80 uppercase tracking-widest mb-4 flex items-center gap-2 drop-shadow-sm">
+          <TrendingUp className="w-5 h-5 text-indigo-400" /> 12-Month Trajectory
+        </h3>
         {relevantPredictions.length > 0 ? (
           <div className="space-y-4">
-            {" "}
             {relevantPredictions.map((p, idx) => {
               const isIncreasing = p.projected_value > p.current_value;
               return (
                 <div
                   key={idx}
-                  className="dark bg-slate-800/50 rounded-xl p-4 border border-slate-700/50"
+                  className="bg-white/5 rounded-2xl p-5 border border-white/10 shadow-lg backdrop-blur-sm transition-all hover:bg-white/10"
                 >
-                  {" "}
-                  <div className="flex justify-between items-center mb-2">
-                    {" "}
-                    <span className="text-muted-foreground font-medium">
+                  <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
+                    <span className="text-indigo-100 font-bold text-lg drop-shadow-sm">
                       {p.metric_name}
-                    </span>{" "}
-                    <span className="text-xs text-muted-foreground">
+                    </span>
+                    <span className="text-xs font-bold text-indigo-300/70 uppercase tracking-wider">
                       Confidence: {(p.confidence_level * 100).toFixed(0)}%
-                    </span>{" "}
-                  </div>{" "}
+                    </span>
+                  </div>
                   <div className="flex items-center gap-4">
-                    {" "}
                     <div className="flex-1">
-                      {" "}
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-indigo-200/70 font-bold uppercase tracking-wider mb-1">
                         Current
-                      </div>{" "}
-                      <div className="text-lg font-bold text-white">
+                      </div>
+                      <div className="text-2xl font-black text-white drop-shadow-sm">
                         {p.current_value}
-                      </div>{" "}
-                    </div>{" "}
-                    <div className="flex-shrink-0 text-foreground">
-                      {" "}
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0">
                       {isIncreasing ? (
-                        <ArrowUpRight className="w-5 h-5 text-amber-500" />
+                        <div className="bg-amber-500/20 p-2 rounded-full border border-amber-500/30">
+                          <ArrowUpRight className="w-6 h-6 text-amber-400 drop-shadow-md" />
+                        </div>
                       ) : (
-                        <ArrowDownRight className="w-5 h-5 text-emerald-500" />
-                      )}{" "}
-                    </div>{" "}
+                        <div className="bg-emerald-500/20 p-2 rounded-full border border-emerald-500/30">
+                          <ArrowDownRight className="w-6 h-6 text-emerald-400 drop-shadow-md" />
+                        </div>
+                      )}
+                    </div>
                     <div className="flex-1 text-right">
-                      {" "}
-                      <div className="text-xs text-muted-foreground">
+                      <div className="text-xs text-indigo-200/70 font-bold uppercase tracking-wider mb-1">
                         Projected (+{p.timeframe_months}mo)
-                      </div>{" "}
+                      </div>
                       <div
-                        className={`text-lg font-bold ${isIncreasing ? "text-amber-400" : "text-emerald-400"}`}
+                        className={`text-2xl font-black drop-shadow-sm ${isIncreasing ? "text-amber-400" : "text-emerald-400"}`}
                       >
-                        {" "}
-                        {p.projected_value}{" "}
-                      </div>{" "}
-                    </div>{" "}
-                  </div>{" "}
+                        {p.projected_value}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
-            })}{" "}
+            })}
           </div>
         ) : (
-          <div className="dark bg-slate-800/30 rounded-xl p-4 border border-slate-700/30 text-center">
-            {" "}
-            <Minus className="w-5 h-5 text-foreground mx-auto mb-2" />{" "}
-            <p className="text-sm text-muted-foreground">
+          <div className="bg-white/5 rounded-2xl p-6 border border-white/10 text-center shadow-inner">
+            <Minus className="w-8 h-8 text-indigo-400/50 mx-auto mb-3" />
+            <p className="text-base text-indigo-100/90 font-bold leading-relaxed">
               Stable trajectory. No critical shifts projected for this system.
-            </p>{" "}
+            </p>
           </div>
-        )}{" "}
-      </div>{" "}
-      {}{" "}
-      <div className="mt-auto">
-        {" "}
-        <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-3">
+        )}
+      </div>
+
+      <div className="relative z-10 mt-auto">
+        <h3 className="text-sm font-black text-indigo-300/80 uppercase tracking-widest mb-3 drop-shadow-sm">
           AI Insights
-        </h3>{" "}
+        </h3>
         <div
-          className={`p-4 rounded-xl border ${score < 60 ? "bg-red-500/10 border-red-500/20" : "bg-slate-800/50 border-slate-700/50"}`}
+          className={`p-5 rounded-2xl border backdrop-blur-md shadow-lg ${score < 60 ? "bg-rose-500/15 border-rose-500/30" : "bg-emerald-500/15 border-emerald-500/30"}`}
         >
-          {" "}
-          <div className="flex gap-3">
-            {" "}
+          <div className="flex gap-4">
             <AlertTriangle
-              className={`w-5 h-5 flex-shrink-0 ${score < 60 ? "text-red-400" : "text-muted-foreground"}`}
-            />{" "}
-            <p className="text-sm text-muted-foreground">
-              {" "}
+              className={`w-7 h-7 flex-shrink-0 drop-shadow-md ${score < 60 ? "text-rose-400" : "text-emerald-400"}`}
+            />
+            <p className={`text-base font-bold leading-relaxed ${score < 60 ? "text-rose-100" : "text-emerald-100"} drop-shadow-sm`}>
               {score < 60
                 ? `Critical intervention recommended. ${organName} markers show significant deterioration correlated with metabolic and lifestyle vectors.`
-                : `${organName} functionality is within expected parameters based on the current health snapshot.`}{" "}
-            </p>{" "}
-          </div>{" "}
-        </div>{" "}
-      </div>{" "}
+                : `${organName} functionality is within expected parameters based on the current health snapshot.`}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

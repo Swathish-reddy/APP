@@ -59,14 +59,14 @@ export default function PatientsPage() {
     }, 1000);
   }, [search]);
   return (
-    <div className="p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
       {" "}
       {}{" "}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {" "}
         <div>
           {" "}
-          <h1 className="text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
             {" "}
             <Users className="w-8 h-8 text-cyan-400" /> Patient Intelligence
             Center{" "}
@@ -77,7 +77,7 @@ export default function PatientsPage() {
         </div>{" "}
         <div className="flex items-center gap-3">
           {" "}
-          <button className="dark inline-flex items-center gap-2 px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-sm font-medium rounded-xl transition-colors border border-slate-700">
+          <button className="dark inline-flex items-center gap-2 px-4 py-2 bg-muted hover:bg-slate-700 text-foreground text-sm font-medium rounded-xl transition-colors border border-border">
             {" "}
             <Filter className="w-4 h-4" /> Filter{" "}
           </button>{" "}
@@ -88,7 +88,7 @@ export default function PatientsPage() {
         </div>{" "}
       </div>{" "}
       {}{" "}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {" "}
         {[
           {
@@ -115,7 +115,7 @@ export default function PatientsPage() {
         ].map((stat, i) => (
           <div
             key={i}
-            className="dark bg-slate-900/50 border border-slate-800 p-6 rounded-2xl backdrop-blur-sm flex items-center gap-4"
+            className="dark bg-card/50 border border-border p-4 md:p-6 rounded-2xl backdrop-blur-sm flex items-center gap-4"
           >
             {" "}
             <div className={`p-4 rounded-xl ${stat.bg} ${stat.color}`}>
@@ -133,15 +133,15 @@ export default function PatientsPage() {
         ))}{" "}
       </div>{" "}
       {}{" "}
-      <div className="dark bg-slate-900/40 border border-slate-800 rounded-3xl overflow-hidden backdrop-blur-md">
+      <div className="dark bg-card/40 border border-border rounded-3xl overflow-hidden backdrop-blur-md">
         {" "}
-        <div className="dark p-4 border-b border-slate-800 bg-slate-900/60 flex items-center gap-3">
+        <div className="dark p-4 border-b border-border bg-card/60 flex items-center gap-3">
           {" "}
           <Search className="w-5 h-5 text-muted-foreground ml-2" />{" "}
           <input
             type="text"
             placeholder="Search by name, ID, or phone..."
-            className="bg-transparent border-none outline-none text-slate-200 placeholder-slate-500 w-full text-sm font-medium"
+            className="bg-transparent border-none outline-none text-foreground placeholder-slate-500 w-full text-sm font-medium"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />{" "}
@@ -152,7 +152,7 @@ export default function PatientsPage() {
             {" "}
             <thead>
               {" "}
-              <tr className="dark bg-slate-900/40 text-muted-foreground text-xs uppercase tracking-wider">
+              <tr className="dark bg-card/40 text-muted-foreground text-xs uppercase tracking-wider">
                 {" "}
                 <th className="p-4 font-semibold">Patient Info</th>{" "}
                 <th className="p-4 font-semibold">Risk Level</th>{" "}
@@ -168,7 +168,7 @@ export default function PatientsPage() {
                   {" "}
                   <td
                     colSpan={5}
-                    className="p-8 text-center text-muted-foreground"
+                    className="p-4 md:p-8 text-center text-muted-foreground"
                   >
                     Loading patients...
                   </td>{" "}
@@ -180,7 +180,7 @@ export default function PatientsPage() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
                     key={patient.patient_id}
-                    className="hover:bg-slate-800/30 transition-colors group"
+                    className="hover:bg-muted/30 transition-colors group"
                   >
                     {" "}
                     <td className="p-4">
@@ -190,7 +190,7 @@ export default function PatientsPage() {
                         className="block"
                       >
                         {" "}
-                        <p className="font-semibold text-slate-200 group-hover:text-cyan-400 transition-colors">
+                        <p className="font-semibold text-foreground group-hover:text-cyan-400 transition-colors">
                           {patient.full_name}
                         </p>{" "}
                         <p className="text-xs text-muted-foreground font-mono mt-0.5">
@@ -230,7 +230,7 @@ export default function PatientsPage() {
                       {" "}
                       <Link
                         href={`/patients/${patient.patient_id}`}
-                        className="dark inline-flex px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-muted-foreground text-xs font-medium rounded-lg transition-colors border border-slate-700"
+                        className="dark inline-flex px-3 py-1.5 bg-muted hover:bg-slate-700 text-muted-foreground text-xs font-medium rounded-lg transition-colors border border-border"
                       >
                         {" "}
                         View Twin{" "}

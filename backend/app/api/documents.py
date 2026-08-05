@@ -48,9 +48,65 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
         
         doc.status = "Completed"
         
-        # 3. Update Patient metrics
-        if analysis and analysis.get("structured_data"):
-            structured_data = analysis["structured_data"]
+        # 3. Update Patient metrics and other models
+        if analysis:
+            # Update Patient Details
+            patient_details = analysis.get("patient_details", {})
+            pat_res = await db.execute(select(Patient).where(Patient.patient_id == doc.patient_id))
+            pat = pat_res.scalars().first()
+            if pat and patient_details:
+                if patient_details.get("full_name") and pat.full_name == "Demo Patient":
+                    pat.full_name = patient_details.get("full_name")
+                if patient_details.get("age"): pat.age = patient_details.get("age")
+                if patient_details.get("gender"): pat.gender = patient_details.get("gender")
+                if patient_details.get("blood_group"): pat.blood_group = patient_details.get("blood_group")
+                if patient_details.get("height"): pat.height = float(patient_details.get("height"))
+                if patient_details.get("weight"): pat.weight = float(patient_details.get("weight"))
+                if pat.height and pat.weight:
+                    pat.bmi = round(pat.weight / ((pat.height/100)**2), 1)
+
+            # Insert Medications
+            from app.db.models import Medication, Allergy, MedicalHistory, AIRecommendation
+            meds = analysis.get("medications", [])
+            for m in meds:
+                db.add(Medication(
+                    patient_id=doc.patient_id,
+                    medicine_name=m.get("medicine_name", "Unknown"),
+                    dosage=m.get("dosage", ""),
+                    frequency=m.get("frequency", "")
+                ))
+                
+            # Insert Allergies
+            algs = analysis.get("allergies", [])
+            for a in algs:
+                db.add(Allergy(
+                    patient_id=doc.patient_id,
+                    allergen=a.get("allergen", "Unknown"),
+                    severity=a.get("severity", ""),
+                    reaction=a.get("reaction", "")
+                ))
+                
+            # Insert Medical History
+            hists = analysis.get("medical_history", [])
+            for h in hists:
+                db.add(MedicalHistory(
+                    patient_id=doc.patient_id,
+                    disease_name=h.get("disease_name", "Unknown"),
+                    diagnosis_date=h.get("diagnosis_date", ""),
+                    status=h.get("status", "")
+                ))
+                
+            # Insert AI Recommendations
+            recs = analysis.get("recommendations", [])
+            for r in recs:
+                db.add(AIRecommendation(
+                    patient_id=doc.patient_id,
+                    category="Medical Report Insight",
+                    title="Follow-up from Report",
+                    description=r
+                ))
+
+            structured_data = analysis.get("structured_data", {})
             abnormalities = analysis.get("abnormalities", {})
             
             for metric_key, value in structured_data.items():
@@ -142,8 +198,24 @@ async def upload_document(
 ):
     # Verify patient
     result = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
-    if not result.scalars().first():
-        raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
+    pat = result.scalars().first()
+    if not pat:
+        from app.db.db import patients_db
+        mock_id = f"P{patient_id}"
+        if mock_id in patients_db:
+            mock_data = patients_db[mock_id]
+            pat = Patient(
+                patient_id=patient_id,
+                owner_id=current_user.id,
+                full_name=mock_data.get("name", "Demo Patient"),
+                age=mock_data.get("age", 45),
+                gender=mock_data.get("gender", "Unknown")
+            )
+            db.add(pat)
+            await db.commit()
+            await db.refresh(pat)
+        else:
+            raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
         
     # Save file
     file_ext = os.path.splitext(file.filename)[1]
@@ -174,7 +246,12 @@ async def upload_document(
 async def get_patient_documents(patient_id: int, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     # Verify patient ownership
     result_pat = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
-    if not result_pat.scalars().first():
+    pat = result_pat.scalars().first()
+    if not pat:
+        from app.db.db import patients_db
+        mock_id = f"P{patient_id}"
+        if mock_id in patients_db:
+            return [] # No documents uploaded yet for this mock patient
         raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
         
     result = await db.execute(select(Document).where(Document.patient_id == patient_id).order_by(Document.upload_date.desc()))

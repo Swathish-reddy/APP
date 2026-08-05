@@ -43,18 +43,17 @@ async def _build_pharmacotherapy_baseline(patient_obj: Patient, db: AsyncSession
     except Exception as e:
         print(f"Error enriching patient with documents in medications: {e}")
 
+    from app.db.models import Medication
+    meds_res = await db.execute(select(Medication).where(Medication.patient_id == patient_obj.patient_id))
+    db_meds = [{"name": m.medicine_name, "dosage": f"{m.dosage} {m.frequency}"} for m in meds_res.scalars().all()]
+
     return {
         "patient_id": patient_obj.patient_id,
         "age": patient_obj.age or 46,
         "weight_kg": patient_obj.weight or 90.0,
         "labs": labs,
         "vitals": vitals,
-        "medications": [
-            {"name": "Metformin", "dosage": "1000mg BID"},
-            {"name": "Lisinopril", "dosage": "20mg Daily"},
-            {"name": "Atorvastatin", "dosage": "40mg Daily"},
-            {"name": "Ibuprofen", "dosage": "400mg PRN"} # The toxic addition for CDSS showcase
-        ]
+        "medications": db_meds if db_meds else []
     }
 
 @router.get("/{patient_id}/intelligence", response_model=Dict[str, Any])

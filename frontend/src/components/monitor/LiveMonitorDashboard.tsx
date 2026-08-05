@@ -105,7 +105,7 @@ export const LiveMonitorDashboard: React.FC<LiveMonitorDashboardProps> = ({
       {" "}
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
             Live Health Command Center
           </h1>
           <div className="flex items-center gap-2 mt-1">

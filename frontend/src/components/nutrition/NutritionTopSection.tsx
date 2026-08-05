@@ -1,6 +1,6 @@
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Activity, Target, Flame, BrainCircuit, CheckCircle2 } from "lucide-react";
+import { Activity, Target, Flame, BrainCircuit, CheckCircle2, Droplets } from "lucide-react";
 import { NutritionPlan, NutritionCompliance } from "@/types";
 
 interface NutritionTopSectionProps {
@@ -12,7 +12,7 @@ export const NutritionTopSection: React.FC<NutritionTopSectionProps> = ({
   compliance,
 }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
       {" "}
       <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
         {" "}
@@ -84,7 +84,7 @@ export const NutritionTopSection: React.FC<NutritionTopSectionProps> = ({
           {" "}
           <div className="text-2xl font-bold">
             {compliance
-              ? `${Math.round(compliance.current_adherence_avg)}%`
+              ? `${Math.round(compliance.current_adherence_avg ?? 0)}%`
               : "--"}
           </div>{" "}
           <p className="text-xs text-muted-foreground mt-1">

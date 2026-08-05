@@ -12,7 +12,7 @@ export default function EmergencyCommandCenter() {
   const router = useRouter();
 
   return (
-    <div className="bg-slate-950 min-h-screen text-slate-300 font-sans flex flex-col relative overflow-hidden h-full">
+    <div className="bg-background min-h-screen text-foreground font-sans flex flex-col relative overflow-hidden h-full">
       {/* Background ambient glow */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900 via-slate-950 to-slate-950 pointer-events-none" />
       

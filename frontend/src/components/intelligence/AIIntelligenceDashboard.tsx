@@ -107,7 +107,7 @@ export const AIIntelligenceDashboard: React.FC<
         {" "}
         <div>
           {" "}
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
             {" "}
             <BrainCircuit className="w-8 h-8 text-primary" /> AI Medical
             Intelligence Center{" "}
@@ -137,7 +137,7 @@ export const AIIntelligenceDashboard: React.FC<
       {}{" "}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
         {" "}
-        <TabsList className="grid w-full grid-cols-5 h-12">
+        <TabsList className="grid w-full grid-cols-1 md:grid-cols-3 xl:grid-cols-5 h-12">
           {" "}
           <TabsTrigger value="xai" className="gap-2 text-xs">
             {" "}
@@ -163,7 +163,7 @@ export const AIIntelligenceDashboard: React.FC<
         {}{" "}
         <TabsContent value="xai" className="mt-6">
           {" "}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[700px]">
+          <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6 min-h-[700px]">
             {" "}
             <div className="bg-background border rounded-xl p-5 shadow-sm">
               {" "}
@@ -194,7 +194,7 @@ export const AIIntelligenceDashboard: React.FC<
         {}{" "}
         <TabsContent value="assistant" className="mt-6">
           {" "}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 min-h-[700px]">
+          <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6 min-h-[700px]">
             {" "}
             <div className="bg-background border rounded-xl overflow-hidden shadow-sm h-[700px] flex flex-col">
               {" "}

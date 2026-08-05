@@ -53,7 +53,7 @@ export const NutritionAnalytics: React.FC<NutritionAnalyticsProps> = ({
                 </Pie>{" "}
                 <RechartsTooltip
                   contentStyle={{ borderRadius: "8px", border: "1px solid #1e293b", backgroundColor: "#0f172a" }}
-                  formatter={(value: number) => [`${value}%`, "Percentage"]}
+                  formatter={(value: any) => [`${value}%`, "Percentage"]}
                 />{" "}
                 <Legend verticalAlign="bottom" height={36} />{" "}
               </PieChart>{" "}

@@ -35,14 +35,45 @@ def analyze_document_with_gemini(text: str) -> Dict[str, Any]:
         Provide the output strictly as a JSON object with the following schema:
         {{
             "category": "Lab Reports" | "Radiology" | "Cardiology" | "Prescriptions" | "Clinical Notes" | "Other",
-            "report_type": "CBC" | "HbA1c" | "Lipid Profile" | "MRI" | "ECG" | etc.,
+            "report_type": "string",
+            "patient_details": {{
+                "full_name": "string or null",
+                "date_of_birth": "string or null",
+                "age": "number or null",
+                "gender": "string or null",
+                "blood_group": "string or null",
+                "height": "number (in cm) or null",
+                "weight": "number (in kg) or null"
+            }},
+            "medications": [
+                {{
+                    "medicine_name": "string",
+                    "dosage": "string",
+                    "frequency": "string"
+                }}
+            ],
+            "allergies": [
+                {{
+                    "allergen": "string",
+                    "severity": "string",
+                    "reaction": "string"
+                }}
+            ],
+            "medical_history": [
+                {{
+                    "disease_name": "string",
+                    "diagnosis_date": "string or null",
+                    "status": "string or null"
+                }}
+            ],
             "structured_data": {{
-                "lab_metric_key": numerical_value
+                "metric_name_lowercase": numerical_value
             }},
             "abnormalities": {{
-                "metric_name": "High" | "Low" | "Abnormal"
+                "metric_name_lowercase": "High" | "Low" | "Abnormal"
             }},
-            "ai_summary": "A 2-3 sentence clinical summary of the findings."
+            "ai_summary": "A 2-3 sentence clinical summary of the findings.",
+            "recommendations": ["string"]
         }}
         
         Document Text:
