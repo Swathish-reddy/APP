@@ -27,3 +27,8 @@ frontend/android/app/build/
 frontend/android/.gradle/
 CognivueX-release.apk
 cognivuex-release.keystore
+
+frontend/android/jdk17.zip
+*.zip
+*.keystore
+C:/Android/
