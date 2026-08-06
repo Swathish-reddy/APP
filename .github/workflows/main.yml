@@ -22,20 +22,16 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
-      - name: Install dependencies
+      - name: Install dependencies and build
         working-directory: frontend
-        run: npm ci
-      - name: Generate logs
-        run: echo "Generating logs for setup-node"
-      - name: Create Artifact
         run: |
-          mkdir -p build
-          echo "web build" > build/web-build.txt
+          npm ci
+          npm run build
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: web-build
-          path: build/
+          path: frontend/.next/
 
   selenium-tests:
     name: selenium-tests
@@ -49,20 +45,17 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
-      - name: Install dependencies
-        working-directory: backend
-        run: pip install -r requirements.txt
-      - name: Generate logs
-        run: echo "Generating logs for selenium-tests"
-      - name: Create Artifact
+      - name: Install dependencies and generate report
         run: |
-          mkdir -p report
-          echo "selenium report" > report/selenium-report.txt
+          cd backend && pip install -r requirements.txt
+          cd ..
+          pip install pandas openpyxl reportlab tabulate
+          python scripts/generate_reports.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: selenium-report
-          path: report/
+          path: reports/selenium-web-report.*
 
   appium-tests:
     name: appium-tests
@@ -76,20 +69,17 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
-      - name: Install dependencies
-        working-directory: backend
-        run: pip install -r requirements.txt
-      - name: Generate logs
-        run: echo "Generating logs for appium-tests"
-      - name: Create Artifact
+      - name: Install dependencies and generate report
         run: |
-          mkdir -p report
-          echo "appium report" > report/appium-report.txt
+          cd backend && pip install -r requirements.txt
+          cd ..
+          pip install pandas openpyxl reportlab tabulate
+          python scripts/generate_reports.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: appium-report
-          path: report/
+          path: reports/appium-android-report.*
 
   load-tests:
     name: load-tests
@@ -103,20 +93,17 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
-      - name: Install dependencies
-        working-directory: backend
-        run: pip install -r requirements.txt
-      - name: Generate logs
-        run: echo "Generating logs for load-tests"
-      - name: Create Artifact
+      - name: Install dependencies and generate report
         run: |
-          mkdir -p report
-          echo "load report" > report/load-report.txt
+          cd backend && pip install -r requirements.txt
+          cd ..
+          pip install pandas openpyxl reportlab tabulate
+          python scripts/generate_reports.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: load-report
-          path: report/
+          path: reports/performance-test-report.*
 
   security-assessment:
     name: security-assessment
@@ -130,20 +117,17 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
-      - name: Install dependencies
-        working-directory: backend
-        run: pip install -r requirements.txt
-      - name: Generate logs
-        run: echo "Generating logs for security-assessment"
-      - name: Create Artifact
+      - name: Install dependencies and generate report
         run: |
-          mkdir -p report
-          echo "security report" > report/security-report.txt
+          cd backend && pip install -r requirements.txt
+          cd ..
+          pip install pandas openpyxl reportlab tabulate
+          python scripts/generate_reports.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: security-report
-          path: report/
+          path: reports/security-test-report.*
 
   summary:
     name: summary
@@ -157,17 +141,14 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
-      - name: Install dependencies
-        working-directory: backend
-        run: pip install -r requirements.txt
-      - name: Generate logs
-        run: echo "Generating logs for summary"
-      - name: Create Artifact
+      - name: Install dependencies and generate report
         run: |
-          mkdir -p report
-          echo "summary" > report/summary.txt
+          cd backend && pip install -r requirements.txt
+          cd ..
+          pip install pandas openpyxl reportlab tabulate
+          python scripts/generate_reports.py
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: summary
-          path: report/
+          path: reports/summary-dashboard.*
