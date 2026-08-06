@@ -32,6 +32,7 @@ jobs:
         with:
           name: web-build
           path: frontend/.next/
+          include-hidden-files: true
 
   selenium-tests:
     name: selenium-tests
