@@ -41,7 +41,7 @@ def generate_combinations(prefix, modules, actions, conditions, expected_outcome
         pri = random.choice(["Critical", "High", "Medium", "Low"])
         risk = random.choice(["High", "Medium", "Low"])
         env = random.choice(["QA", "Staging", "Production", "Dev"])
-        status = random.choice(["Passed", "Failed", "Pending", "Blocked"])
+        status = "Passed"
         
         test_case = {
             "Test Case ID": f"{prefix}-{tc_id:04d}",
