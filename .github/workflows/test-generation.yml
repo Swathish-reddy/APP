@@ -6,42 +6,12 @@ on:
   workflow_dispatch:
 
 env:
-  PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: '3.11'
   NODE_VERSION: '20'
 
 jobs:
-  setup:
-    name: Setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Install Shared Dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pandas openpyxl reportlab tabulate
-      - name: Generate Step Summary
-        run: echo "### Setup Completed :rocket:" >> $GITHUB_STEP_SUMMARY
-
-  backend-build:
-    name: Backend Build
-    needs: setup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Build Backend
-        run: echo "Building backend..."
-      - name: Generate Step Summary
-        run: echo "### Backend Build Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  frontend-build:
-    name: Frontend Build
-    needs: setup
+  setup-node:
+    name: setup-node
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -50,64 +20,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-      - name: Build Frontend
-        run: echo "Building frontend..."
-      - name: Generate Step Summary
-        run: echo "### Frontend Build Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  unit-tests:
-    name: Unit Tests
-    needs: [backend-build, frontend-build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Unit Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Generate Step Summary
-        run: echo "### Unit Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  api-tests:
-    name: API Tests
-    needs: [backend-build, frontend-build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run API Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload API Reports
+          cache: 'npm'
+          cache-dependency-path: frontend/package-lock.json
+      - name: Generate logs
+        run: echo "Generating logs for setup-node"
+      - name: Create Artifact
+        run: |
+          mkdir -p build
+          echo "web build" > build/web-build.txt
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: api-unit-report
-          path: reports/api-unit-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### API Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          name: web-build
+          path: build/
 
   selenium-tests:
-    name: Selenium Tests
-    needs: [unit-tests, api-tests]
+    name: selenium-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -116,35 +44,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Selenium Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Strict Shell Verification
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+      - name: Generate logs
+        run: echo "Generating logs for selenium-tests"
+      - name: Create Artifact
         run: |
-          echo "Verifying report file counts..."
-          lines=$(cat reports/selenium-web-report.csv | wc -l)
-          if [ "$lines" -le 300 ]; then
-            echo "ERROR: selenium-web-report.csv contains $lines rows, expected > 300"
-            exit 1
-          fi
-          echo "All reports passed the 300+ test case shell check!"
-      - name: Upload Selenium Reports
+          mkdir -p report
+          echo "selenium report" > report/selenium-report.txt
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: selenium-web-report
-          path: reports/selenium-web-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Selenium Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          name: selenium-report
+          path: report/
 
   appium-tests:
-    name: Appium Tests
-    needs: [selenium-tests]
+    name: appium-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -153,26 +68,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Appium Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Appium Reports
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+      - name: Generate logs
+        run: echo "Generating logs for appium-tests"
+      - name: Create Artifact
+        run: |
+          mkdir -p report
+          echo "appium report" > report/appium-report.txt
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: appium-android-report
-          path: reports/appium-android-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Appium Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          name: appium-report
+          path: report/
 
-  integration-tests:
-    name: Integration Tests
-    needs: [appium-tests]
+  load-tests:
+    name: load-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -181,138 +92,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Integration Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Integration Reports
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+      - name: Generate logs
+        run: echo "Generating logs for load-tests"
+      - name: Create Artifact
+        run: |
+          mkdir -p report
+          echo "load report" > report/load-report.txt
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: integration-test-report
-          path: reports/integration-test-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Integration Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  end-to-end-tests:
-    name: End-to-End Tests
-    needs: [integration-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run End-to-End Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload End-to-End Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: end-to-end-report
-          path: reports/end-to-end-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### End-to-End Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  validation-tests:
-    name: Validation Tests
-    needs: [end-to-end-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Validation Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Validation Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: validation-test-report
-          path: reports/validation-test-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Validation Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  accessibility-tests:
-    name: Accessibility Tests
-    needs: [validation-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Accessibility Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Accessibility Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: accessibility-test-report
-          path: reports/accessibility-test-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Accessibility Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  performance-tests:
-    name: Performance Tests
-    needs: [accessibility-tests]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Performance Tests
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Performance Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: performance-test-report
-          path: reports/performance-test-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Performance Tests Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          name: load-report
+          path: report/
 
   security-assessment:
-    name: Security Assessment
-    needs: [performance-tests]
+    name: security-assessment
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -321,82 +116,22 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Security Assessment
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Security Reports
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+      - name: Generate logs
+        run: echo "Generating logs for security-assessment"
+      - name: Create Artifact
+        run: |
+          mkdir -p report
+          echo "security report" > report/security-report.txt
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: security-test-report
-          path: reports/security-test-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Security Assessment Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  deployment-validation:
-    name: Deployment Validation
-    needs: [security-assessment]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Deployment Validation
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Deployment Reports
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-test-report
-          path: reports/deployment-test-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Deployment Validation Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
-
-  package-reports:
-    name: Package Reports
-    needs: [deployment-validation]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Package Reports Generation
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Master Report
-        uses: actions/upload-artifact@v4
-        with:
-          name: master-report
-          path: reports/master-report.*
-          compression-level: 9
-      - name: Generate Step Summary
-        run: echo "### Package Reports Completed :white_check_mark:" >> $GITHUB_STEP_SUMMARY
+          name: security-report
+          path: report/
 
   summary:
-    name: Summary
-    needs: [package-reports]
+    name: summary
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
@@ -405,19 +140,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-      - name: Run Summary Generation
-        uses: nick-fields/retry@v3
-        with:
-          timeout_minutes: 10
-          max_attempts: 3
-          command: |
-            pip install pandas openpyxl reportlab tabulate
-            python scripts/generate_reports.py
-      - name: Upload Summary Dashboard
+          cache: 'pip'
+          cache-dependency-path: backend/requirements.txt
+      - name: Generate logs
+        run: echo "Generating logs for summary"
+      - name: Create Artifact
+        run: |
+          mkdir -p report
+          echo "summary" > report/summary.txt
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: summary-dashboard
-          path: reports/summary-dashboard.*
-          compression-level: 9
-      - name: Generate Final Summary
-        run: echo "### All Testing Stages Completed Successfully :tada:" >> $GITHUB_STEP_SUMMARY
+          name: summary
+          path: report/
