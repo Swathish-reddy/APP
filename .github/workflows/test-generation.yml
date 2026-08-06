@@ -22,6 +22,9 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           cache-dependency-path: frontend/package-lock.json
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
       - name: Generate logs
         run: echo "Generating logs for setup-node"
       - name: Create Artifact
@@ -46,6 +49,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
       - name: Generate logs
         run: echo "Generating logs for selenium-tests"
       - name: Create Artifact
@@ -70,6 +76,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
       - name: Generate logs
         run: echo "Generating logs for appium-tests"
       - name: Create Artifact
@@ -94,6 +103,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
       - name: Generate logs
         run: echo "Generating logs for load-tests"
       - name: Create Artifact
@@ -118,6 +130,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
       - name: Generate logs
         run: echo "Generating logs for security-assessment"
       - name: Create Artifact
@@ -142,6 +157,9 @@ jobs:
           python-version: ${{ env.PYTHON_VERSION }}
           cache: 'pip'
           cache-dependency-path: backend/requirements.txt
+      - name: Install dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
       - name: Generate logs
         run: echo "Generating logs for summary"
       - name: Create Artifact
