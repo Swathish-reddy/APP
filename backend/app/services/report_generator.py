@@ -3,9 +3,14 @@ Report Generator — GenAI Structured Health Reports for CogniVueX
 Generates: Patient Health Report, Clinical Summary Report, Executive Report
 """
 import datetime
-from typing import Dict, Any, List
+from typing import Any
+
 from app.services.fusion import run_ai_fusion
-from app.services.xai_engine import compute_shap_analysis, generate_reasoning_chain, get_evidence_links
+from app.services.xai_engine import (
+    compute_shap_analysis,
+    generate_reasoning_chain,
+    get_evidence_links,
+)
 
 
 def _severity_label(risk_percent: float) -> str:
@@ -15,7 +20,7 @@ def _severity_label(risk_percent: float) -> str:
     return "Critical"
 
 
-def generate_patient_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_patient_report(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Full patient-facing health report: health score, risks, recommendations, care plan.
     """
@@ -74,7 +79,7 @@ def generate_patient_report(patient: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def generate_clinical_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_clinical_report(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Clinician-facing summary: concise risk analysis, twin state, suggested tests/referrals.
     """
@@ -121,7 +126,7 @@ def generate_clinical_report(patient: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def generate_executive_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_executive_report(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Wellness/executive summary: lifestyle analysis, preventive risks, optimization opportunities.
     """

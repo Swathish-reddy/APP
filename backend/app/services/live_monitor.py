@@ -1,13 +1,12 @@
-import random
 import datetime
 import math
-import copy
-from typing import Dict, Any, List
+import random
+from typing import Any
+
 from app.db.db import (
-    patients_db,
     CONNECTED_DEVICES_DB,
+    HEALTH_ALERTS_DB,
     LIVE_STREAMS_DB,
-    HEALTH_ALERTS_DB
 )
 
 # Simulated ECG generation
@@ -37,19 +36,7 @@ def generate_ecg_wave(t: float, hr: int, anomaly: str = None) -> float:
             
     return val
 
-def init_mock_patient_for_monitoring(patient_id: str):
-    if patient_id not in patients_db:
-        # Clone P101 as a template to provide dummy vitals/labs
-        patients_db[patient_id] = copy.deepcopy(patients_db.get("P101", {}))
-        patients_db[patient_id]["id"] = patient_id
-    if patient_id not in CONNECTED_DEVICES_DB:
-        CONNECTED_DEVICES_DB[patient_id] = []
-
-def generate_live_stream(patient_id: str, trigger_event: str = None) -> Dict[str, Any]:
-    if patient_id not in patients_db:
-        return {}
-        
-    patient = patients_db[patient_id]
+def generate_live_stream(patient_id: str, patient: dict, trigger_event: str = None) -> dict[str, Any]:
     vitals = patient["vitals"].copy()
     
     # Simulate fluctuations
@@ -60,11 +47,11 @@ def generate_live_stream(patient_id: str, trigger_event: str = None) -> Dict[str
     glucose_fluctuation = random.randint(-2, 2)
     
     # Apply standard fluctuations
-    vitals["heart_rate"] += hr_fluctuation
-    vitals["systolic_bp"] += sys_fluctuation
-    vitals["diastolic_bp"] += dia_fluctuation
-    vitals["spo2"] = min(100, max(85, vitals["spo2"] + spo2_fluctuation))
-    vitals["glucose"] += glucose_fluctuation
+    vitals["heart_rate"] = vitals.get("heart_rate", 70) + hr_fluctuation
+    vitals["systolic_bp"] = vitals.get("systolic_bp", 120) + sys_fluctuation
+    vitals["diastolic_bp"] = vitals.get("diastolic_bp", 80) + dia_fluctuation
+    vitals["spo2"] = min(100, max(85, vitals.get("spo2", 98) + spo2_fluctuation))
+    vitals["glucose"] = vitals.get("glucose", 90) + glucose_fluctuation
     
     anomaly_type = None
     
@@ -90,9 +77,6 @@ def generate_live_stream(patient_id: str, trigger_event: str = None) -> Dict[str
         val = generate_ecg_wave(t * freq_multiplier, vitals["heart_rate"], anomaly_type)
         ecg_data.append(val)
         
-    # Sync to twin
-    patient["vitals"] = vitals
-    
     # Store stream
     stream_data = {
         "timestamp": datetime.datetime.now().isoformat(),
@@ -113,7 +97,7 @@ def generate_live_stream(patient_id: str, trigger_event: str = None) -> Dict[str
         
     return stream_data
 
-def detect_anomalies(patient_id: str, vitals: Dict[str, Any], trigger_event: str = None):
+def detect_anomalies(patient_id: str, vitals: dict[str, Any], trigger_event: str = None):
     alerts = []
     timestamp = datetime.datetime.now().isoformat()
     
@@ -170,10 +154,7 @@ def detect_anomalies(patient_id: str, vitals: Dict[str, Any], trigger_event: str
         # Keep latest 50
         HEALTH_ALERTS_DB[patient_id] = HEALTH_ALERTS_DB[patient_id][:50]
 
-def get_ai_predictions(patient_id: str) -> Dict[str, Any]:
-    if patient_id not in patients_db:
-        return {}
-    
+def get_ai_predictions(patient: dict) -> dict[str, Any]:
     # Generate some dynamic mock AI predictions based on patient state
     return {
         "timestamp": datetime.datetime.now().isoformat(),
@@ -187,7 +168,7 @@ def get_ai_predictions(patient_id: str) -> Dict[str, Any]:
         ]
     }
         
-def get_connected_devices(patient_id: str) -> List[Dict[str, Any]]:
+def get_connected_devices(patient_id: str) -> list[dict[str, Any]]:
     devices = CONNECTED_DEVICES_DB.get(patient_id, [])
     # Simulate battery drain and random connection drops for demo
     for dev in devices:
@@ -205,7 +186,7 @@ def get_connected_devices(patient_id: str) -> List[Dict[str, Any]]:
             dev["last_sync"] = "Just now"
     return devices
 
-def scan_nearby_devices(patient_id: str) -> List[Dict[str, Any]]:
+def scan_nearby_devices(patient_id: str) -> list[dict[str, Any]]:
     return [
         {"id": f"SCAN_{random.randint(1000, 9999)}", "name": "Apple Watch Series 9", "type": "Smartwatch", "protocol": "Bluetooth LE", "signal": 92},
         {"id": f"SCAN_{random.randint(1000, 9999)}", "name": "Dexcom G7", "type": "CGM", "protocol": "Bluetooth LE", "signal": 85},
@@ -214,5 +195,5 @@ def scan_nearby_devices(patient_id: str) -> List[Dict[str, Any]]:
         {"id": f"SCAN_{random.randint(1000, 9999)}", "name": "Omron BP7450", "type": "Blood Pressure", "protocol": "Bluetooth Classic", "signal": 88}
     ]
 
-def get_health_alerts(patient_id: str) -> List[Dict[str, Any]]:
+def get_health_alerts(patient_id: str) -> list[dict[str, Any]]:
     return HEALTH_ALERTS_DB.get(patient_id, [])

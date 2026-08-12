@@ -19,7 +19,7 @@ interface Patient {
   gender: string;
   blood_group: string;
   updated_at: string;
-}
+};
 export default function PatientsPage() {
   const [patients, setPatients] = useState<Patient[]>([]);
   const [search, setSearch] = useState("");
@@ -59,14 +59,14 @@ export default function PatientsPage() {
     }, 1000);
   }, [search]);
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-8">
+    <div className="p-4 md:p-4 md:p-4 md:p-8 max-w-7xl mx-auto space-y-8">
       {" "}
       {}{" "}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         {" "}
         <div>
           {" "}
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold tracking-tight text-foreground flex items-center gap-2">
             {" "}
             <Users className="w-8 h-8 text-cyan-400" /> Patient Intelligence
             Center{" "}
@@ -88,7 +88,7 @@ export default function PatientsPage() {
         </div>{" "}
       </div>{" "}
       {}{" "}
-      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {" "}
         {[
           {
@@ -115,7 +115,7 @@ export default function PatientsPage() {
         ].map((stat, i) => (
           <div
             key={i}
-            className="dark bg-card/50 border border-border p-4 md:p-6 rounded-2xl backdrop-blur-sm flex items-center gap-4"
+            className="dark bg-card/50 border border-border p-4 md:p-4 md:p-4 md:p-6 rounded-2xl backdrop-blur-sm flex items-center gap-4"
           >
             {" "}
             <div className={`p-4 rounded-xl ${stat.bg} ${stat.color}`}>
@@ -168,7 +168,7 @@ export default function PatientsPage() {
                   {" "}
                   <td
                     colSpan={5}
-                    className="p-4 md:p-8 text-center text-muted-foreground"
+                    className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground"
                   >
                     Loading patients...
                   </td>{" "}

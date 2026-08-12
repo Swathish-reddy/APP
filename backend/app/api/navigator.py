@@ -1,15 +1,18 @@
-from fastapi import APIRouter, HTTPException
-from typing import Dict, Any, List
+
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from app.db.db import patients_db
+from sqlalchemy.ext.asyncio import AsyncSession
+from app.db.session import get_db
+
+from app.services.patient_service import get_patient_profile_dict
 from app.services.care_navigator import (
+    book_appointment,
     calculate_doctor_match,
     calculate_hospital_match,
-    get_diagnostic_centers,
     generate_care_pathway,
-    book_appointment,
     get_appointments,
-    get_referrals
+    get_diagnostic_centers,
+    get_referrals,
 )
 
 router = APIRouter()
@@ -20,11 +23,8 @@ class AppointmentPayload(BaseModel):
     date: str
 
 @router.get("/patients/{patient_id}/recommendations")
-def get_recommendations(patient_id: str):
-    if patient_id not in patients_db:
-        raise HTTPException(status_code=404, detail="Patient not found")
-        
-    patient = patients_db[patient_id]
+async def get_recommendations(patient_id: str, db: AsyncSession = Depends(get_db)):
+    patient = await get_patient_profile_dict(patient_id, db)
     return {
         "doctors": calculate_doctor_match(patient),
         "hospitals": calculate_hospital_match(patient),
@@ -32,28 +32,21 @@ def get_recommendations(patient_id: str):
     }
 
 @router.get("/patients/{patient_id}/pathway")
-def get_pathway(patient_id: str):
-    if patient_id not in patients_db:
-        raise HTTPException(status_code=404, detail="Patient not found")
-        
-    patient = patients_db[patient_id]
+async def get_pathway(patient_id: str, db: AsyncSession = Depends(get_db)):
+    patient = await get_patient_profile_dict(patient_id, db)
     return generate_care_pathway(patient_id, patient)
 
 @router.get("/patients/{patient_id}/appointments")
-def list_appointments(patient_id: str):
-    if patient_id not in patients_db:
-        raise HTTPException(status_code=404, detail="Patient not found")
+async def list_appointments(patient_id: str, db: AsyncSession = Depends(get_db)):
+    await get_patient_profile_dict(patient_id, db)
     return get_appointments(patient_id)
 
 @router.post("/patients/{patient_id}/appointments")
-def create_appointment(patient_id: str, payload: AppointmentPayload):
-    if patient_id not in patients_db:
-        raise HTTPException(status_code=404, detail="Patient not found")
-    
+async def create_appointment(patient_id: str, payload: AppointmentPayload, db: AsyncSession = Depends(get_db)):
+    await get_patient_profile_dict(patient_id, db)
     return book_appointment(patient_id, payload.provider_id, payload.type, payload.date)
 
 @router.get("/patients/{patient_id}/referrals")
-def list_referrals(patient_id: str):
-    if patient_id not in patients_db:
-        raise HTTPException(status_code=404, detail="Patient not found")
+async def list_referrals(patient_id: str, db: AsyncSession = Depends(get_db)):
+    await get_patient_profile_dict(patient_id, db)
     return get_referrals(patient_id)

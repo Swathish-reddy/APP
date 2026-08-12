@@ -14,7 +14,7 @@ interface ReportPanelProps {
   report: any;
   onChangeType: (type: string) => void;
   reportType: string;
-}
+};
 export const ReportPanel: React.FC<ReportPanelProps> = ({
   report,
   onChangeType,

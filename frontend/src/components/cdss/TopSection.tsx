@@ -4,7 +4,7 @@ import { Activity, AlertTriangle, CheckCircle, Clock } from "lucide-react";
 interface TopSectionProps {
   patientData: any;
   recommendations: any;
-}
+};
 export const TopSection: React.FC<TopSectionProps> = ({
   patientData,
   recommendations,
@@ -22,7 +22,7 @@ export const TopSection: React.FC<TopSectionProps> = ({
     });
   }
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
       {" "}
       <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
         {" "}

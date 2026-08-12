@@ -35,11 +35,11 @@ export default function PatientHistory({ params, patientId: propPatientId }: { p
   }
 
   return (
-    <div className="p-4 md:p-8 max-w-[1200px] mx-auto space-y-8">
-      <div className="flex items-center gap-4 bg-muted/80 border border-indigo-500/50 p-6 rounded-3xl backdrop-blur-xl shadow-xl">
+    <div className="p-4 md:p-4 md:p-4 md:p-8 max-w-[1200px] mx-auto space-y-8">
+      <div className="flex items-center gap-4 bg-muted/80 border border-indigo-500/50 p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl">
         <History className="w-10 h-10 text-indigo-400" />
         <div>
-          <h2 className="text-3xl font-extrabold text-foreground">Medical History</h2>
+          <h2 className="text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground">Medical History</h2>
           <p className="text-indigo-200 mt-1 font-medium">Chronological health record extracted from medical reports.</p>
         </div>
       </div>
@@ -51,14 +51,14 @@ export default function PatientHistory({ params, patientId: propPatientId }: { p
           <p className="text-muted-foreground mt-2">Upload medical reports to automatically populate this patient's history.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {history.map((item, i) => (
             <motion.div 
               key={i}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.1 }}
-              className="bg-muted/50 border border-border rounded-2xl p-6 shadow-lg hover:shadow-indigo-500/10 hover:border-indigo-500/30 transition-all"
+              className="bg-muted/50 border border-border rounded-2xl p-4 md:p-4 md:p-6 shadow-lg hover:shadow-indigo-500/10 hover:border-indigo-500/30 transition-all"
             >
               <div className="flex items-start gap-3">
                 <Activity className="w-6 h-6 text-rose-400 shrink-0 mt-1" />

@@ -48,5 +48,5 @@ function ScrollBar({
       />{" "}
     </ScrollAreaPrimitive.Scrollbar>
   );
-}
+};
 export { ScrollArea, ScrollBar };

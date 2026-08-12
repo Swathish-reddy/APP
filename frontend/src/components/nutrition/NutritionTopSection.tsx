@@ -6,13 +6,13 @@ import { NutritionPlan, NutritionCompliance } from "@/types";
 interface NutritionTopSectionProps {
   plan: NutritionPlan | null;
   compliance: NutritionCompliance | null;
-}
+};
 export const NutritionTopSection: React.FC<NutritionTopSectionProps> = ({
   plan,
   compliance,
 }) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
       {" "}
       <Card className="bg-gradient-to-br from-green-500/10 to-green-600/5 border-green-500/20">
         {" "}

@@ -1,7 +1,7 @@
-import os
 import json
+import os
 import re
-from typing import Dict, Any
+from typing import Any
 
 try:
     import google.generativeai as genai
@@ -21,7 +21,7 @@ REFERENCE_RANGES = {
     "platelets": {"min": 150, "max": 400, "unit": "10^3/uL"}
 }
 
-def analyze_document_with_gemini(text: str) -> Dict[str, Any]:
+def analyze_document_with_gemini(text: str) -> dict[str, Any]:
     api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
     if not api_key or not HAS_GEMINI:
         return None
@@ -31,19 +31,24 @@ def analyze_document_with_gemini(text: str) -> Dict[str, Any]:
         model = genai.GenerativeModel('gemini-1.5-flash')
         
         prompt = f"""
-        Analyze the following medical document text.
+        Analyze the following medical document text. Extract clinically relevant structured information.
+        Do NOT invent any values that are not present in the document.
+        Normalize metric names where safe (e.g. HbA1c, hba1c, glycated hemoglobin -> hba1c).
         Provide the output strictly as a JSON object with the following schema:
         {{
             "category": "Lab Reports" | "Radiology" | "Cardiology" | "Prescriptions" | "Clinical Notes" | "Other",
             "report_type": "string",
             "patient_details": {{
                 "full_name": "string or null",
+                "patient_id": "string or null",
                 "date_of_birth": "string or null",
                 "age": "number or null",
                 "gender": "string or null",
                 "blood_group": "string or null",
                 "height": "number (in cm) or null",
-                "weight": "number (in kg) or null"
+                "weight": "number (in kg) or null",
+                "report_date": "string or null",
+                "hospital_doctor_info": "string or null"
             }},
             "medications": [
                 {{
@@ -70,11 +75,28 @@ def analyze_document_with_gemini(text: str) -> Dict[str, Any]:
                 "metric_name_lowercase": numerical_value
             }},
             "abnormalities": {{
-                "metric_name_lowercase": "High" | "Low" | "Abnormal"
+                "metric_name_lowercase": "High" | "Low" | "Abnormal" | "Critical"
+            }},
+            "extracted_vitals": {{
+                "blood_pressure": "string or null",
+                "heart_rate": "number or null",
+                "spo2": "number or null",
+                "temperature": "number or null",
+                "weight": "number or null",
+                "bmi": "number or null"
             }},
             "ai_summary": "A 2-3 sentence clinical summary of the findings.",
             "recommendations": ["string"]
         }}
+        
+        Ensure you extract common biomarkers in `structured_data` like:
+        hba1c, glucose, fasting_glucose, random_glucose, insulin, 
+        total_cholesterol, ldl, hdl, triglycerides, vldl,
+        creatinine, bun, egfr, uric_acid,
+        ast, alt, alp, bilirubin, albumin, total_protein,
+        tsh, t3, t4, free_t3, free_t4,
+        hemoglobin, rbc, wbc, platelets, hematocrit, mcv, mch, mchc.
+        If a field is missing, omit it or set to null. NEVER fabricate values.
         
         Document Text:
         {text}
@@ -87,7 +109,7 @@ def analyze_document_with_gemini(text: str) -> Dict[str, Any]:
         print(f"Gemini Doc Intelligence error: {e}")
         return None
 
-def fallback_analyze_document(text: str) -> Dict[str, Any]:
+def fallback_analyze_document(text: str) -> dict[str, Any]:
     """Basic regex and string matching fallback."""
     text_lower = text.lower()
     
@@ -155,7 +177,7 @@ def fallback_analyze_document(text: str) -> Dict[str, Any]:
         "ai_summary": ai_summary
     }
 
-def analyze_medical_document(text: str) -> Dict[str, Any]:
+def analyze_medical_document(text: str) -> dict[str, Any]:
     analysis = analyze_document_with_gemini(text)
     if analysis:
         return analysis

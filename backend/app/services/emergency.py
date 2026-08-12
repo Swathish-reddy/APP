@@ -1,5 +1,5 @@
-from typing import Dict, Any, List
 from datetime import datetime
+from typing import Any
 
 # ─────────────────────────────────────────────────
 # Module 13: Emergency Response System
@@ -20,7 +20,7 @@ EMERGENCY_THRESHOLDS = {
     "respiratory_high":    {"value": 25,  "label": "Tachypnea",            "severity": "High"},
 }
 
-def evaluate_emergency(vitals: Dict[str, Any], patient_id: str) -> Dict[str, Any]:
+def evaluate_emergency(vitals: dict[str, Any], patient_id: str) -> dict[str, Any]:
     """
     Analyses current vital sign readings against critical clinical thresholds.
     Returns triggered emergency alerts, recommended actions, and nearby hospital suggestions.

@@ -1,17 +1,20 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
 
-from app.api.deps import get_db, get_current_user
+from app.api.deps import get_current_user, get_db
 from app.db.models import User
 from app.services.analytics_engine import generate_executive_analytics_report
 
 router = APIRouter()
 
-from app.db.models import Patient, Document
 from sqlalchemy.future import select
 
-async def _simulate_population_state(db: AsyncSession) -> Dict[str, Any]:
+from app.db.models import Document, Patient
+
+
+async def _simulate_population_state(db: AsyncSession) -> dict[str, Any]:
     """
     Aggregates population-level state from the CogniVueX platform database dynamically.
     """
@@ -44,7 +47,7 @@ async def _simulate_population_state(db: AsyncSession) -> Dict[str, Any]:
 
     return state
 
-@router.get("/executive", response_model=Dict[str, Any])
+@router.get("/executive", response_model=dict[str, Any])
 async def get_executive_analytics(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
@@ -64,5 +67,5 @@ async def get_executive_analytics(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate executive analytics report: {str(e)}"
+            detail=f"Failed to generate executive analytics report: {e!s}"
         )

@@ -1,7 +1,6 @@
 import asyncio
 from app.db.session import AsyncSessionLocal, engine
 from app.db.models import Base, User, Patient
-import uuid
 
 async def init_db():
     async with engine.begin() as conn:

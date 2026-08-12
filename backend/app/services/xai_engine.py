@@ -2,8 +2,7 @@
 XAI Engine — Explainable AI Platform for CogniVueX
 Provides: SHAP Analysis, Counterfactual Explanations, Medical Reasoning Chains, Evidence Linking
 """
-from typing import Dict, Any, List
-import random
+from typing import Any
 
 # ─────────────────────────────────────────────
 # Evidence Database (Clinical Guidelines)
@@ -68,7 +67,7 @@ EVIDENCE_DATABASE = {
 # ─────────────────────────────────────────────
 # SHAP Analysis Engine (Enhanced)
 # ─────────────────────────────────────────────
-def compute_shap_analysis(patient: Dict[str, Any], primary_disease: str) -> Dict[str, Any]:
+def compute_shap_analysis(patient: dict[str, Any], primary_disease: str) -> dict[str, Any]:
     """
     Computes patient-specific SHAP values for the primary disease.
     Returns risk drivers (+), protective factors (-), and neutral factors.
@@ -220,7 +219,7 @@ def compute_shap_analysis(patient: Dict[str, Any], primary_disease: str) -> Dict
 # ─────────────────────────────────────────────
 # Medical Reasoning Chain Engine
 # ─────────────────────────────────────────────
-def generate_reasoning_chain(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+def generate_reasoning_chain(patient: dict[str, Any]) -> list[dict[str, Any]]:
     """
     Builds a clinical reasoning chain showing how one biomarker leads to another condition.
     """
@@ -306,13 +305,13 @@ def generate_reasoning_chain(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
 # ─────────────────────────────────────────────
 # Counterfactual Explanation Engine
 # ─────────────────────────────────────────────
-def compute_counterfactual(patient: Dict[str, Any], base_risk_percent: float) -> Dict[str, Any]:
+def compute_counterfactual(patient: dict[str, Any], base_risk_percent: float) -> dict[str, Any]:
     """
     Shows what parameter changes would reduce the primary risk score.
     Returns each intervention and the projected new risk.
     """
     vitals = patient.get("vitals", {})
-    labs = patient.get("labs", {})
+    patient.get("labs", {})
     lifestyle = patient.get("lifestyle", {})
     bmi = patient.get("bmi", 24.0)
 
@@ -405,7 +404,7 @@ def compute_counterfactual(patient: Dict[str, Any], base_risk_percent: float) ->
 # ─────────────────────────────────────────────
 # Linked Evidence Lookup
 # ─────────────────────────────────────────────
-def get_evidence_links(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+def get_evidence_links(patient: dict[str, Any]) -> list[dict[str, Any]]:
     """
     Returns applicable evidence links for the patient's biomarkers.
     """
@@ -447,7 +446,7 @@ def get_evidence_links(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
 # ─────────────────────────────────────────────
 # LIME Analysis Engine
 # ─────────────────────────────────────────────
-def compute_lime_analysis(patient: Dict[str, Any]) -> Dict[str, Any]:
+def compute_lime_analysis(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Simulates LIME (Local Interpretable Model-agnostic Explanations).
     Calculates the local decision boundary that caused the specific prediction.
@@ -461,7 +460,7 @@ def compute_lime_analysis(patient: Dict[str, Any]) -> Dict[str, Any]:
 # ─────────────────────────────────────────────
 # Bias Detection Engine
 # ─────────────────────────────────────────────
-def detect_bias(patient: Dict[str, Any]) -> Dict[str, Any]:
+def detect_bias(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Detects potential demographic or data-missingness biases in the prediction.
     """
@@ -481,13 +480,13 @@ def detect_bias(patient: Dict[str, Any]) -> Dict[str, Any]:
 # ─────────────────────────────────────────────
 # Orchestrator
 # ─────────────────────────────────────────────
-def generate_full_explanation(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_full_explanation(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Compiles the comprehensive 20-point XAI report.
     """
     primary_disease = "Cardiovascular" # Placeholder
     shap_data = compute_shap_analysis(patient, primary_disease)
-    reasoning = generate_reasoning_chain(patient)
+    generate_reasoning_chain(patient)
     counterfactual = compute_counterfactual(patient, 45.0)
     evidence = get_evidence_links(patient)
     lime = compute_lime_analysis(patient)

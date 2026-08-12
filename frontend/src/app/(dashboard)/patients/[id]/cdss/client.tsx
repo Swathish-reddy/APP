@@ -24,10 +24,10 @@ export default function CDSSPage({
     }
   }, [propPatientId, params]);
 
-  if (!id) return <div className="p-4 md:p-6 text-muted-foreground animate-pulse">Loading CDSS...</div>;
+  if (!id) return <div className="p-4 md:p-4 md:p-4 md:p-6 text-muted-foreground animate-pulse">Loading CDSS...</div>;
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-4 md:p-4 md:p-6">
       <CDSSIntelligenceReport patientId={id} />
       <DecisionDashboard patientId={id} />
     </div>

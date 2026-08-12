@@ -1,22 +1,23 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
 from pydantic import BaseModel
-import asyncio
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
 from app.db.models import Patient
-from sqlalchemy.future import select
 from app.services.realtime_monitor import generate_realtime_report
 
 router = APIRouter()
 
 class TelemetryPayload(BaseModel):
-    live_data: Dict[str, Any]
+    live_data: dict[str, Any]
 
-from app.db.models import HealthMetric, Document
+from app.db.models import Document, HealthMetric
 
-async def _build_patient_baseline(patient_obj: Patient, db: AsyncSession) -> Dict[str, Any]:
+
+async def _build_patient_baseline(patient_obj: Patient, db: AsyncSession) -> dict[str, Any]:
     """Helper to convert Patient ORM to dictionary suitable for baseline comparison, enriching with reports."""
     metrics_result = await db.execute(select(HealthMetric).where(HealthMetric.patient_id == patient_obj.patient_id))
     metrics_list = metrics_result.scalars().all()
@@ -57,7 +58,7 @@ async def _build_patient_baseline(patient_obj: Patient, db: AsyncSession) -> Dic
         "active_medications": []
     }
 
-@router.post("/{patient_id}/ingest", response_model=Dict[str, Any])
+@router.post("/{patient_id}/ingest", response_model=dict[str, Any])
 async def ingest_live_telemetry(patient_id: int, req: TelemetryPayload, db: AsyncSession = Depends(get_db)):
     """
     Ingests a live telemetry payload (from IoT/Wearable).
@@ -86,5 +87,5 @@ async def ingest_live_telemetry(patient_id: int, req: TelemetryPayload, db: Asyn
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to process live telemetry: {str(e)}"
+            detail=f"Failed to process live telemetry: {e!s}"
         )

@@ -1,8 +1,9 @@
-import random
-from typing import Dict, Any, List
+from typing import Any
+
 from app.services.xai_engine import compute_shap_analysis
 
-def get_xai_report(disease_name: str, patient: Dict[str, Any]) -> Dict[str, Any]:
+
+def get_xai_report(disease_name: str, patient: dict[str, Any]) -> dict[str, Any]:
     """
     Main entry point to get explainable AI insights for a prediction.
     Now uses the advanced xai_engine to generate highly detailed and medically accurate insights.

@@ -1,7 +1,8 @@
-from typing import Dict, Any, List
 from datetime import datetime
+from typing import Any
 
-def detect_anomalies(baseline: Dict[str, Any], live_data: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+def detect_anomalies(baseline: dict[str, Any], live_data: dict[str, Any]) -> list[dict[str, Any]]:
     """
     Compares live telemetry against patient baselines to detect acute deviations.
     """
@@ -63,7 +64,7 @@ def detect_anomalies(baseline: Dict[str, Any], live_data: Dict[str, Any]) -> Lis
         
     return anomalies
 
-def predict_emergency_events(anomalies: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def predict_emergency_events(anomalies: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Forecasts acute risks based on active anomalies."""
     predictions = []
     
@@ -88,7 +89,7 @@ def predict_emergency_events(anomalies: List[Dict[str, Any]]) -> List[Dict[str, 
         
     return predictions
 
-def generate_realtime_report(patient: Dict[str, Any], live_data: Dict[str, Any]) -> Dict[str, Any]:
+def generate_realtime_report(patient: dict[str, Any], live_data: dict[str, Any]) -> dict[str, Any]:
     """
     Compiles the comprehensive 18-point Real-Time Monitoring report.
     """

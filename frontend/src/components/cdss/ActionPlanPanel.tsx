@@ -5,13 +5,12 @@ import { CheckCircle2, Clock, AlertCircle, XCircle, CalendarClock } from "lucide
 
 interface ActionPlanPanelProps {
   plan: any;
-}
-
+};
 export const ActionPlanPanel: React.FC<ActionPlanPanelProps> = ({ plan }) => {
   const [completedItems, setCompletedItems] = useState<Set<string>>(new Set());
   const [skippedItems, setSkippedItems] = useState<Set<string>>(new Set());
 
-  if (!plan) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Generating Action Plan...</div>;
+  if (!plan) return <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Generating Action Plan...</div>;
 
   const handleMarkComplete = (actionId: string) => {
     setCompletedItems(prev => new Set(prev).add(actionId));
@@ -21,7 +20,7 @@ export const ActionPlanPanel: React.FC<ActionPlanPanelProps> = ({ plan }) => {
     setSkippedItems(prev => new Set(prev).add(actionId));
   };
 
-  // Map category to a specific color/icon if desired
+  // if desired
   const categoryStyles: Record<string, string> = {
     "Immediate Actions": "text-red-500 border-red-500/20 bg-red-50/50 dark:bg-red-950/20",
     "Emergency Warning": "text-red-600 border-red-600/30 bg-red-100/50 dark:bg-red-900/30",
@@ -56,7 +55,7 @@ export const ActionPlanPanel: React.FC<ActionPlanPanelProps> = ({ plan }) => {
       
       <CardContent className="px-0 space-y-6 overflow-y-auto flex-1 pr-2 custom-scrollbar">
         {actionCategories.length === 0 && (
-          <div className="text-center text-muted-foreground p-4 md:p-8 border border-dashed rounded-xl">
+          <div className="text-center text-muted-foreground p-4 md:p-4 md:p-4 md:p-8 border border-dashed rounded-xl">
             No specific actions required at this time. Maintain healthy lifestyle.
           </div>
         )}

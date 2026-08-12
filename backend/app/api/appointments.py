@@ -1,13 +1,12 @@
+
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from typing import List, Optional
-from pydantic import BaseModel
-from datetime import datetime
 
-from app.db.session import get_db
-from app.db.models import Appointment, Patient, User
 from app.api.deps import get_current_user
+from app.db.models import Appointment, Patient, User
+from app.db.session import get_db
 
 router = APIRouter()
 

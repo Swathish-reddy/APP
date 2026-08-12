@@ -125,10 +125,10 @@ export default function HealthSimulationStudio({
       ]
     : [];
   return (
-    <div className="py-4 md:py-6 h-[calc(100vh-80px)] flex flex-col">
+    <div className="py-4 md:py-4 md:py-4 md:py-6 h-[calc(100vh-80px)] flex flex-col">
       <div className="flex justify-between items-end mb-6 flex-shrink-0 relative z-10">
         <div>
-          <h2 className="text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-400 tracking-tight flex items-center gap-3 drop-shadow-md">
+          <h2 className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl font-black bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-emerald-400 tracking-tight flex items-center gap-3 drop-shadow-md">
             <Beaker className="w-10 h-10 text-teal-400 drop-shadow-lg" /> Health Simulation Studio
           </h2>
           <p className="text-teal-600 dark:text-teal-200/70 mt-2 font-bold tracking-wide">
@@ -137,8 +137,8 @@ export default function HealthSimulationStudio({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 flex-1 min-h-0 relative z-10">
-        <div className="dark lg:col-span-1 bg-gradient-to-br from-slate-900 to-teal-950 border border-teal-500/20 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex flex-col overflow-y-auto custom-scrollbar relative overflow-hidden">
+      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 flex-1 min-h-0 relative z-10">
+        <div className="dark lg:col-span-1 bg-gradient-to-br from-slate-900 to-teal-950 border border-teal-500/20 rounded-3xl p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl flex flex-col overflow-y-auto custom-scrollbar relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10"></div>
           
           <h3 className="text-xl font-black text-teal-300 drop-shadow-sm mb-6 relative z-10">
@@ -150,7 +150,7 @@ export default function HealthSimulationStudio({
                 <span className="text-teal-200/80 font-bold uppercase tracking-wider">
                   Weight Change (kg)
                 </span>
-                <span className="text-white font-black drop-shadow-sm text-base">
+                <span className="text-foreground font-black drop-shadow-sm text-base">
                   {modifiers.weight_change > 0 ? "+" : ""}
                   {modifiers.weight_change} kg
                 </span>
@@ -180,7 +180,7 @@ export default function HealthSimulationStudio({
                 <span className="text-teal-200/80 font-bold uppercase tracking-wider">
                   Added Exercise (min/d)
                 </span>
-                <span className="text-white font-black drop-shadow-sm text-base">
+                <span className="text-foreground font-black drop-shadow-sm text-base">
                   +{modifiers.exercise_increase} min
                 </span>
               </div>
@@ -205,7 +205,7 @@ export default function HealthSimulationStudio({
                 <span className="text-teal-200/80 font-bold uppercase tracking-wider">
                   Sleep Adj (hrs)
                 </span>
-                <span className="text-white font-black drop-shadow-sm text-base">
+                <span className="text-foreground font-black drop-shadow-sm text-base">
                   {modifiers.sleep_change > 0 ? "+" : ""}
                   {modifiers.sleep_change} hrs
                 </span>
@@ -241,8 +241,8 @@ export default function HealthSimulationStudio({
         </div>
 
         <div className="lg:col-span-2 flex flex-col gap-6">
-          <div className="dark bg-gradient-to-br from-slate-900 to-sky-950 border border-sky-500/20 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex-1 flex flex-col relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mt-20"></div>
+          <div className="dark bg-gradient-to-br from-slate-900 to-sky-950 border border-sky-500/20 rounded-3xl p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl flex-1 flex flex-col relative overflow-hidden">
+            <div className="absolute top-0 left-0 w-full md:w-full md:w-64 h-64 bg-sky-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mt-20"></div>
             
             <h3 className="text-2xl font-black text-sky-300 drop-shadow-sm mb-6 flex items-center justify-between relative z-10">
               Twin State Comparison
@@ -258,7 +258,7 @@ export default function HealthSimulationStudio({
             </h3>
 
             {!simulationResult ? (
-              <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-sky-300/50 border-2 border-dashed border-sky-500/20 rounded-2xl bg-white/5">
+              <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-sky-300/50 border-2 border-dashed border-sky-500/20 rounded-2xl bg-card/5">
                 <Beaker className="w-16 h-16 mb-4 text-sky-400/30" />
                 <p className="font-bold text-lg max-w-xs text-center">
                   Adjust variables and run a simulation to see the projected impact.
@@ -266,34 +266,34 @@ export default function HealthSimulationStudio({
               </div>
             ) : (
               <div className="relative z-10 flex-1 flex flex-col">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                  <div className="bg-white/5 rounded-2xl p-5 border border-white/10 flex justify-between items-center shadow-inner">
+                <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                  <div className="bg-card/5 rounded-2xl p-5 border border-white/10 flex justify-between items-center shadow-inner">
                     <div>
                       <p className="text-xs text-sky-200/70 uppercase tracking-widest font-black mb-2">
                         Health Score
                       </p>
                       <div className="flex items-baseline gap-3">
-                        <span className="text-3xl font-black text-blue-400 drop-shadow-md">
+                        <span className="text-2xl md:text-2xl md:text-3xl font-black text-blue-400 drop-shadow-md">
                           {simulationResult.current.health_score}
                         </span>
                         <ArrowRight className="w-5 h-5 text-sky-200/50" />
-                        <span className="text-4xl md:text-5xl font-black text-orange-400 drop-shadow-lg">
+                        <span className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl md:text-2xl md:text-3xl md:text-4xl md:text-4xl md:text-5xl font-black text-orange-400 drop-shadow-lg">
                           {simulationResult.projected.health_score}
                         </span>
                       </div>
                     </div>
                   </div>
-                  <div className="bg-white/5 rounded-2xl p-5 border border-white/10 flex justify-between items-center shadow-inner">
+                  <div className="bg-card/5 rounded-2xl p-5 border border-white/10 flex justify-between items-center shadow-inner">
                     <div>
                       <p className="text-xs text-sky-200/70 uppercase tracking-widest font-black mb-2">
                         Biological Age
                       </p>
                       <div className="flex items-baseline gap-3">
-                        <span className="text-3xl font-black text-blue-400 drop-shadow-md">
+                        <span className="text-2xl md:text-2xl md:text-3xl font-black text-blue-400 drop-shadow-md">
                           {simulationResult.current.biological_age}
                         </span>
                         <ArrowRight className="w-5 h-5 text-sky-200/50" />
-                        <span className="text-4xl md:text-5xl font-black text-orange-400 drop-shadow-lg">
+                        <span className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl md:text-2xl md:text-3xl md:text-4xl md:text-4xl md:text-5xl font-black text-orange-400 drop-shadow-lg">
                           {simulationResult.projected.biological_age}
                         </span>
                       </div>
@@ -301,7 +301,7 @@ export default function HealthSimulationStudio({
                   </div>
                 </div>
                 
-                <div className="flex-1 min-h-[280px] bg-white/5 p-4 rounded-2xl border border-white/10 shadow-inner">
+                <div className="flex-1 min-h-[280px] bg-card/5 p-4 rounded-2xl border border-white/10 shadow-inner">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
                       data={chartData}
@@ -351,7 +351,7 @@ export default function HealthSimulationStudio({
         </div>
 
         <div className="lg:col-span-1 flex flex-col gap-6">
-          <div className="dark bg-gradient-to-b from-slate-900 to-indigo-950 border border-indigo-500/20 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex-1 overflow-y-auto custom-scrollbar relative overflow-hidden">
+          <div className="dark bg-gradient-to-b from-slate-900 to-indigo-950 border border-indigo-500/20 rounded-3xl p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl flex-1 overflow-y-auto custom-scrollbar relative overflow-hidden">
             <h3 className="text-sm font-black text-indigo-300 uppercase tracking-widest mb-4 flex items-center gap-2 drop-shadow-sm relative z-10">
               <Brain className="w-5 h-5 text-indigo-400" /> Explainable AI (XAI)
             </h3>
@@ -372,7 +372,7 @@ export default function HealthSimulationStudio({
                   ),
                 )}
                 {simulationResult.xai_insights.length === 0 && (
-                  <p className="text-sm font-bold text-indigo-200/70 p-4 bg-white/5 rounded-xl border border-white/10">
+                  <p className="text-sm font-bold text-indigo-200/70 p-4 bg-card/5 rounded-xl border border-white/10">
                     No significant physiological deviations detected based on
                     these modifiers.
                   </p>
@@ -381,7 +381,7 @@ export default function HealthSimulationStudio({
             )}
           </div>
 
-          <div className="dark bg-gradient-to-t from-slate-900 to-fuchsia-950 border border-fuchsia-500/20 rounded-3xl p-6 h-[220px] shadow-2xl backdrop-blur-xl overflow-y-auto custom-scrollbar relative overflow-hidden">
+          <div className="dark bg-gradient-to-t from-slate-900 to-fuchsia-950 border border-fuchsia-500/20 rounded-3xl p-4 md:p-4 md:p-6 h-[220px] shadow-2xl backdrop-blur-xl overflow-y-auto custom-scrollbar relative overflow-hidden">
             <h3 className="text-sm font-black text-fuchsia-300 uppercase tracking-widest mb-4 drop-shadow-sm relative z-10">
               Saved Scenarios
             </h3>
@@ -389,7 +389,7 @@ export default function HealthSimulationStudio({
               {savedScenarios.map((s: any) => (
                 <div
                   key={s.id}
-                  className="p-3 bg-white/5 rounded-xl border border-white/10 flex justify-between items-center shadow-inner hover:bg-white/10 transition-colors cursor-pointer"
+                  className="p-3 bg-card/5 rounded-xl border border-white/10 flex justify-between items-center shadow-inner hover:bg-card/10 transition-colors cursor-pointer"
                 >
                   <span className="text-xs text-fuchsia-50 font-bold truncate pr-3">
                     {s.scenario_name}
@@ -400,7 +400,7 @@ export default function HealthSimulationStudio({
                 </div>
               ))}
               {savedScenarios.length === 0 && (
-                <p className="text-xs font-bold text-fuchsia-200/50 p-4 bg-white/5 rounded-xl border border-white/10 text-center">
+                <p className="text-xs font-bold text-fuchsia-200/50 p-4 bg-card/5 rounded-xl border border-white/10 text-center">
                   No saved scenarios yet.
                 </p>
               )}

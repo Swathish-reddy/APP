@@ -32,7 +32,7 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
     fetchData();
   }, []);
 
-  if (loading) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
+  if (loading) return <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
 
   if (selectedDoctor) {
     return <AppointmentBooking doctor={selectedDoctor} patientId={patientId} onBack={() => setSelectedDoctor(null)} />;
@@ -87,7 +87,7 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
         />
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredDoctors.map(doc => (
           <Card key={doc.id} className="overflow-hidden border-none shadow-sm hover:shadow-md transition-shadow bg-card/50 dark:bg-card/50 backdrop-blur">
             <CardContent className="p-0">

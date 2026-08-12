@@ -150,10 +150,10 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
           </button>{" "}
         </div>{" "}
       </div>{" "}
-      <div className="flex-1 grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="flex-1 grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {" "}
         {}{" "}
-        <div className="lg:col-span-2 bg-card border border-slate-200 rounded-2xl shadow-sm p-4 md:p-8 relative flex items-center justify-center overflow-hidden">
+        <div className="lg:col-span-2 bg-card border border-slate-200 rounded-2xl shadow-sm p-4 md:p-4 md:p-4 md:p-8 relative flex items-center justify-center overflow-hidden">
           {" "}
           {}{" "}
           <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9IiNlMmU4ZjAiLz48L3N2Zz4=')] opacity-50"></div>{" "}
@@ -305,69 +305,13 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
                       )}
                     </>
                   ) : (
-                    <div className="text-center p-4 md:p-6 text-muted-foreground">
+                    <div className="text-center p-4 md:p-4 md:p-4 md:p-6 text-muted-foreground">
                       <p>No lab data found for this patient.</p>
                       <p className="text-sm mt-2">Upload a medical report to generate insights.</p>
                     </div>
                   )}
                   {" "}
-                  <div className="bg-amber-50 border border-amber-200 p-4 rounded-xl">
-                    {" "}
-                    <div className="flex items-center mb-2">
-                      {" "}
-                      <AlertTriangle className="h-4 w-4 text-amber-600 mr-2" />{" "}
-                      <span className="font-bold text-sm text-amber-900">
-                        Compound Metabolic Risk
-                      </span>{" "}
-                    </div>{" "}
-                    <p className="text-xs text-amber-800 leading-relaxed">
-                      {" "}
-                      AI identified a correlation between borderline{" "}
-                      <span className="font-bold">HbA1c (5.8%)</span> and
-                      elevated{" "}
-                      <span className="font-bold">LDL (140 mg/dL)</span>. When
-                      fused with a high-normal{" "}
-                      <span className="font-bold">TSH (4.5 mIU/L)</span>, this
-                      indicates a 32% increased risk of subclinical metabolic
-                      syndrome within 12 months.{" "}
-                    </p>{" "}
-                  </div>{" "}
-                  <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl">
-                    {" "}
-                    <div className="flex items-center mb-2">
-                      {" "}
-                      <CheckCircle2 className="h-4 w-4 text-emerald-600 mr-2" />{" "}
-                      <span className="font-bold text-sm text-emerald-900">
-                        Hematological Stability
-                      </span>{" "}
-                    </div>{" "}
-                    <p className="text-xs text-emerald-800 leading-relaxed">
-                      {" "}
-                      CBC indicators show strong oxygen transport capacity with
-                      Hemoglobin at <span className="font-bold">14.2 g/dL</span>
-                      . No active systemic inflammation detected (WBC
-                      normal).{" "}
-                    </p>{" "}
-                  </div>{" "}
-                  <div className="pt-4 border-t border-slate-100">
-                    {" "}
-                    <h4 className="text-xs font-bold text-muted-foreground uppercase mb-3">
-                      AI Action Plan
-                    </h4>{" "}
-                    <ul className="space-y-2 text-sm text-foreground">
-                      {" "}
-                      <li className="flex items-start">
-                        <ChevronRight className="h-4 w-4 text-indigo-500 mr-1 shrink-0 mt-0.5" />{" "}
-                        Consider Thyroid-Antibody (TPO) test to rule out
-                        Hashimoto's given the TSH/Lipid correlation.
-                      </li>{" "}
-                      <li className="flex items-start">
-                        <ChevronRight className="h-4 w-4 text-indigo-500 mr-1 shrink-0 mt-0.5" />{" "}
-                        Implement low-glycemic index diet to stabilize HbA1c
-                        before next 90-day checkup.
-                      </li>{" "}
-                    </ul>{" "}
-                  </div>{" "}
+
                 </motion.div>
               ) : (
                 <motion.div
@@ -381,7 +325,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
                   <p className="text-xs text-muted-foreground mb-4">
                     Raw extracted parameters awaiting fusion:
                   </p>{" "}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-3">
                     {" "}
                     {Object.entries(
                       nodes.find((n: any) => n.id === activeNode)?.data || {},

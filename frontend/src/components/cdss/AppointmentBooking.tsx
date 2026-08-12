@@ -7,8 +7,7 @@ interface AppointmentBookingProps {
   doctor: any;
   patientId: string;
   onBack: () => void;
-}
-
+};
 export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBookingProps) => {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<string>("");
@@ -92,9 +91,9 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
 
       <Card className="border-none shadow-md overflow-hidden bg-card/80 dark:bg-card/80 backdrop-blur">
         <CardContent className="p-0 flex flex-col md:flex-row">
-          {/* Left Side: Doctor Info */}
-          <div className="bg-slate-50 dark:bg-muted p-4 md:p-8 md:w-full md:w-full lg:w-1/3 border-r border-slate-200 dark:border-border">
-            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-foreground font-bold text-2xl md:text-3xl shadow-inner mb-4">
+          {}
+          <div className="bg-slate-50 dark:bg-muted p-4 md:p-4 md:p-4 md:p-8 md:w-full md:w-full lg:w-full md:w-full lg:w-full md:w-full lg:w-1/3 border-r border-slate-200 dark:border-border">
+            <div className="w-20 h-20 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-foreground font-bold text-2xl md:text-2xl md:text-2xl md:text-3xl shadow-inner mb-4">
               {doctor.name.replace('Dr. ', '').charAt(0)}
             </div>
             <h2 className="text-xl font-bold text-foreground">{doctor.name}</h2>
@@ -119,12 +118,12 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
             </div>
           </div>
 
-          {/* Right Side: Booking Flow */}
-          <div className="p-4 md:p-8 md:w-2/3">
+          {}
+          <div className="p-4 md:p-4 md:p-4 md:p-8 md:w-2/3">
             <h3 className="text-lg font-bold mb-6">Book Appointment</h3>
             
             <div className="space-y-8">
-              {/* Date Selection */}
+              {}
               <div>
                 <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">Select Date</label>
                 <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide">
@@ -142,11 +141,11 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
                 </div>
               </div>
 
-              {/* Time Selection */}
+              {}
               {selectedDate && (
                 <div className="animate-in fade-in duration-300">
                   <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">Available Slots</label>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
+                  <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 sm:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-3">
                     {times.map((t: string, i: number) => (
                       <button 
                         key={i}
@@ -160,11 +159,11 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
                 </div>
               )}
 
-              {/* Consultation Type */}
+              {}
               {selectedTime && (
                 <div className="animate-in fade-in duration-300">
                   <label className="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3 block">Consultation Type</label>
-                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <button 
                       onClick={() => setConsultType("Video")}
                       className={`p-4 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${consultType === "Video" ? 'bg-emerald-50 border-emerald-500 text-emerald-700 dark:bg-emerald-950/30 dark:text-emerald-400' : 'bg-card text-muted-foreground hover:border-emerald-300'}`}
@@ -190,12 +189,12 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
                 </div>
               )}
 
-              {/* Confirm */}
+              {}
               {consultType && (
                 <div className="pt-4 border-t border-slate-200 dark:border-border flex justify-end animate-in fade-in duration-300">
                   <Button 
                     size="lg" 
-                    className="bg-card dark:bg-card text-foreground dark:text-slate-900 hover:bg-muted dark:hover:bg-slate-100 shadow-xl px-4 md:px-8"
+                    className="bg-card dark:bg-card text-foreground dark:text-slate-900 hover:bg-muted dark:hover:bg-slate-100 shadow-xl px-4 md:px-4 md:px-4 md:px-8"
                     onClick={handleBook}
                     disabled={booking}
                   >

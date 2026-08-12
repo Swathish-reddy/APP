@@ -1,7 +1,8 @@
-from typing import Dict, Any, List
 import datetime
+from typing import Any
 
-def evaluate_security_compliance(user_data: Dict[str, Any], sessions: List[Dict[str, Any]]) -> Dict[str, Any]:
+
+def evaluate_security_compliance(user_data: dict[str, Any], sessions: list[dict[str, Any]]) -> dict[str, Any]:
     """Checks for stale sessions or non-compliant security configurations."""
     alerts = []
     recs = []
@@ -26,7 +27,7 @@ def evaluate_security_compliance(user_data: Dict[str, Any], sessions: List[Dict[
         "recommendations": recs
     }
 
-def generate_settings_intelligence_report(user_data: Dict[str, Any], sessions: List[Dict[str, Any]]) -> Dict[str, Any]:
+def generate_settings_intelligence_report(user_data: dict[str, Any], sessions: list[dict[str, Any]]) -> dict[str, Any]:
     """Compiles the 18-point Settings and Configuration Report."""
     
     security = evaluate_security_compliance(user_data, sessions)

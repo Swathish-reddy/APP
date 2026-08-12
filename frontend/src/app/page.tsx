@@ -24,15 +24,15 @@ import {
 import { api, PatientSummary, PatientDetails } from "../services/api";
 import DashboardLayout from "../components/layout/DashboardLayout";
 import DataFusionCenter from "../components/dashboard/DataFusionCenter";
-import PatientDigitalTwin from "./(dashboard)/patients/[id]/twin/page";
-import RiskCenterPage from "./(dashboard)/patients/[id]/risk-center/page";
-import HealthSimulationStudio from "./(dashboard)/patients/[id]/simulator/page";
-import DocumentCenter from "./(dashboard)/patients/[id]/documents/page";
+import PatientDigitalTwin from "./(dashboard)/patients/[id]/twin/client";
+import RiskCenterPage from "./(dashboard)/patients/[id]/risk-center/client";
+import HealthSimulationStudio from "./(dashboard)/patients/[id]/simulator/client";
+import DocumentCenter from "./(dashboard)/patients/[id]/documents/client";
 import XAIModule from "../components/dashboard/XAIModule";
-import LiveMonitor from "./(dashboard)/patients/[id]/live-monitor/page";
-import DietIntelligence from "./(dashboard)/patients/[id]/nutrition/page";
-import DoctorIntelligence from "./(dashboard)/patients/[id]/cdss/page";
-import MedicationCenter from "./(dashboard)/patients/[id]/medications/page";
+import LiveMonitor from "./(dashboard)/patients/[id]/live-monitor/client";
+import DietIntelligence from "./(dashboard)/patients/[id]/nutrition/client";
+import DoctorIntelligence from "./(dashboard)/patients/[id]/cdss/client";
+import MedicationCenter from "./(dashboard)/patients/[id]/medications/client";
 import AnalyticsDashboard from "./(dashboard)/analytics/page";
 import EmergencyCenter from "./(dashboard)/emergency/page";
 import HospitalIntelligence from "./(dashboard)/hospital/page";
@@ -66,40 +66,59 @@ function HumanoidPlaceholder() {
       </mesh>{" "}
     </group>
   );
-}
+};
 export default function Home() {
   const [patients, setPatients] = React.useState<PatientSummary[]>([]);
   const [selectedPatientId, setSelectedPatientId] = React.useState<string>("1");
   const [patientDetails, setPatientDetails] = React.useState<PatientDetails | null>(
     null,
   );
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [isCheckingAuth, setIsCheckingAuth] = React.useState(true);
   const [activeTab, setActiveTab] = React.useState("overview");
   const router = useRouter();
+
   React.useEffect(() => {
+    const handleBeforeUnload = () => {
+      localStorage.removeItem("token");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
     const token = localStorage.getItem("token");
     if (!token) {
-      router.push("/login");
+      window.location.href = "/login";
       return;
     }
+    setIsCheckingAuth(false);
+    
     async function init() {
       try {
         const list = await api.getPatients();
         setPatients(list);
         if (list.length > 0) setSelectedPatientId(list[0].id);
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
     }
     init();
   }, []);
+
   React.useEffect(() => {
     if (!selectedPatientId) return;
     async function load() {
+      setIsLoading(true);
       try {
         const details = await api.getPatientDetails(selectedPatientId);
         setPatientDetails(details);
-      } catch (err) {}
+      } catch (err) {
+      } finally {
+        setIsLoading(false);
+      }
     }
     load();
   }, [selectedPatientId]);
+
   const radarData = patientDetails?.ai_fusion?.predictions
     ? Object.entries(patientDetails.ai_fusion.predictions)
         .slice(0, 6)
@@ -108,14 +127,31 @@ export default function Home() {
           A: val.risk_percent,
           fullMark: 100,
         }))
-    : [
-        { subject: "Diabetes", A: 85, fullMark: 100 },
-        { subject: "Heart", A: 65, fullMark: 100 },
-        { subject: "Stroke", A: 40, fullMark: 100 },
-        { subject: "Kidney", A: 30, fullMark: 100 },
-        { subject: "Liver", A: 45, fullMark: 100 },
-        { subject: "Obesity", A: 70, fullMark: 100 },
-      ];
+    : [];
+
+  if (isCheckingAuth) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="animate-pulse flex space-x-2">
+          <div className="h-3 w-3 bg-blue-500 rounded-full"></div>
+          <div className="h-3 w-3 bg-blue-500 rounded-full"></div>
+          <div className="h-3 w-3 bg-blue-500 rounded-full"></div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading && !patientDetails) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="flex flex-col items-center space-y-4">
+          <div className="animate-spin h-12 w-12 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+          <p className="text-slate-500 font-medium animate-pulse">Loading CogniVueX Intelligence...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <DashboardLayout
       patients={patients}
@@ -163,7 +199,7 @@ export default function Home() {
           <>
             {" "}
             {}{" "}
-            <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
               {" "}
               {}{" "}
               <div className="bg-card rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden group">
@@ -207,7 +243,7 @@ export default function Home() {
                     </svg>{" "}
                     <div className="absolute inset-0 flex items-center justify-center font-bold text-xl text-foreground">
                       {" "}
-                      {patientDetails?.metrics?.overall_health_score || 92}{" "}
+                      {patientDetails?.metrics?.overall_health_score || "--"}{" "}
                     </div>{" "}
                   </div>{" "}
                   <div>
@@ -236,8 +272,8 @@ export default function Home() {
                 </div>{" "}
                 <div className="flex items-end space-x-2">
                   {" "}
-                  <span className="text-2xl md:text-3xl font-extrabold text-foreground">
-                    {patientDetails?.metrics?.biological_age || 42}
+                  <span className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground">
+                    {patientDetails?.metrics?.biological_age || "--"}
                   </span>{" "}
                   <span className="text-sm text-muted-foreground mb-1">
                     years
@@ -256,7 +292,7 @@ export default function Home() {
                   ></div>{" "}
                 </div>{" "}
                 <p className="text-xs text-muted-foreground mt-2">
-                  Actual age: {patientDetails?.demographics?.age || 45}{" "}
+                  Actual age: {patientDetails?.demographics?.age || "--"}{" "}
                   (Difference: -3y)
                 </p>{" "}
               </div>{" "}
@@ -274,8 +310,8 @@ export default function Home() {
                 </div>{" "}
                 <div className="flex items-end space-x-2">
                   {" "}
-                  <span className="text-2xl md:text-3xl font-extrabold text-foreground">
-                    {patientDetails?.metrics?.life_expectancy || 84.5}
+                  <span className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground">
+                    {patientDetails?.metrics?.life_expectancy || "--"}
                   </span>{" "}
                   <span className="text-sm text-muted-foreground mb-1">
                     years
@@ -298,7 +334,7 @@ export default function Home() {
                 <span className="text-sm font-semibold text-muted-foreground mb-2 block">
                   Wellness Index
                 </span>{" "}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-2">
                   {" "}
                   <div className="bg-slate-50 p-2 rounded-lg flex items-center space-x-2">
                     {" "}
@@ -344,7 +380,7 @@ export default function Home() {
               </div>{" "}
             </div>{" "}
             {}{" "}
-            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {" "}
               {}{" "}
               <div className="lg:col-span-2 bg-card rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[500px]">

@@ -11,8 +11,7 @@ interface Case {
   time_in?: string;
   eta?: string;
   critical?: boolean;
-}
-
+};
 export default function LeftPanelQueue() {
   const [activeTab, setActiveTab] = useState('critical');
   const [data, setData] = useState<{critical: Case[], waiting: Case[], incoming: Case[]}>({
@@ -43,7 +42,7 @@ export default function LeftPanelQueue() {
 
   const renderCase = (c: Case) => (
     <div key={c.id} className="group relative bg-card/40 border border-border/50 p-4 rounded-xl hover:bg-muted/80 hover:border-slate-600 transition-all cursor-pointer overflow-hidden">
-      {/* Background glow if critical */}
+      { /* if critical */ }
       {c.triage === 'ESI-1' && (
         <div className="absolute top-0 left-0 w-1 h-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
       )}
@@ -81,14 +80,14 @@ export default function LeftPanelQueue() {
 
   return (
     <div className="h-full flex flex-col bg-card/60 border border-border/80 rounded-2xl backdrop-blur-md overflow-hidden">
-      {/* Header */}
+      {}
       <div className="p-4 border-b border-border bg-card/50">
         <h2 className="text-lg font-bold text-foreground flex items-center">
           <Activity className="w-5 h-5 mr-2 text-blue-500" />
           Live Queue
         </h2>
         
-        {/* Search & Filter */}
+        {}
         <div className="mt-4 flex gap-2">
           <div className="relative flex-1">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -104,7 +103,7 @@ export default function LeftPanelQueue() {
         </div>
       </div>
 
-      {/* Tabs */}
+      {}
       <div className="flex border-b border-border bg-card/30">
         <button 
           onClick={() => setActiveTab('critical')}
@@ -126,7 +125,7 @@ export default function LeftPanelQueue() {
         </button>
       </div>
 
-      {/* List Area */}
+      {}
       <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-hide">
         {loading ? (
           <div className="space-y-3">

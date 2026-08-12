@@ -6,7 +6,7 @@ import { GroceryList } from "@/types";
 interface AIInsightsPanelProps {
   impact?: Record<string, string>;
   grocery: GroceryList | null;
-}
+};
 export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
   impact,
   grocery,
@@ -32,7 +32,7 @@ export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
               {" "}
               <Target className="w-4 h-4" /> Expected Clinical Impact{" "}
             </h4>{" "}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4">
               {" "}
               <div className="bg-background rounded-lg p-3 border">
                 {" "}

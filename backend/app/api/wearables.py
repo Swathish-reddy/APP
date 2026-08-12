@@ -1,11 +1,12 @@
+import random
+from datetime import datetime, timedelta
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from datetime import datetime, timedelta
-import random
 
+from app.db.models import Patient, WearableData, WearableDevice
 from app.db.session import get_db
-from app.db.models import Patient, WearableDevice, WearableData
 
 router = APIRouter()
 

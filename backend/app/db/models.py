@@ -1,7 +1,18 @@
-from sqlalchemy import Column, String, Integer, DateTime, Boolean, ForeignKey, Float, JSON, Text
-from sqlalchemy.orm import relationship, declarative_base
-from sqlalchemy.sql import func
 import uuid
+
+from sqlalchemy import (
+    JSON,
+    Boolean,
+    Column,
+    DateTime,
+    Float,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+)
+from sqlalchemy.orm import declarative_base, relationship
+from sqlalchemy.sql import func
 
 Base = declarative_base()
 
@@ -16,12 +27,28 @@ class User(Base):
     full_name = Column(String, nullable=False)
     hashed_password = Column(String, nullable=False)
     is_active = Column(Boolean, default=True)
+    role = Column(String, default="patient") # e.g., admin, doctor, patient
+    failed_login_attempts = Column(Integer, default=0)
+    locked_until = Column(DateTime(timezone=True), nullable=True)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     patients = relationship("Patient", back_populates="owner", cascade="all, delete")
 
 
+class PasswordResetOTP(Base):
+    __tablename__ = "password_reset_otps"
+
+    id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
+    email = Column(String, index=True, nullable=False)
+    otp_hash = Column(String, nullable=False)
+    expires_at = Column(DateTime(timezone=True), nullable=False)
+    attempt_count = Column(Integer, default=0)
+    verified = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
 # ─── PATIENT ─────────────────────────────────────────────────────────────────
+
 
 class Patient(Base):
     __tablename__ = "patients"
@@ -501,7 +528,7 @@ class DoctorProfile(Base):
     id = Column(String, primary_key=True, index=True, default=lambda: str(uuid.uuid4()))
     name = Column(String, nullable=False)
     specialization = Column(String, nullable=False)
-    hospital_id = Column(String, ForeignKey("hospital_profiles.id"), nullable=True)
+    hospital_id = Column(String, ForeignKey("hospital_profiles.id", ondelete="SET NULL"), nullable=True)
     experience_years = Column(Integer, nullable=True)
     consultation_fee = Column(Float, nullable=True)
     rating = Column(Float, nullable=True)

@@ -20,7 +20,7 @@ import {
 import { useParams } from 'next/navigation';
 export default function DocumentCompare() {
   const params = useParams();
-  const patientId = params?.id || "";
+  const patientId = (params?.id as string) || "";
   
   const [documents, setDocuments] = useState<any[]>([]);
   const [chartData, setChartData] = useState<any[]>([]);
@@ -75,7 +75,7 @@ export default function DocumentCompare() {
   }, [selectedMetric, documents]);
 
   return (
-    <div className="py-4 md:py-6 max-w-5xl mx-auto">
+    <div className="py-4 md:py-4 md:py-4 md:py-6 max-w-5xl mx-auto">
       <div className="flex justify-between items-center mb-8">
         <div className="flex items-center gap-4">
           <Link
@@ -94,7 +94,7 @@ export default function DocumentCompare() {
           </div>{" "}
         </div>{" "}
       </div>{" "}
-      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
         {" "}
         <div className="dark lg:col-span-1 bg-card/50 border border-border rounded-2xl p-5">
           {" "}
@@ -120,7 +120,7 @@ export default function DocumentCompare() {
             )}{" "}
           </div>{" "}
         </div>{" "}
-        <div className="dark lg:col-span-3 bg-card/50 border border-border rounded-2xl p-4 md:p-6 flex flex-col min-h-[400px]">
+        <div className="dark lg:col-span-3 bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6 flex flex-col min-h-[400px]">
           {" "}
           {selectedMetric ? (
             <>

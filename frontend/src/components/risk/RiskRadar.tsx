@@ -11,7 +11,7 @@ import {
 } from "recharts";
 interface RiskRadarProps {
   data: Record<string, number>;
-}
+};
 export default function RiskRadar({ data }: RiskRadarProps) {
   const chartData = Object.entries(data).map(([subject, A]) => ({
     subject,

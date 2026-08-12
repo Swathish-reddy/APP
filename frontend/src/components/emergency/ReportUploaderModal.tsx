@@ -6,8 +6,7 @@ interface ReportUploaderModalProps {
   isOpen: boolean;
   onClose: () => void;
   onUploadSuccess: () => void;
-}
-
+};
 export default function ReportUploaderModal({ isOpen, onClose, onUploadSuccess }: ReportUploaderModalProps) {
   const [dragActive, setDragActive] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -67,7 +66,7 @@ export default function ReportUploaderModal({ isOpen, onClose, onUploadSuccess }
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
-          className="bg-card border border-border rounded-2xl p-4 md:p-6 w-full max-w-lg shadow-2xl relative"
+          className="bg-card border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6 w-full max-w-lg shadow-2xl relative"
         >
           <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
@@ -97,7 +96,7 @@ export default function ReportUploaderModal({ isOpen, onClose, onUploadSuccess }
               </button>
             </div>
           ) : (
-            <div className="border border-border bg-muted/50 rounded-xl p-4 md:p-8 flex flex-col items-center justify-center text-center">
+            <div className="border border-border bg-muted/50 rounded-xl p-4 md:p-4 md:p-4 md:p-8 flex flex-col items-center justify-center text-center">
               {complete ? (
                 <>
                   <CheckCircle2 className="w-16 h-16 text-emerald-500 mb-4 animate-[scale-in_0.3s_ease-out]" />

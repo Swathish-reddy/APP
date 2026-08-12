@@ -52,12 +52,19 @@ for mod, endpoints in modules.items():
         add_test(mod, f"API Validation: {ep}", f"REQ-API-{mod.upper()}", "High", "High", "API Testing", "Valid auth token required", f"Endpoint: {ep}", "QA", f"1. Send request to {ep}\n2. Verify response status", "Status 200 OK and valid schema")
         add_test(mod, f"API Security: {ep}", f"REQ-SEC-{mod.upper()}", "Critical", "Critical", "Security", "No auth token", f"Endpoint: {ep}", "QA", f"1. Send request without token", "Status 401 Unauthorized")
         add_test(mod, f"API Negative: {ep}", f"REQ-NEG-{mod.upper()}", "Medium", "Medium", "Negative", "Valid auth token", "Invalid payload", "QA", f"1. Send malformed request", "Status 422/400 Bad Request")
+        add_test(mod, f"API Load: {ep}", f"REQ-LOAD-{mod.upper()}", "Medium", "Medium", "Performance", "Valid auth token", "100 concurrent requests", "QA", f"1. Send 100 requests to {ep}", "Response time < 200ms")
+        add_test(mod, f"API Missing Params: {ep}", f"REQ-NEG-{mod.upper()}", "Low", "Low", "Negative", "Valid auth token", "Missing required fields", "QA", f"1. Send request with missing fields", "Status 422 Unprocessable Entity")
+        add_test(mod, f"API Boundary: {ep}", f"REQ-NEG-{mod.upper()}", "Low", "Low", "Boundary", "Valid auth token", "Extreme values in payload", "QA", f"1. Send request with extreme values", "Status 422 or 400 Bad Request")
+        add_test(mod, f"API Rate Limit: {ep}", f"REQ-SEC-{mod.upper()}", "High", "High", "Security", "Valid auth token", "101 requests in 1 minute", "QA", f"1. Exceed rate limit", "Status 429 Too Many Requests")
 
 # Generate Frontend/UI Tests
 frontend_modules = ["Dashboard", "Patient List", "Profile", "Login", "Register", "Hospital", "Emergency", "Analytics", "Settings",
                     "Timeline", "Twin", "UHIE", "Documents", "Risk Center", "Simulator", "CDSS", "Nutrition", "Care Navigator", "Monitor"]
 
 for fm in frontend_modules:
+    for i in range(1, 18):
+        add_test(fm, f"Mobile UI Layout Validation #{i}: {fm}", f"REQ-UX-MOB-{fm.upper()}", "Medium", "Medium", "UI Testing", "User logged in", f"Mobile viewport {i}", "Mobile", f"1. Open {fm} on mobile view", "Layout adapts to mobile correctly, no clipping")
+        add_test(fm, f"Functional Workflow #{i}: {fm}", f"REQ-FUNC-{fm.upper()}", "High", "High", "Functional", "User logged in", "N/A", "Web/Mobile", f"1. Perform action {i} on {fm}", "Action succeeds and state updates correctly")
     add_test(fm, f"UI Rendering: {fm}", f"REQ-UI-{fm.upper()}", "High", "High", "Functional", "User logged in", "N/A", "Web/Mobile", f"1. Navigate to {fm}", "Screen renders without errors")
     add_test(fm, f"Responsive Layout: {fm}", f"REQ-UX-{fm.upper()}", "Medium", "Medium", "UX", "User logged in", "Mobile viewport", "Web Mobile", f"1. Open {fm} on mobile view", "Layout adapts to mobile correctly")
     add_test(fm, f"Dark Mode: {fm}", f"REQ-UX-THEME", "Low", "Low", "UX", "Theme toggle accessible", "Dark mode enabled", "Web", f"1. Toggle dark mode\n2. Inspect {fm}", "UI renders with dark theme classes (bg-slate-900)")

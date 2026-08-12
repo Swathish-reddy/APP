@@ -7,8 +7,8 @@ export default function TopKPIDashboard({ data }: { data: any }) {
   const kpis = data;
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-8 gap-3">
-      {/* Total Patients */}
+    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 lg:grid-cols-8 gap-3">
+      {}
       <div className="bg-card/60 border border-border/50 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <Users className="w-4 h-4 text-blue-400" />
@@ -17,7 +17,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         <div className="text-2xl font-black text-foreground">{kpis.total_patients}</div>
       </div>
 
-      {/* Emergency */}
+      {}
       <div className="bg-card/60 border border-border/50 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <AlertTriangle className="w-4 h-4 text-orange-400" />
@@ -26,7 +26,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         <div className="text-2xl font-black text-foreground">{kpis.emergency_patients}</div>
       </div>
 
-      {/* ER Wait Time */}
+      {}
       <div className="bg-card/60 border border-border/50 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <Clock className="w-4 h-4 text-yellow-400" />
@@ -38,7 +38,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         </div>
       </div>
 
-      {/* Admissions */}
+      {}
       <div className="bg-card/60 border border-border/50 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <UserPlus className="w-4 h-4 text-emerald-400" />
@@ -47,7 +47,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         <div className="text-2xl font-black text-foreground">+{kpis.admissions_today}</div>
       </div>
 
-      {/* ICU Occupancy */}
+      {}
       <div className="bg-card/60 border border-border/50 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm relative overflow-hidden">
         <div className={`absolute bottom-0 left-0 h-1 transition-all ${kpis.icu_occupancy_pct > 90 ? 'bg-red-500' : 'bg-emerald-500'}`} style={{ width: `${kpis.icu_occupancy_pct}%` }}></div>
         <div className="flex items-center justify-between mb-2">
@@ -60,7 +60,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         </div>
       </div>
 
-      {/* Available Beds */}
+      {}
       <div className="bg-card/60 border border-border/50 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <CheckCircle className="w-4 h-4 text-teal-400" />
@@ -69,7 +69,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         <div className="text-2xl font-black text-foreground">{kpis.available_beds}</div>
       </div>
 
-      {/* Critical Alerts */}
+      {}
       <div className="bg-red-500/10 border border-red-500/30 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <AlertTriangle className="w-4 h-4 text-red-500 animate-pulse" />
@@ -78,7 +78,7 @@ export default function TopKPIDashboard({ data }: { data: any }) {
         <div className="text-2xl font-black text-red-400">{kpis.critical_alerts}</div>
       </div>
 
-      {/* AI Confidence */}
+      {}
       <div className="bg-indigo-500/10 border border-indigo-500/30 rounded-xl p-3 flex flex-col justify-between shadow-lg backdrop-blur-sm">
         <div className="flex items-center justify-between mb-2">
           <Activity className="w-4 h-4 text-indigo-400" />

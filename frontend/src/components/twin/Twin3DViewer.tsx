@@ -204,14 +204,14 @@ export default function Twin3DViewer({
         />
         
         <Float speed={2} rotationIntensity={0.2} floatIntensity={0.5}>
-          {/* We scale the whole group up and move it down so the humanoid fits the screen */}
+          {}
           <group position={[0, -5, 0]} scale={1.8}>
             
             <HumanoidBody />
 
-            {/* The Internal Organs positioned to match the inner chest cavity of the GLB */}
-            {/* The GLB is centered, so Y=0 is the center of the body. We need to position organs relatively. */}
-            {/* Assuming GLB height is ~4 units after scaling by 1.8, head is at ~+2, chest at ~+0.8, abdomen at ~-0.2 */}
+            {}
+            {}
+            {}
             <group position={[0, 0, 0]}>
               <OrganNode
                 name="Brain"
@@ -233,7 +233,7 @@ export default function Twin3DViewer({
                 onClick={onSelectOrgan}
               />
               
-              {/* Lungs (Left & Right) */}
+              {}
               <OrganNode
                 name="Lungs"
                 position={[0.5, 1.4, 0]}
@@ -263,7 +263,7 @@ export default function Twin3DViewer({
             onClick={onSelectOrgan}
           />
           
-          {/* Kidneys (Left & Right) */}
+          {}
           <OrganNode
             name="Kidneys"
             position={[0.3, 0.5, -0.2]}

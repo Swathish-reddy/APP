@@ -6,7 +6,7 @@ import { Alert } from "@/types";
 
 interface AlertsPanelProps {
   alerts: Alert[];
-}
+};
 export const AlertsPanel: React.FC<AlertsPanelProps> = ({ alerts }) => {
   const getAlertIcon = (severity: string) => {
     switch (severity) {

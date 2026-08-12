@@ -2,29 +2,53 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { UserCircle, Shield, Key, LogOut } from "lucide-react";
+import { UserCircle, Shield, LogOut } from "lucide-react";
+import { BASE_URL } from "../../../services/api";
 export default function ProfilePage() {
   const router = useRouter();
   const [profile, setProfile] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
-    setProfile({
-      user: {
-        username: "Guest User",
-        email: "guest@example.com",
-        role: "ADMIN",
-        mfa_enabled: false,
-      },
-      profile: {
-        first_name: "Guest",
-        last_name: "User",
-        phone: "123-456-7890",
-        address: "123 Health Ave, Clinic City",
-      },
-    });
-    setIsLoading(false);
+    const fetchProfile = async () => {
+      try {
+        const token = localStorage.getItem("token") || sessionStorage.getItem("token");
+        if (!token) {
+          router.push("/login");
+          return;
+        }
+        const res = await fetch(`${BASE_URL}/auth/me`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        if (res.ok) {
+          const userData = await res.json();
+          setProfile({
+            user: {
+              username: userData.full_name,
+              email: userData.email,
+              role: userData.role || "patient",
+              mfa_enabled: false,
+            },
+            profile: {
+              first_name: userData.full_name.split(' ')[0] || "Unknown",
+              last_name: userData.full_name.split(' ').slice(1).join(' ') || "Unknown",
+              phone: "Not set",
+              address: "Not set",
+            }
+          });
+        }
+      } catch (err) {
+        console.error("Failed to fetch profile", err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProfile();
   }, [router]);
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    router.push("/login");
+  };
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-50">
@@ -38,13 +62,13 @@ export default function ProfilePage() {
     );
   }
   return (
-    <div className="min-h-screen bg-slate-50 p-4 md:p-6">
+    <div className="min-h-screen bg-slate-50 p-4 md:p-4 md:p-4 md:p-6">
       {" "}
       <div className="max-w-4xl mx-auto space-y-6">
         {" "}
         <div className="flex justify-between items-center">
           {" "}
-          <h1 className="text-2xl md:text-3xl font-bold text-foreground font-display">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold text-foreground font-display">
             Account Profile
           </h1>{" "}
           <button
@@ -55,14 +79,14 @@ export default function ProfilePage() {
             <LogOut className="w-4 h-4" /> <span>Logout</span>{" "}
           </button>{" "}
         </div>{" "}
-        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {" "}
           <div className="col-span-1 space-y-6">
             {" "}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="glass-panel rounded-xl p-4 md:p-6 flex flex-col items-center"
+              className="glass-panel rounded-xl p-4 md:p-4 md:p-4 md:p-6 flex flex-col items-center"
             >
               {" "}
               <div className="w-24 h-24 bg-sky-100 rounded-full flex items-center justify-center mb-4 text-sky-600">
@@ -84,7 +108,7 @@ export default function ProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="glass-panel rounded-xl p-4 md:p-6"
+              className="glass-panel rounded-xl p-4 md:p-4 md:p-4 md:p-6"
             >
               {" "}
               <h3 className="text-lg font-medium text-foreground mb-4 flex items-center gap-2">
@@ -118,13 +142,13 @@ export default function ProfilePage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="glass-panel rounded-xl p-4 md:p-6"
+              className="glass-panel rounded-xl p-4 md:p-4 md:p-4 md:p-6"
             >
               {" "}
               <h3 className="text-lg font-medium text-foreground mb-6">
                 Personal Information
               </h3>{" "}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
                 {" "}
                 <div>
                   {" "}

@@ -15,8 +15,7 @@ import {
 
 interface EvidencePanelProps {
   selectedRec: any;
-}
-
+};
 export const EvidencePanel: React.FC<EvidencePanelProps> = ({
   selectedRec,
 }) => {
@@ -30,8 +29,8 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
   }
 
   // If passed from cdss recommendations, we might need to map it,
-  // but let's assume we pass the full XAI prediction object here if selected.
-  // We'll mock fallback if not full XAI object format
+  // if selected.
+  // if not full XAI object format
   const xai = selectedRec.disease ? selectedRec : {
     disease: "Selected Condition",
     natural_language_explanation: selectedRec.reasoning || "Analysis complete.",
@@ -57,7 +56,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
       </CardHeader>
       
       <CardContent className="px-0 flex-1 overflow-y-auto space-y-4 pr-2 custom-scrollbar">
-        {/* Natural Language Explanation */}
+        {}
         <div className="bg-indigo-50/50 dark:bg-indigo-950/20 p-4 rounded-xl border border-indigo-100 dark:border-indigo-900/50">
           <h4 className="flex items-center gap-2 font-medium text-sm text-indigo-700 dark:text-indigo-400 mb-2">
             <Info className="w-4 h-4" /> AI Interpretation
@@ -67,7 +66,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
           </p>
         </div>
 
-        {/* Feature Importance Chart (SHAP) */}
+        {}
         {shapData.length > 0 && (
           <div>
             <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-wider flex items-center">
@@ -98,8 +97,8 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
           </div>
         )}
 
-        {/* Factors Breakdown */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {}
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
             <h4 className="font-semibold text-xs text-muted-foreground uppercase tracking-wider flex items-center text-red-500">
               <TrendingUp className="w-4 h-4 mr-1" /> Elevating Factors
@@ -135,7 +134,7 @@ export const EvidencePanel: React.FC<EvidencePanelProps> = ({
           </div>
         </div>
 
-        {/* Risk Comparison */}
+        {}
         {xai.risk_comparison && (
           <div className="bg-slate-50 dark:bg-card/50 p-4 rounded-xl border">
             <h4 className="font-semibold text-xs mb-3 text-muted-foreground uppercase tracking-wider flex items-center">

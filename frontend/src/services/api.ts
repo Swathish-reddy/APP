@@ -1,10 +1,26 @@
-const _envUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-const BASE_URL = _envUrl.endsWith('/api/v1') ? _envUrl : `${_envUrl}/api/v1`;
-const WS_BASE_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/api/v1/ws/vitals';
+const getApiUrl = () => {
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+};
+const _envUrl = getApiUrl();
+export const BASE_URL = _envUrl.endsWith('/api/v1') ? _envUrl : `${_envUrl}/api/v1`;
+export const WS_BASE_URL = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/api/v1/ws/vitals';
 
 const getAuthHeaders = (): Record<string, string> => {
   const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
   return token ? { 'Authorization': `Bearer ${token}` } : {};
+};
+
+const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Response> => {
+  const res = await fetch(url, options);
+  if (res.status === 401) {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      window.location.href = '/login';
+    }
+    throw new Error('Session expired. Please log in again.');
+  }
+  return res;
 };
 
 export interface PatientSummary { id: string; name: string; age: number; gender: string; overall_health_score: number; readmission_risk: string; }
@@ -42,7 +58,7 @@ export interface DietPlan {
 export const api = { 
   async getPatients(): Promise<PatientSummary[]> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients`, { headers: { ...getAuthHeaders() } }); 
+      const res = await fetchWithAuth(`${BASE_URL}/patients`, { headers: { ...getAuthHeaders() } }); 
       if (!res.ok) throw new Error('Failed to fetch patients list'); 
       const data = await res.json();
       return data.map((p: { patient_id: number | string; full_name: string; age?: number; gender?: string }) => ({
@@ -61,7 +77,7 @@ export const api = {
   
   async getPatientDetails(id: string): Promise<PatientDetails | null> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients/${id}`, { headers: { ...getAuthHeaders() } }); 
+      const res = await fetchWithAuth(`${BASE_URL}/patients/${id}/unified`, { headers: { ...getAuthHeaders() } }); 
       if (!res.ok) throw new Error(`Failed to fetch details for patient ${id}`); 
       return await res.json();
     } catch (error) {
@@ -72,7 +88,7 @@ export const api = {
   
   async registerPatient(patientData: Record<string, unknown>): Promise<{ message: string; patient_id: string } | null> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients`, { 
+      const res = await fetchWithAuth(`${BASE_URL}/patients`, { 
         method: 'POST', 
         headers: { 'Content-Type': 'application/json', ...getAuthHeaders() }, 
         body: JSON.stringify(patientData) 
@@ -87,9 +103,9 @@ export const api = {
   
   async simulateWhatIf(id: string, scenarios: Record<string, unknown>): Promise<SimulationResult | null> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients/${id}/simulate`, { 
+      const res = await fetchWithAuth(`${BASE_URL}/patients/${id}/simulate`, { 
         method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() }, 
         body: JSON.stringify(scenarios) 
       }); 
       if (!res.ok) throw new Error('Simulation calculation failed'); 
@@ -102,7 +118,7 @@ export const api = {
   
   async getClinicalRecommendations(id: string): Promise<ClinicalRecommendations | null> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients/${id}/recommendations`); 
+      const res = await fetchWithAuth(`${BASE_URL}/patients/${id}/recommendations`, { headers: { ...getAuthHeaders() } }); 
       if (!res.ok) throw new Error('Failed to fetch clinical recommendations'); 
       return await res.json();
     } catch (error) {
@@ -113,7 +129,7 @@ export const api = {
   
   async getPatientDiet(id: string): Promise<DietPlan | null> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients/${id}/diet`); 
+      const res = await fetchWithAuth(`${BASE_URL}/patients/${id}/diet`, { headers: { ...getAuthHeaders() } }); 
       if (!res.ok) throw new Error('Failed to fetch diet details'); 
       return await res.json();
     } catch (error) {
@@ -124,9 +140,9 @@ export const api = {
   
   async chatWithAssistant(id: string, message: string): Promise<{ reply: string }> { 
     try {
-      const res = await fetch(`${BASE_URL}/patients/${id}/chat`, { 
+      const res = await fetchWithAuth(`${BASE_URL}/patients/${id}/chat`, { 
         method: 'POST', 
-        headers: { 'Content-Type': 'application/json' }, 
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() }, 
         body: JSON.stringify({ message }) 
       }); 
       if (!res.ok) throw new Error('Chatbot query failed'); 
@@ -143,7 +159,7 @@ export const api = {
   
   async getTimeline(id: string): Promise<any[]> {
     try {
-      const res = await fetch(`${BASE_URL}/patients/${id}/timeline`, {
+      const res = await fetchWithAuth(`${BASE_URL}/patients/${id}/timeline`, {
         headers: { ...getAuthHeaders() }
       });
       if (res.status === 401) {

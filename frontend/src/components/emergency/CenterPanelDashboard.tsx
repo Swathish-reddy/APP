@@ -90,13 +90,13 @@ export default function CenterPanelDashboard() {
           <button 
             onClick={handleTriage}
             disabled={loading}
-            className="bg-blue-600 hover:bg-blue-500 text-foreground font-bold py-3 px-4 md:px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] disabled:opacity-50 flex items-center gap-2 whitespace-nowrap"
+            className="bg-blue-600 hover:bg-blue-500 text-foreground font-bold py-3 px-4 md:px-4 md:px-4 md:px-6 rounded-xl transition-all shadow-[0_0_15px_rgba(37,99,235,0.4)] disabled:opacity-50 flex items-center gap-2 whitespace-nowrap"
           >
             {loading ? <Activity className="animate-spin w-5 h-5" /> : <Brain className="w-5 h-5" />}
             <span className="hidden sm:inline">{loading ? "Analyzing..." : "AI Analyze"}</span>
           </button>
           
-          {/* Uploader Trigger */}
+          {}
           <button 
             onClick={() => setShowUploader(true)}
             className="bg-muted hover:bg-slate-700 border border-border text-foreground font-bold py-3 px-4 rounded-xl transition-all flex items-center gap-2"
@@ -120,10 +120,10 @@ export default function CenterPanelDashboard() {
       </div>
 
       {triageData ? (
-        <div className="flex-1 grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto scrollbar-hide pb-4">
+        <div className="flex-1 grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4 overflow-y-auto scrollbar-hide pb-4">
           
           <div className="space-y-4 flex flex-col h-full">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 shrink-0">
+            <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-3 shrink-0">
               <div className="bg-card/60 border border-border rounded-xl p-4 relative overflow-hidden group">
                 <div className="absolute -right-4 -top-4 w-16 h-16 bg-red-500/10 rounded-full blur-xl group-hover:bg-red-500/20 transition-all"></div>
                 <div className="flex justify-between items-start mb-2">
@@ -131,7 +131,7 @@ export default function CenterPanelDashboard() {
                   <Heart className="w-4 h-4 text-red-500 animate-pulse" />
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl md:text-3xl md:text-4xl font-black text-foreground tracking-tighter">{liveVitals.hr}</span>
+                  <span className="text-2xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl font-black text-foreground tracking-tighter">{liveVitals.hr}</span>
                   <span className="text-sm text-muted-foreground font-medium mb-1">bpm</span>
                 </div>
               </div>
@@ -142,7 +142,7 @@ export default function CenterPanelDashboard() {
                   <Droplets className="w-4 h-4 text-blue-400" />
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className={`text-2xl md:text-3xl md:text-4xl font-black tracking-tighter ${liveVitals.spo2 < 92 ? 'text-red-400' : 'text-foreground'}`}>{liveVitals.spo2}</span>
+                  <span className={`text-2xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl font-black tracking-tighter ${liveVitals.spo2 < 92 ? 'text-red-400' : 'text-foreground'}`}>{liveVitals.spo2}</span>
                   <span className="text-sm text-muted-foreground font-medium mb-1">%</span>
                 </div>
               </div>
@@ -153,7 +153,7 @@ export default function CenterPanelDashboard() {
                   <ActivitySquare className="w-4 h-4 text-emerald-400" />
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className="text-2xl md:text-3xl font-black text-foreground tracking-tighter">{liveVitals.bp}</span>
+                  <span className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-black text-foreground tracking-tighter">{liveVitals.bp}</span>
                   <span className="text-sm text-muted-foreground font-medium mb-1">mmHg</span>
                 </div>
               </div>
@@ -164,13 +164,13 @@ export default function CenterPanelDashboard() {
                   <Activity className="w-4 h-4 text-purple-400" />
                 </div>
                 <div className="flex items-end gap-2">
-                  <span className={`text-2xl md:text-3xl md:text-4xl font-black tracking-tighter ${liveVitals.resp > 22 ? 'text-orange-400' : 'text-foreground'}`}>{liveVitals.resp}</span>
+                  <span className={`text-2xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl font-black tracking-tighter ${liveVitals.resp > 22 ? 'text-orange-400' : 'text-foreground'}`}>{liveVitals.resp}</span>
                   <span className="text-sm text-muted-foreground font-medium mb-1">/min</span>
                 </div>
               </div>
             </div>
 
-            {/* Hardware Monitor */}
+            {}
             <div className="flex-1 min-h-[200px]">
               <HardwareMonitor />
             </div>
@@ -228,7 +228,7 @@ export default function CenterPanelDashboard() {
               )}
             </div>
 
-            {/* Radar Map */}
+            {}
             <div className="shrink-0 h-[220px]">
               <EmergencyMap />
             </div>
@@ -247,7 +247,7 @@ export default function CenterPanelDashboard() {
         </div>
       )}
 
-      {/* Modals */}
+      {}
       <ReportUploaderModal 
         isOpen={showUploader} 
         onClose={() => setShowUploader(false)} 

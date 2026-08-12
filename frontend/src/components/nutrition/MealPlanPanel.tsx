@@ -8,7 +8,7 @@ import { NutritionPlan, Meal } from "@/types";
 interface MealPlanPanelProps {
   plan: NutritionPlan | null;
   onSwap: (mealType: string, currentFood: string) => void;
-}
+};
 export const MealPlanPanel: React.FC<MealPlanPanelProps> = ({
   plan,
   onSwap,

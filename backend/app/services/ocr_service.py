@@ -1,7 +1,6 @@
-import os
-import io
 import base64
-from typing import Optional
+import os
+
 from PIL import Image
 
 try:
@@ -49,7 +48,7 @@ def encode_image(image_path: str) -> str:
         return base64.b64encode(image_file.read()).decode('utf-8')
 
 
-def extract_text_with_gemini(file_path: str, file_type: str) -> Optional[str]:
+def extract_text_with_gemini(file_path: str, file_type: str) -> str | None:
     api_key = os.getenv("GEMINI_API_KEY") or os.getenv("GOOGLE_API_KEY")
     if not api_key or not HAS_GEMINI:
         return None
@@ -83,7 +82,7 @@ def extract_text_with_gemini(file_path: str, file_type: str) -> Optional[str]:
         return None
 
 
-def extract_text_with_easyocr(file_path: str, file_type: str) -> Optional[str]:
+def extract_text_with_easyocr(file_path: str, file_type: str) -> str | None:
     if not HAS_EASYOCR:
         return None
     reader = _get_easyocr_reader()
@@ -108,7 +107,7 @@ def extract_text_with_easyocr(file_path: str, file_type: str) -> Optional[str]:
         return None
 
 
-def extract_text_with_pytesseract(file_path: str, file_type: str) -> Optional[str]:
+def extract_text_with_pytesseract(file_path: str, file_type: str) -> str | None:
     if not HAS_PYTESSERACT:
         return None
     try:
@@ -127,10 +126,18 @@ def extract_text_with_pytesseract(file_path: str, file_type: str) -> Optional[st
 
 def process_document_text(file_path: str, file_type: str) -> str:
     """
-    Extraction pipeline: Gemini Vision → EasyOCR → PyTesseract → Structured fallback.
+    Extraction pipeline: Native Text → Gemini Vision → EasyOCR → PyTesseract → Structured fallback.
     Falls back to a realistic mock CBC/lab report when no OCR engine is available,
     so the analysis pipeline can still demonstrate end-to-end functionality.
     """
+    # 0. Native Text Extraction for pure text formats
+    if file_type in ['text/plain', 'text/csv', 'application/json', 'application/xml', 'text/xml'] or file_path.endswith(('.txt', '.csv', '.json', '.xml')):
+        try:
+            with open(file_path, "r", encoding="utf-8") as f:
+                return f.read()
+        except Exception as e:
+            print(f"Error reading text file natively: {e}")
+
     # 1. Try Gemini Vision (best quality, needs API key)
     text = extract_text_with_gemini(file_path, file_type)
     if text and text.strip():

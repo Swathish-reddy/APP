@@ -70,7 +70,7 @@ export default function PatientDevices() {
     }
   };
   return (
-    <div className="py-4 md:py-6 space-y-6 max-w-6xl mx-auto">
+    <div className="py-4 md:py-4 md:py-4 md:py-6 space-y-6 max-w-6xl mx-auto">
       {" "}
       {}{" "}
       <div className="flex justify-between items-end mb-8">
@@ -144,7 +144,7 @@ export default function PatientDevices() {
             return (
               <div
                 key={device.id}
-                className="dark bg-card/50 border border-border rounded-3xl p-4 md:p-6"
+                className="dark bg-card/50 border border-border rounded-3xl p-4 md:p-4 md:p-4 md:p-6"
               >
                 {" "}
                 <div className="flex justify-between items-center mb-8 border-b border-border pb-4">
@@ -194,7 +194,7 @@ export default function PatientDevices() {
                     Click"Sync Data" to simulate a 24-hour vital stream pull.
                   </div>
                 ) : (
-                  <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
                     {" "}
                     {}{" "}
                     <div className="bg-background/50 border border-border/80 rounded-2xl p-5">

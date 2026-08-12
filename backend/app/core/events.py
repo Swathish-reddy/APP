@@ -1,6 +1,7 @@
 import asyncio
 import logging
-from typing import Callable, Dict, List, Any, Awaitable
+from collections.abc import Awaitable, Callable
+from typing import Any
 
 logger = logging.getLogger(__name__)
 
@@ -16,17 +17,17 @@ EVENT_RECOMMENDATION_GENERATED = "RECOMMENDATION_GENERATED"
 class EventBus:
     def __init__(self):
         # Maps event_type to a list of async handler functions
-        self.subscribers: Dict[str, List[Callable[[Dict[str, Any]], Awaitable[None]]]] = {}
+        self.subscribers: dict[str, list[Callable[[dict[str, Any]], Awaitable[None]]]] = {}
         self.queue = asyncio.Queue()
         self._task = None
 
-    def subscribe(self, event_type: str, handler: Callable[[Dict[str, Any]], Awaitable[None]]):
+    def subscribe(self, event_type: str, handler: Callable[[dict[str, Any]], Awaitable[None]]):
         if event_type not in self.subscribers:
             self.subscribers[event_type] = []
         self.subscribers[event_type].append(handler)
         logger.info(f"Subscribed handler to {event_type}")
 
-    async def publish(self, event_type: str, payload: Dict[str, Any]):
+    async def publish(self, event_type: str, payload: dict[str, Any]):
         """Publish an event to the bus."""
         event = {"type": event_type, "payload": payload}
         await self.queue.put(event)

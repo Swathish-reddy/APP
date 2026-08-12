@@ -7,7 +7,7 @@ interface RecommendationPanelProps {
   recommendations: any;
   onSelectRec: (rec: any) => void;
   selectedRecId: string | null;
-}
+};
 export const RecommendationPanel: React.FC<RecommendationPanelProps> = ({
   recommendations,
   onSelectRec,

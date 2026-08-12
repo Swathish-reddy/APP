@@ -10,7 +10,7 @@ import {
 } from "recharts";
 interface NutritionAnalyticsProps {
   macros?: Record<string, number>;
-}
+};
 export const NutritionAnalytics: React.FC<NutritionAnalyticsProps> = ({
   macros,
 }) => {

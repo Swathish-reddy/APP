@@ -10,7 +10,7 @@ export default function TopNavigation() {
   }, []);
 
   return (
-    <div className="h-16 bg-card/80 backdrop-blur-lg border-b border-border flex items-center justify-between px-4 md:px-6 z-20 shadow-lg">
+    <div className="h-16 bg-card/80 backdrop-blur-lg border-b border-border flex items-center justify-between px-4 md:px-4 md:px-4 md:px-6 z-20 shadow-lg">
       <div className="flex items-center space-x-6">
         <div className="flex items-center space-x-2">
           <ShieldAlert className="text-red-500 h-6 w-6 animate-pulse" />

@@ -9,7 +9,7 @@ import { NutritionPlan, GroceryList, NutritionCompliance } from "@/types";
 
 interface NutritionDashboardProps {
   patientId: string;
-}
+};
 export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
   patientId,
 }) => {
@@ -72,7 +72,7 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
         {" "}
         <div>
           {" "}
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold tracking-tight">
             Nutrition Intelligence Center
           </h1>{" "}
           <p className="text-muted-foreground mt-1">

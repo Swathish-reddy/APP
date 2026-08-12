@@ -1,17 +1,25 @@
 import os
 import shutil
 import uuid
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Form, BackgroundTasks
+
+from fastapi import (
+    APIRouter,
+    BackgroundTasks,
+    Depends,
+    File,
+    Form,
+    HTTPException,
+    UploadFile,
+)
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.db.session import get_db
-from app.db.models import Document, Patient, User, HealthMetric, HealthTimeline
-from app.services.ocr_service import process_document_text
-from app.services.doc_intelligence import analyze_medical_document, REFERENCE_RANGES
-from app.core.events import event_bus, EVENT_DOCUMENT_UPLOADED
 from app.api.deps import get_current_user
+from app.core.events import EVENT_DOCUMENT_UPLOADED, event_bus
+from app.db.models import Document, HealthMetric, HealthTimeline, Patient, User
+from app.db.session import get_db
+from app.services.doc_intelligence import REFERENCE_RANGES, analyze_medical_document
+from app.services.ocr_service import process_document_text
 
 router = APIRouter()
 
@@ -29,8 +37,10 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
         # 1. OCR Extraction
         extracted_text = process_document_text(file_path, file_type)
         if not extracted_text:
-            doc.status = "Failed"
-            doc.ai_summary = "Failed to extract text from document."
+            doc.status = "Unsupported"
+            doc.ai_summary = "File uploaded successfully, but automatic medical-data extraction is unavailable for this format."
+            doc.category = "Other"
+            doc.report_type = "Unknown"
             await db.commit()
             return
             
@@ -66,7 +76,12 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
                     pat.bmi = round(pat.weight / ((pat.height/100)**2), 1)
 
             # Insert Medications
-            from app.db.models import Medication, Allergy, MedicalHistory, AIRecommendation
+            from app.db.models import (
+                AIRecommendation,
+                Allergy,
+                MedicalHistory,
+                Medication,
+            )
             meds = analysis.get("medications", [])
             for m in meds:
                 db.add(Medication(
@@ -108,7 +123,14 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
 
             structured_data = analysis.get("structured_data", {})
             abnormalities = analysis.get("abnormalities", {})
+            extracted_vitals = analysis.get("extracted_vitals", {})
             
+            # Combine extracted vitals into structured_data to create metrics for them too
+            if extracted_vitals:
+                for k, v in extracted_vitals.items():
+                    if v is not None:
+                        structured_data[k] = v
+                        
             for metric_key, value in structured_data.items():
                 if value is None:
                     continue
@@ -125,7 +147,7 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
                 # Check abnormality
                 if metric_key in abnormalities:
                     ab_status = abnormalities[metric_key]
-                    if ab_status.lower() in ["high", "low", "abnormal"]:
+                    if ab_status.lower() in ["high", "low", "abnormal", "critical"]:
                         status = ab_status
                         severity = "warning"
                 
@@ -134,12 +156,30 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
                     patient_id=doc.patient_id,
                     document_id=doc.id,
                     metric_name=metric_key,
-                    value=value,
+                    value=float(value) if isinstance(value, (int, float)) or (isinstance(value, str) and value.replace('.','',1).isdigit()) else None,
                     unit=unit,
                     reference_min=ref_min,
                     reference_max=ref_max,
                     status=status
                 )
+                
+                # For string values like BP (120/80), we might need to store it differently. 
+                # Since HealthMetric.value is Float, we might just store it in Timeline or handle it gracefully.
+                # Actually, HealthMetric.value is Float, so string BP will fail `float(value)` if not handled.
+                if isinstance(value, str) and not value.replace('.','',1).isdigit():
+                    # For blood pressure, skip the metric insertion as it's a string, or add a generic timeline event
+                    if metric_key == "blood_pressure":
+                        timeline_event = HealthTimeline(
+                            patient_id=doc.patient_id,
+                            event_type="metric_recorded",
+                            title="Blood Pressure Recorded",
+                            description=f"Blood pressure recorded as {value}.",
+                            severity="info",
+                            event_meta={"metric": "blood_pressure", "value": value, "document_id": doc.id}
+                        )
+                        db.add(timeline_event)
+                    continue
+
                 db.add(metric)
                 
                 # Create Timeline Event if abnormal
@@ -185,37 +225,47 @@ async def process_document_background(doc_id: str, file_path: str, file_type: st
     except Exception as e:
         print(f"Background processing error: {e}")
         doc.status = "Failed"
-        doc.ai_summary = f"Error during processing: {str(e)}"
+        doc.ai_summary = f"Error during processing: {e!s}"
         await db.commit()
 
 @router.post("/upload")
 async def upload_document(
     background_tasks: BackgroundTasks,
     patient_id: int = Form(...),
+    force: bool = Form(False),
     file: UploadFile = File(...),
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
+    # Executable validation
+    ext = file.filename.split('.')[-1].lower() if file.filename else ""
+    dangerous_exts = ['exe', 'bat', 'cmd', 'sh', 'ps1', 'msi', 'js', 'vbs', 'com', 'scr', 'pif']
+    if ext in dangerous_exts:
+        raise HTTPException(status_code=400, detail="Executable files are strictly prohibited for security reasons.")
+        
+    # Size validation (20MB limit)
+    file.file.seek(0, 2) # Seek to end
+    file_size = file.file.tell()
+    file.file.seek(0) # Reset to beginning
+    if file_size > 20 * 1024 * 1024:
+        raise HTTPException(status_code=400, detail="File too large. Maximum size is 20MB.")
+
+    # Duplicate check
+    if not force:
+        dup_res = await db.execute(select(Document).where(
+            Document.patient_id == patient_id, 
+            Document.file_name == file.filename, 
+            Document.file_size == file_size
+        ))
+        if dup_res.scalars().first():
+            from fastapi.responses import JSONResponse
+            return JSONResponse(status_code=409, content={"detail": "duplicate_file", "message": "This file already exists."})
+
     # Verify patient
     result = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
     pat = result.scalars().first()
     if not pat:
-        from app.db.db import patients_db
-        mock_id = f"P{patient_id}"
-        if mock_id in patients_db:
-            mock_data = patients_db[mock_id]
-            pat = Patient(
-                patient_id=patient_id,
-                owner_id=current_user.id,
-                full_name=mock_data.get("name", "Demo Patient"),
-                age=mock_data.get("age", 45),
-                gender=mock_data.get("gender", "Unknown")
-            )
-            db.add(pat)
-            await db.commit()
-            await db.refresh(pat)
-        else:
-            raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
+        raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
         
     # Save file
     file_ext = os.path.splitext(file.filename)[1]
@@ -248,10 +298,6 @@ async def get_patient_documents(patient_id: int, db: AsyncSession = Depends(get_
     result_pat = await db.execute(select(Patient).where(Patient.patient_id == patient_id, Patient.owner_id == current_user.id))
     pat = result_pat.scalars().first()
     if not pat:
-        from app.db.db import patients_db
-        mock_id = f"P{patient_id}"
-        if mock_id in patients_db:
-            return [] # No documents uploaded yet for this mock patient
         raise HTTPException(status_code=404, detail="Patient not found or unauthorized")
         
     result = await db.execute(select(Document).where(Document.patient_id == patient_id).order_by(Document.upload_date.desc()))
@@ -270,6 +316,25 @@ async def get_document(doc_id: str, db: AsyncSession = Depends(get_db), current_
         raise HTTPException(status_code=403, detail="Unauthorized")
         
     return doc
+
+from fastapi.responses import FileResponse
+
+@router.get("/{doc_id}/download")
+async def download_document(doc_id: str, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
+    result = await db.execute(select(Document).where(Document.id == doc_id))
+    doc = result.scalars().first()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found")
+        
+    # Check patient ownership
+    pat = await db.execute(select(Patient).where(Patient.patient_id == doc.patient_id, Patient.owner_id == current_user.id))
+    if not pat.scalars().first():
+        raise HTTPException(status_code=403, detail="Unauthorized")
+        
+    if not os.path.exists(doc.file_path):
+        raise HTTPException(status_code=404, detail="File not found on disk")
+        
+    return FileResponse(doc.file_path, filename=doc.file_name, media_type=doc.file_type)
 
 @router.delete("/{doc_id}")
 async def delete_document(doc_id: str, db: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):

@@ -10,13 +10,13 @@ import { cn } from "@/lib/utils";
 interface HealthScoreWidgetProps {
   score: number;
   className?: string;
-}
+};
 export default function HealthScoreWidget({
   score,
   className,
 }: HealthScoreWidgetProps) {
   let color = "#ef4444";
-  let status = "Critical";
+  const status = "Critical";
   if (score >= 90) {
     color = "#10b981";
   } else if (score >= 70) {
@@ -30,7 +30,7 @@ export default function HealthScoreWidget({
   return (
     <div
       className={cn(
-        "relative flex flex-col items-center justify-center p-4 md:p-6 bg-card/50 border border-border rounded-3xl shadow-xl backdrop-blur-xl",
+        "relative flex flex-col items-center justify-center p-4 md:p-4 md:p-4 md:p-6 bg-card/50 border border-border rounded-3xl shadow-xl backdrop-blur-xl",
         className,
       )}
     >
@@ -69,7 +69,7 @@ export default function HealthScoreWidget({
         {}{" "}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           {" "}
-          <span className="text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+          <span className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl md:text-2xl md:text-3xl md:text-4xl md:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
             {score}
           </span>{" "}
           <span className="text-xs font-medium text-muted-foreground mt-1 uppercase tracking-widest">

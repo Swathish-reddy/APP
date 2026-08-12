@@ -1,16 +1,17 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from typing import Dict, Any
 
-from app.db.session import get_db
 from app.db.models import Patient, SimulationScenario
+from app.db.session import get_db
 from app.services.simulator import run_heuristic_simulation
 
 router = APIRouter()
 
 @router.post("/patient/{patient_id}/run")
-async def run_simulation(patient_id: int, modifiers: Dict[str, Any], db: AsyncSession = Depends(get_db)):
+async def run_simulation(patient_id: int, modifiers: dict[str, Any], db: AsyncSession = Depends(get_db)):
     """Runs a temporary what-if simulation"""
     res = await db.execute(select(Patient).where(Patient.patient_id == patient_id))
     if not res.scalars().first():
@@ -23,7 +24,7 @@ async def run_simulation(patient_id: int, modifiers: Dict[str, Any], db: AsyncSe
     return result
 
 @router.post("/patient/{patient_id}/save")
-async def save_scenario(patient_id: int, payload: Dict[str, Any], db: AsyncSession = Depends(get_db)):
+async def save_scenario(patient_id: int, payload: dict[str, Any], db: AsyncSession = Depends(get_db)):
     """Saves a simulation scenario to the database"""
     scenario = SimulationScenario(
         patient_id=patient_id,

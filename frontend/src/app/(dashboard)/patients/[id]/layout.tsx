@@ -119,7 +119,7 @@ export default function PatientProfileLayout({
       {}{" "}
       <div className="sticky top-0 z-40 w-full backdrop-blur-xl bg-[#030712]/80 border-b border-border">
         {" "}
-        <div className="max-w-7xl mx-auto px-4 sm:px-4 md:px-6 lg:px-4 md:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-4 md:px-4 md:px-4 md:px-6 lg:px-4 md:px-4 md:px-4 md:px-8">
           {" "}
           <div className="flex items-center h-16 gap-4">
             {" "}
@@ -158,7 +158,7 @@ export default function PatientProfileLayout({
         </div>{" "}
       </div>{" "}
       {}{" "}
-      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-4 md:p-6 lg:p-4 md:p-8">
+      <div className="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-4 md:p-4 md:p-4 md:p-6 lg:p-4 md:p-4 md:p-4 md:p-8">
         {" "}
         {children}{" "}
       </div>{" "}

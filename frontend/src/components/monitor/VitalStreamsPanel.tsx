@@ -7,7 +7,7 @@ import { StreamData } from "@/types";
 interface VitalStreamsPanelProps {
   stream: StreamData | null;
   ecgHistory: number[];
-}
+};
 export const VitalStreamsPanel: React.FC<VitalStreamsPanelProps> = ({
   stream,
   ecgHistory,
@@ -39,7 +39,7 @@ export const VitalStreamsPanel: React.FC<VitalStreamsPanelProps> = ({
       <CardContent className="p-4 flex-1 flex flex-col gap-4">
         {" "}
         {}{" "}
-        <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
           {" "}
           <div className="dark bg-card rounded-lg p-3 border border-border">
             {" "}
@@ -47,7 +47,7 @@ export const VitalStreamsPanel: React.FC<VitalStreamsPanelProps> = ({
               HEART RATE
             </p>{" "}
             <div
-              className={`text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.heart_rate, 50, 110)}`}
+              className={`text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.heart_rate, 50, 110)}`}
             >
               {" "}
               {vitals.heart_rate || "--"}{" "}
@@ -62,7 +62,7 @@ export const VitalStreamsPanel: React.FC<VitalStreamsPanelProps> = ({
               NIBP
             </p>{" "}
             <div
-              className={`text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.systolic_bp, 90, 140)}`}
+              className={`text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.systolic_bp, 90, 140)}`}
             >
               {" "}
               {vitals.systolic_bp || "--"}
@@ -77,7 +77,7 @@ export const VitalStreamsPanel: React.FC<VitalStreamsPanelProps> = ({
               <Droplet className="w-3 h-3" /> SpO2
             </p>{" "}
             <div
-              className={`text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.spo2, 92, 100)}`}
+              className={`text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.spo2, 92, 100)}`}
             >
               {" "}
               {vitals.spo2 || "--"}{" "}
@@ -92,7 +92,7 @@ export const VitalStreamsPanel: React.FC<VitalStreamsPanelProps> = ({
               GLUCOSE (CGM)
             </p>{" "}
             <div
-              className={`text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.glucose, 70, 180)}`}
+              className={`text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold font-mono ${getStatusColor(vitals.glucose, 70, 180)}`}
             >
               {" "}
               {vitals.glucose || "--"}{" "}

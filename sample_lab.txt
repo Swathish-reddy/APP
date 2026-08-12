@@ -1,0 +1,8 @@
+COMPLETE BLOOD COUNT
+Patient: John Doe
+Date: 2026-08-08
+
+hba1c: 7.4 %
+glucose: 145 mg/dL
+cholesterol total: 240 mg/dL
+ldl: 150 mg/dL

@@ -1,15 +1,16 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
 from app.db.models import Patient
-from sqlalchemy.future import select
 from app.services.xai_engine import generate_full_explanation
 
 router = APIRouter()
 
-@router.get("/{patient_id}/explain", response_model=Dict[str, Any])
+@router.get("/{patient_id}/explain", response_model=dict[str, Any])
 async def get_patient_explanation(patient_id: int, db: AsyncSession = Depends(get_db)):
     """
     Retrieves the comprehensive 20-point XAI report for a given patient.
@@ -42,5 +43,5 @@ async def get_patient_explanation(patient_id: int, db: AsyncSession = Depends(ge
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate XAI explanation: {str(e)}"
+            detail=f"Failed to generate XAI explanation: {e!s}"
         )

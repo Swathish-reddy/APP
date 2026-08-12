@@ -1,40 +1,35 @@
-from fastapi import APIRouter, HTTPException, Depends
+
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
-from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-import copy
 
-from app.db.db import patients_db
-from app.db.session import get_db
 from app.db.models import Document
+from app.db.session import get_db
+from app.services.patient_service import get_patient_profile_dict
+from app.services.chatbot import query_chatbot
 from app.services.fusion import run_ai_fusion
+from app.services.report_generator import (
+    generate_clinical_report,
+    generate_executive_report,
+    generate_patient_report,
+)
 from app.services.xai_engine import (
+    compute_counterfactual,
     compute_shap_analysis,
     generate_reasoning_chain,
-    compute_counterfactual,
-    get_evidence_links
+    get_evidence_links,
 )
-from app.services.report_generator import (
-    generate_patient_report,
-    generate_clinical_report,
-    generate_executive_report
-)
-from app.services.chatbot import query_chatbot
 
 router = APIRouter()
 
-
 class ChatPayload(BaseModel):
     message: str
-    mode: Optional[str] = "patient"  # "patient" | "clinician"
-    history: Optional[list] = []
+    mode: str | None = "patient"  # "patient" | "clinician"
+    history: list | None = []
 
 async def get_enriched_patient(patient_id: str, db: AsyncSession):
-    if patient_id not in patients_db:
-        raise HTTPException(status_code=404, detail="Patient not found")
-        
-    patient = copy.deepcopy(patients_db[patient_id])
+    patient = await get_patient_profile_dict(patient_id, db)
     
     try:
         pid_int = int(patient_id.replace("P", ""))
@@ -75,7 +70,7 @@ async def get_enriched_patient(patient_id: str, db: AsyncSession):
         patient["reports_data"] = reports_data
         
         # Add newly extracted medical history, meds, and allergies from DB
-        from app.db.models import MedicalHistory, Medication, Allergy
+        from app.db.models import Allergy, MedicalHistory, Medication
         med_hist_res = await db.execute(select(MedicalHistory).where(MedicalHistory.patient_id == pid_int))
         patient["medical_history"] = [h.disease_name for h in med_hist_res.scalars().all()]
         

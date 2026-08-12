@@ -1,43 +1,42 @@
-from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Dict, Any, List, Optional
 import asyncio
-import random
 import json
+import random
 from contextlib import asynccontextmanager
-from app.core.config import settings
-from sqlalchemy import select, func
-from app.db.session import AsyncSessionLocal
-from app.db.models import Patient, DoctorProfile, HospitalProfile, HealthEvent
 
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request, status
+from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+import traceback
+from sqlalchemy import func, select
+
+from app.api.analytics import router as analytics_router
+from app.api.appointments import router as appointments_router
 from app.api.auth import router as auth_router
-from app.api.patients import router as patients_router
+from app.api.cdss import router as cdss_router
+from app.api.diet import router as diet_router
+from app.api.doctors import router as doctors_router
 from app.api.documents import router as documents_router
+from app.api.emergency import router as emergency_router
+from app.api.hospital import router as hospital_router
+from app.api.intelligence import router as intelligence_router
+from app.api.medications import router as medications_router
+from app.api.monitor import router as monitor_router
+from app.api.navigator import router as navigator_router
+from app.api.nutrition import router as nutrition_router
+from app.api.overview import router as overview_router
+from app.api.patients import router as patients_router
+from app.api.population import router as population_router
+from app.api.risk_intelligence import router as risk_router
+from app.api.simulator import router as simulator_router
+from app.api.twin import router as twin_router
 from app.api.uhie import router as uhie_router
 from app.api.wearables import router as wearables_router
-from app.api.twin import router as twin_router
-from app.api.simulator import router as simulator_router
-from app.api.risk_intelligence import router as risk_router
-from app.api.cdss import router as cdss_router
-from app.api.nutrition import router as nutrition_router
-from app.api.navigator import router as navigator_router
-from app.api.monitor import router as monitor_router
-from app.api.intelligence import router as intelligence_router
-from app.api.population import router as population_router
-from app.api.medications import router as medications_router
-from app.api.hospital import router as hospital_router
-from app.api.diet import router as diet_router
-from app.api.emergency import router as emergency_router
-from app.api.overview import router as overview_router
-from app.api.analytics import router as analytics_router
-from app.api.doctors import router as doctors_router
-from app.api.appointments import router as appointments_router
+from app.core.config import settings
 from app.core.events import event_bus
+from app.db.models import Base, DoctorProfile, Patient
+from app.db.session import AsyncSessionLocal, engine
 from app.services.orchestrator import init_orchestrator
 
-from app.db.session import engine
-from app.db.models import Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -82,12 +81,11 @@ app.include_router(overview_router, prefix=f"{settings.API_V1_STR}/overview", ta
 app.include_router(analytics_router, prefix=f"{settings.API_V1_STR}/analytics", tags=["analytics"])
 app.include_router(doctors_router, prefix=f"{settings.API_V1_STR}/doctors", tags=["doctors"])
 app.include_router(appointments_router, prefix=f"{settings.API_V1_STR}/appointments", tags=["appointments"])
-from app.core.middleware import SecurityHeadersMiddleware, IPBlockMiddleware
 
 # Set CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.CORS_ORIGINS,
+    allow_origin_regex=".*",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -96,6 +94,15 @@ app.add_middleware(
 # app.add_middleware(IPBlockMiddleware)
 
 
+
+# --- GLOBAL EXCEPTION HANDLER ---
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    traceback.print_exc()
+    return JSONResponse(
+        status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+        content={"detail": "An unexpected error occurred. Please try again later."},
+    )
 
 # --- REST ENDPOINTS ---
 
@@ -120,12 +127,17 @@ async def websocket_vitals_streamer(websocket: WebSocket, patient_id: str):
     Perturbs baseline metrics slightly every second to simulate active feeds.
     Also sends simulated ECG waves.
     """
-    if patient_id not in patients_db:
-        await websocket.close(code=1008, reason="Patient ID not found")
-        return
-        
+    from app.services.patient_service import get_patient_profile_dict
+    from fastapi import HTTPException
+    
+    async with AsyncSessionLocal() as db:
+        try:
+            patient = await get_patient_profile_dict(patient_id, db)
+        except HTTPException:
+            await websocket.close(code=1008, reason="Patient ID not found")
+            return
+            
     await websocket.accept()
-    patient = patients_db[patient_id]
     
     # Store initial vitals to perturb
     base_hr = patient["vitals"].get("heart_rate", 75)
@@ -204,7 +216,7 @@ async def websocket_events_streamer(websocket: WebSocket, patient_id: str):
             await queue.put(payload)
 
     # Subscribe to interesting events
-    from app.core.events import EVENT_TWIN_UPDATED, EVENT_DOCUMENT_UPLOADED
+    from app.core.events import EVENT_DOCUMENT_UPLOADED, EVENT_TWIN_UPDATED
     event_bus.subscribe(EVENT_TWIN_UPDATED, handler)
     event_bus.subscribe(EVENT_DOCUMENT_UPLOADED, handler)
 

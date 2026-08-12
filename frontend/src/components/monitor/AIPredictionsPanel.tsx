@@ -4,8 +4,7 @@ import { Brain, TrendingUp, TrendingDown, Activity, ActivitySquare } from "lucid
 
 interface AIPredictionsPanelProps {
   predictions: any;
-}
-
+};
 export const AIPredictionsPanel: React.FC<AIPredictionsPanelProps> = ({ predictions }) => {
   if (!predictions) {
     return (

@@ -4,7 +4,7 @@ import { Activity, Radio, AlertTriangle, HeartPulse } from "lucide-react";
 interface MonitorTopSectionProps {
   stream: any;
   alerts: any[];
-}
+};
 export const MonitorTopSection: React.FC<MonitorTopSectionProps> = ({
   stream,
   alerts,
@@ -13,7 +13,7 @@ export const MonitorTopSection: React.FC<MonitorTopSectionProps> = ({
     ?.slice(0, 5)
     .some((a: any) => a.severity === "Emergency" || a.severity === "Critical");
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
       {" "}
       <Card className="bg-gradient-to-br from-blue-500/10 to-blue-600/5 border-blue-500/20">
         {" "}

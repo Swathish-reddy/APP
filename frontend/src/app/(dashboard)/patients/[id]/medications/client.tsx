@@ -62,7 +62,7 @@ export default function PatientMedications({ params, patientId: propPatientId }:
         <div className="bg-red-500/20 p-4 rounded-full mb-4 shadow-lg shadow-red-500/20">
           <AlertCircle className="w-12 h-12 text-red-500" />
         </div>
-        <h2 className="text-2xl md:text-3xl font-extrabold text-foreground mb-2">No Medication Data</h2>
+        <h2 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground mb-2">No Medication Data</h2>
         <p className="text-red-200 font-bold max-w-md">Failed to retrieve AI medication intelligence. Ensure patient records are fully ingested.</p>
       </div>
     );
@@ -72,16 +72,16 @@ export default function PatientMedications({ params, patientId: propPatientId }:
 
   return (
     <motion.div 
-      className="p-4 md:p-8 max-w-[1600px] mx-auto space-y-8"
+      className="p-4 md:p-4 md:p-4 md:p-8 max-w-[1600px] mx-auto space-y-8"
       variants={containerVariants}
       initial="hidden"
       animate="show"
     >
-      {/* Header Section */}
-      <motion.div variants={itemVariants} className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-muted/80 border ${isHighRisk ? 'border-rose-500/50' : 'border-indigo-500/50'} p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-2xl relative overflow-hidden`}>
+      {}
+      <motion.div variants={itemVariants} className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-muted/80 border ${isHighRisk ? 'border-rose-500/50' : 'border-indigo-500/50'} p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-2xl relative overflow-hidden`}>
         <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${isHighRisk ? 'from-rose-500 via-orange-500 to-amber-500' : 'from-indigo-500 via-purple-500 to-pink-500'}`}></div>
         <div className="relative z-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold text-foreground flex items-center gap-3 drop-shadow-md">
+          <h1 className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl md:text-2xl md:text-3xl md:text-4xl md:text-4xl md:text-5xl font-extrabold text-foreground flex items-center gap-3 drop-shadow-md">
             <Pill className={`w-12 h-12 ${isHighRisk ? 'text-rose-400' : 'text-indigo-400'} drop-shadow-lg`} /> 
             Medication Intelligence
           </h1>
@@ -104,16 +104,16 @@ export default function PatientMedications({ params, patientId: propPatientId }:
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         
-        {/* Left Column - Critical Interactions & Evaluation (Spans 8 columns) */}
+        {}
         <motion.div variants={itemVariants} className="lg:col-span-8 space-y-6">
           
-          <div className="bg-muted/80 border border-border/80 rounded-3xl p-4 md:p-8 backdrop-blur-md relative overflow-hidden shadow-2xl">
-            <h3 className="text-2xl md:text-3xl font-extrabold text-foreground mb-6 flex items-center gap-3 drop-shadow-md">
+          <div className="bg-muted/80 border border-border/80 rounded-3xl p-4 md:p-4 md:p-4 md:p-8 backdrop-blur-md relative overflow-hidden shadow-2xl">
+            <h3 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground mb-6 flex items-center gap-3 drop-shadow-md">
               <AlertTriangle className="text-rose-400 w-8 h-8 drop-shadow-lg" /> Drug Interactions & Clearances
             </h3>
             
             <div className="space-y-6">
-              {/* Drug Interactions */}
+              {}
               <div>
                 <h4 className="text-sm font-black text-foreground uppercase tracking-widest mb-3 drop-shadow-sm">Critical Interactions</h4>
                 {Array.isArray(medData["4_drug_interaction_analysis"]) ? (
@@ -136,7 +136,7 @@ export default function PatientMedications({ params, patientId: propPatientId }:
                 )}
               </div>
 
-              {/* Clearances & Contraindications */}
+              {}
               <div>
                 <h4 className="text-sm font-black text-foreground uppercase tracking-widest mb-3 drop-shadow-sm">Renal & Hepatic Contraindications</h4>
                 {Array.isArray(medData["5_allergy_contraindication_review"]) ? (
@@ -160,8 +160,8 @@ export default function PatientMedications({ params, patientId: propPatientId }:
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-muted/80 border border-indigo-500/30 rounded-3xl p-4 md:p-6 shadow-xl shadow-indigo-900/20">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-muted/80 border border-indigo-500/30 rounded-3xl p-4 md:p-4 md:p-4 md:p-6 shadow-xl shadow-indigo-900/20">
               <h4 className="text-base font-black text-indigo-300 uppercase tracking-widest mb-4 flex items-center gap-2 drop-shadow-sm">
                 <Stethoscope className="w-5 h-5 text-indigo-400" /> Clinical Status
               </h4>
@@ -177,7 +177,7 @@ export default function PatientMedications({ params, patientId: propPatientId }:
               </div>
             </div>
             
-            <div className="bg-muted/80 border border-teal-500/30 rounded-3xl p-4 md:p-6 shadow-xl shadow-teal-900/20">
+            <div className="bg-muted/80 border border-teal-500/30 rounded-3xl p-4 md:p-4 md:p-4 md:p-6 shadow-xl shadow-teal-900/20">
               <h4 className="text-base font-black text-teal-300 uppercase tracking-widest mb-4 flex items-center gap-2 drop-shadow-sm">
                 <TrendingDown className="w-5 h-5 text-teal-400" /> Predictions & Adherence
               </h4>
@@ -196,10 +196,10 @@ export default function PatientMedications({ params, patientId: propPatientId }:
 
         </motion.div>
 
-        {/* Right Column - Recommendations & Summary (Spans 4 columns) */}
+        {}
         <motion.div variants={itemVariants} className="lg:col-span-4 space-y-6 flex flex-col h-full">
           
-          <div className="bg-gradient-to-b from-indigo-900/50 to-slate-800/90 border border-indigo-500/40 rounded-3xl p-4 md:p-8 backdrop-blur-xl flex-grow flex flex-col shadow-2xl">
+          <div className="bg-gradient-to-b from-indigo-900/50 to-slate-800/90 border border-indigo-500/40 rounded-3xl p-4 md:p-4 md:p-4 md:p-8 backdrop-blur-xl flex-grow flex flex-col shadow-2xl">
             <h3 className="text-2xl font-extrabold text-foreground mb-6 flex items-center gap-3 drop-shadow-md">
               <BrainCircuit className="w-7 h-7 text-indigo-400 drop-shadow-lg" /> AI Recommendations
             </h3>
@@ -248,7 +248,7 @@ export default function PatientMedications({ params, patientId: propPatientId }:
             </div>
           </div>
 
-          <div className="bg-muted/80 border border-cyan-500/30 rounded-3xl p-4 md:p-6 shadow-xl shadow-cyan-900/20">
+          <div className="bg-muted/80 border border-cyan-500/30 rounded-3xl p-4 md:p-4 md:p-4 md:p-6 shadow-xl shadow-cyan-900/20">
             <h4 className="text-base font-black text-cyan-300 uppercase tracking-widest mb-3 flex items-center gap-2 drop-shadow-sm">
               <ClipboardList className="w-5 h-5 text-cyan-400" /> Executive Summary
             </h4>

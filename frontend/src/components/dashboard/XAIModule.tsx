@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { Brain, Activity, Target, ShieldAlert } from "lucide-react";
+import { BASE_URL } from "../../services/api";
 import XAIExplanationPanel from "../risk/XAIExplanationPanel";
 export default function XAIModule({ patientId }: { patientId: string }) {
   const [predictionData, setPredictionData] = useState<any>(null);
@@ -11,9 +12,8 @@ export default function XAIModule({ patientId }: { patientId: string }) {
       try {
         const token = localStorage.getItem("token");
         const pid = patientId?.replace("P", "");
-        const API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
         const res = await fetch(
-          `${API}/api/v1/risk/patient/${pid}/predict?disease=cardiovascular_disease`,
+          `${BASE_URL}/risk/patient/${pid}/predict?disease=cardiovascular_disease`,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }
@@ -51,7 +51,7 @@ export default function XAIModule({ patientId }: { patientId: string }) {
           </p>{" "}
         </div>{" "}
       </div>{" "}
-      <div className="bg-card rounded-2xl border border-slate-200 shadow-sm p-4 md:p-6">
+      <div className="bg-card rounded-2xl border border-slate-200 shadow-sm p-4 md:p-4 md:p-4 md:p-6">
         {" "}
         <h3 className="font-bold text-lg text-foreground mb-4 flex items-center">
           {" "}
@@ -76,7 +76,7 @@ export default function XAIModule({ patientId }: { patientId: string }) {
                 <span className="text-sm font-semibold text-muted-foreground uppercase tracking-wider block mb-1">
                   Calculated Risk Score
                 </span>{" "}
-                <span className="text-2xl md:text-3xl font-black text-rose-600">
+                <span className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-black text-rose-600">
                   {predictionData.risk_score.toFixed(1)}%
                 </span>{" "}
               </div>{" "}

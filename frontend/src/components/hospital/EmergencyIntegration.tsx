@@ -6,7 +6,7 @@ export default function EmergencyIntegration({ data }: { data: any }) {
   const isHigh = data.emergency_patients > 30;
 
   return (
-    <div className="bg-card/60 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col relative overflow-hidden group">
+    <div className="bg-card/60 border border-border/50 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col relative overflow-hidden group">
       <div className={`absolute top-0 left-0 w-full h-1 ${isHigh ? 'bg-red-500' : 'bg-emerald-500'}`}></div>
       <h2 className="text-xl font-bold text-foreground mb-4 flex items-center">
         <Ambulance className={`w-5 h-5 mr-2 ${isHigh ? 'text-red-400' : 'text-emerald-400'}`} />

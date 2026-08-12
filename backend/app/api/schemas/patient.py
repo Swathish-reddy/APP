@@ -1,18 +1,19 @@
-from pydantic import BaseModel, Field
-from typing import Optional, List, Dict, Any
 from datetime import datetime
+
+from pydantic import BaseModel
+
 
 # =======================
 # LIFESTYLE
 # =======================
 class LifestyleBase(BaseModel):
-    smoking_status: Optional[str] = None
-    alcohol_consumption: Optional[str] = None
-    sleep_hours: Optional[float] = None
-    physical_activity_level: Optional[str] = None
-    stress_level: Optional[str] = None
-    dietary_preference: Optional[str] = None
-    water_intake: Optional[float] = None
+    smoking_status: str | None = None
+    alcohol_consumption: str | None = None
+    sleep_hours: float | None = None
+    physical_activity_level: str | None = None
+    stress_level: str | None = None
+    dietary_preference: str | None = None
+    water_intake: float | None = None
 
 class LifestyleCreate(LifestyleBase):
     pass
@@ -28,11 +29,11 @@ class LifestyleResponse(LifestyleBase):
 # =======================
 class MedicalHistoryBase(BaseModel):
     disease_name: str
-    diagnosis_date: Optional[datetime] = None
-    severity: Optional[str] = None
-    status: Optional[str] = None
-    treating_doctor: Optional[str] = None
-    notes: Optional[str] = None
+    diagnosis_date: datetime | None = None
+    severity: str | None = None
+    status: str | None = None
+    treating_doctor: str | None = None
+    notes: str | None = None
 
 class MedicalHistoryCreate(MedicalHistoryBase):
     pass
@@ -49,7 +50,7 @@ class MedicalHistoryResponse(MedicalHistoryBase):
 class FamilyHistoryBase(BaseModel):
     relation: str
     disease: str
-    age_of_onset: Optional[int] = None
+    age_of_onset: int | None = None
 
 class FamilyHistoryCreate(FamilyHistoryBase):
     pass
@@ -65,9 +66,9 @@ class FamilyHistoryResponse(FamilyHistoryBase):
 # =======================
 class AllergyBase(BaseModel):
     allergen: str
-    allergy_type: Optional[str] = None
-    severity: Optional[str] = None
-    reaction: Optional[str] = None
+    allergy_type: str | None = None
+    severity: str | None = None
+    reaction: str | None = None
 
 class AllergyCreate(AllergyBase):
     pass
@@ -83,11 +84,11 @@ class AllergyResponse(AllergyBase):
 # =======================
 class MedicationBase(BaseModel):
     medicine_name: str
-    dosage: Optional[str] = None
-    frequency: Optional[str] = None
-    start_date: Optional[datetime] = None
-    end_date: Optional[datetime] = None
-    prescribing_doctor: Optional[str] = None
+    dosage: str | None = None
+    frequency: str | None = None
+    start_date: datetime | None = None
+    end_date: datetime | None = None
+    prescribing_doctor: str | None = None
 
 class MedicationCreate(MedicationBase):
     pass
@@ -103,9 +104,9 @@ class MedicationResponse(MedicationBase):
 # =======================
 class SurgeryBase(BaseModel):
     surgery_name: str
-    hospital: Optional[str] = None
-    date: Optional[datetime] = None
-    outcome: Optional[str] = None
+    hospital: str | None = None
+    date: datetime | None = None
+    outcome: str | None = None
 
 class SurgeryCreate(SurgeryBase):
     pass
@@ -121,8 +122,8 @@ class SurgeryResponse(SurgeryBase):
 # =======================
 class VaccinationBase(BaseModel):
     vaccine_name: str
-    date: Optional[datetime] = None
-    booster_status: Optional[str] = None
+    date: datetime | None = None
+    booster_status: str | None = None
 
 class VaccinationCreate(VaccinationBase):
     pass
@@ -137,7 +138,7 @@ class VaccinationResponse(VaccinationBase):
 # CLINICAL NOTE
 # =======================
 class ClinicalNoteBase(BaseModel):
-    doctor: Optional[str] = None
+    doctor: str | None = None
     note: str
 
 class ClinicalNoteCreate(ClinicalNoteBase):
@@ -156,10 +157,10 @@ class ClinicalNoteResponse(ClinicalNoteBase):
 class AppointmentBase(BaseModel):
     date: datetime
     time: str
-    doctor: Optional[str] = None
-    hospital: Optional[str] = None
-    purpose: Optional[str] = None
-    status: Optional[str] = "SCHEDULED"
+    doctor: str | None = None
+    hospital: str | None = None
+    purpose: str | None = None
+    status: str | None = "SCHEDULED"
 
 class AppointmentCreate(AppointmentBase):
     pass
@@ -175,49 +176,69 @@ class AppointmentResponse(AppointmentBase):
 # =======================
 class PatientBase(BaseModel):
     full_name: str
-    age: Optional[int] = None
-    gender: Optional[str] = None
-    blood_group: Optional[str] = None
-    height: Optional[float] = None
-    weight: Optional[float] = None
-    bmi: Optional[float] = None
-    marital_status: Optional[str] = None
-    occupation: Optional[str] = None
-    address: Optional[str] = None
-    emergency_contact: Optional[str] = None
+    age: int | None = None
+    gender: str | None = None
+    blood_group: str | None = None
+    height: float | None = None
+    weight: float | None = None
+    bmi: float | None = None
+    marital_status: str | None = None
+    occupation: str | None = None
+    address: str | None = None
+    emergency_contact: str | None = None
 
 class PatientCreate(PatientBase):
-    user_id: Optional[int] = None
+    user_id: int | None = None
 
 class PatientUpdate(BaseModel):
-    full_name: Optional[str] = None
-    age: Optional[int] = None
-    gender: Optional[str] = None
-    blood_group: Optional[str] = None
-    height: Optional[float] = None
-    weight: Optional[float] = None
-    bmi: Optional[float] = None
-    marital_status: Optional[str] = None
-    occupation: Optional[str] = None
-    address: Optional[str] = None
-    emergency_contact: Optional[str] = None
+    full_name: str | None = None
+    age: int | None = None
+    gender: str | None = None
+    blood_group: str | None = None
+    height: float | None = None
+    weight: float | None = None
+    bmi: float | None = None
+    marital_status: str | None = None
+    occupation: str | None = None
+    address: str | None = None
+    emergency_contact: str | None = None
 
 class PatientResponse(PatientBase):
     patient_id: int
     unique_patient_code: str
-    user_id: Optional[int] = None
+    user_id: int | None = None
     created_at: datetime
     updated_at: datetime
 
     class Config:
         from_attributes = True
 
+# =======================
+# HEALTH METRIC
+# =======================
+class HealthMetricBase(BaseModel):
+    metric_name: str
+    value: float | None = None
+    unit: str | None = None
+    reference_min: float | None = None
+    reference_max: float | None = None
+    status: str | None = None
+
+class HealthMetricResponse(HealthMetricBase):
+    id: str
+    patient_id: int
+    document_id: str | None = None
+    recorded_at: datetime
+    class Config:
+        from_attributes = True
+
 class PatientDetailResponse(PatientResponse):
-    lifestyle: Optional[LifestyleResponse] = None
-    medical_history: List[MedicalHistoryResponse] = []
-    family_history: List[FamilyHistoryResponse] = []
-    allergies: List[AllergyResponse] = []
-    medications: List[MedicationResponse] = []
-    surgeries: List[SurgeryResponse] = []
-    vaccinations: List[VaccinationResponse] = []
-    appointments: List[AppointmentResponse] = []
+    lifestyle: LifestyleResponse | None = None
+    medical_history: list[MedicalHistoryResponse] = []
+    family_history: list[FamilyHistoryResponse] = []
+    allergies: list[AllergyResponse] = []
+    medications: list[MedicationResponse] = []
+    surgeries: list[SurgeryResponse] = []
+    vaccinations: list[VaccinationResponse] = []
+    appointments: list[AppointmentResponse] = []
+    health_metrics: list[HealthMetricResponse] = []

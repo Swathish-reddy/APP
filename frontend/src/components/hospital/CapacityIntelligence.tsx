@@ -5,7 +5,7 @@ export default function CapacityIntelligence({ data }: { data: any }) {
   if (!data?.capacity_intelligence) return null;
   const ci = data.capacity_intelligence;
   return (
-    <div className="bg-gradient-to-b from-indigo-900/40 to-slate-900/80 border border-indigo-500/30 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full">
+    <div className="bg-gradient-to-b from-indigo-900/40 to-slate-900/80 border border-indigo-500/30 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full">
       <div className="flex items-center gap-3 mb-6">
         <Database className="w-6 h-6 text-indigo-400" />
         <h2 className="text-xl font-bold text-foreground">Capacity Intelligence</h2>

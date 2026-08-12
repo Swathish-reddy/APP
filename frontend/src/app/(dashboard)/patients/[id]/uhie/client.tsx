@@ -54,14 +54,14 @@ export default function UnifiedHealthIntelligence() {
     }
   };
   return (
-    <div className="py-4 md:py-6 space-y-6">
+    <div className="py-4 md:py-4 md:py-4 md:py-6 space-y-6">
       {" "}
       {}{" "}
       <div className="flex justify-between items-end">
         {" "}
         <div>
           {" "}
-          <h2 className="text-2xl md:text-3xl font-bold text-foreground tracking-tight flex items-center gap-3">
+          <h2 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold text-foreground tracking-tight flex items-center gap-3">
             {" "}
             <BrainCircuit className="w-8 h-8 text-indigo-400" /> Unified Health
             Intelligence{" "}
@@ -85,10 +85,10 @@ export default function UnifiedHealthIntelligence() {
         </button>{" "}
       </div>{" "}
       {}{" "}
-      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {" "}
         {}{" "}
-        <div className="bg-gradient-to-br from-slate-900 to-indigo-900/20 border border-indigo-500/30 rounded-2xl p-4 md:p-6 relative overflow-hidden">
+        <div className="bg-gradient-to-br from-slate-900 to-indigo-900/20 border border-indigo-500/30 rounded-2xl p-4 md:p-4 md:p-4 md:p-6 relative overflow-hidden">
           {" "}
           <div className="absolute -right-4 -top-4 w-24 h-24 bg-indigo-500/10 rounded-full blur-xl"></div>{" "}
           <h3 className="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">
@@ -96,7 +96,7 @@ export default function UnifiedHealthIntelligence() {
           </h3>{" "}
           <div className="flex items-end gap-4">
             {" "}
-            <span className="text-4xl md:text-5xl font-black text-foreground">
+            <span className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl md:text-2xl md:text-3xl md:text-4xl md:text-4xl md:text-5xl font-black text-foreground">
               {healthState?.health_score || "--"}
             </span>{" "}
             <span className="text-sm text-muted-foreground mb-1">
@@ -114,14 +114,14 @@ export default function UnifiedHealthIntelligence() {
           </div>{" "}
         </div>{" "}
         {}{" "}
-        <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-6 relative">
+        <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6 relative">
           {" "}
           <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-2">
             Biological Age
           </h3>{" "}
           <div className="flex items-end gap-3">
             {" "}
-            <span className="text-2xl md:text-3xl md:text-4xl font-bold text-cyan-400">
+            <span className="text-2xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl font-bold text-cyan-400">
               {healthState?.biological_age || "--"}
             </span>{" "}
             <span className="text-sm text-muted-foreground mb-1">
@@ -135,7 +135,7 @@ export default function UnifiedHealthIntelligence() {
           </p>{" "}
         </div>{" "}
         {}{" "}
-        <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-6">
+        <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6">
           {" "}
           <h3 className="text-sm font-bold text-muted-foreground uppercase tracking-wider mb-4">
             Risk Factors
@@ -177,10 +177,10 @@ export default function UnifiedHealthIntelligence() {
           </div>{" "}
         </div>{" "}
       </div>{" "}
-      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
         {" "}
         {}{" "}
-        <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-6 min-h-[400px] flex flex-col">
+        <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6 min-h-[400px] flex flex-col">
           {" "}
           <div className="flex justify-between items-center mb-6">
             {" "}
@@ -216,7 +216,7 @@ export default function UnifiedHealthIntelligence() {
         <div className="space-y-6">
           {" "}
           {}{" "}
-          <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-6">
+          <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6">
             {" "}
             <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
               {" "}
@@ -260,7 +260,7 @@ export default function UnifiedHealthIntelligence() {
             </div>{" "}
           </div>{" "}
           {}{" "}
-          <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-6">
+          <div className="dark bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6">
             {" "}
             <h3 className="text-lg font-bold text-foreground flex items-center gap-2 mb-4">
               {" "}

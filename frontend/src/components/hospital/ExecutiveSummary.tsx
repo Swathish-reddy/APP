@@ -5,7 +5,7 @@ export default function ExecutiveSummary({ data }: { data: any }) {
   if (!data) return null;
   
   return (
-    <div className="bg-card/60 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col">
+    <div className="bg-card/60 border border-border/50 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col">
       <h2 className="text-xl font-bold text-foreground mb-4 flex items-center">
         <Briefcase className="w-5 h-5 mr-2 text-emerald-400" />
         Executive Summary
@@ -22,7 +22,7 @@ export default function ExecutiveSummary({ data }: { data: any }) {
           </div>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4 mt-6">
           <div className="space-y-1">
             <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Admissions</p>
             <p className="text-xl font-bold text-foreground flex items-center">

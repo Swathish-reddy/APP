@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Any
 
 # Standardized Clinical Reference Ranges
 REFERENCE_RANGES = {
@@ -44,7 +44,7 @@ def classify_lab_value(parameter: str, value: float) -> str:
         
     return "Abnormal" # Fallback
 
-def detect_disease_associations(abnormal_labs: Dict[str, str]) -> List[str]:
+def detect_disease_associations(abnormal_labs: dict[str, str]) -> list[str]:
     """Links abnormal findings to likely chronic conditions."""
     diseases = set()
     if "hba1c" in abnormal_labs or "glucose_fasting" in abnormal_labs:
@@ -55,7 +55,7 @@ def detect_disease_associations(abnormal_labs: Dict[str, str]) -> List[str]:
         diseases.add("Diabetic Dyslipidemia")
     return list(diseases)
 
-def generate_lab_report(patient: Dict[str, Any], lab_results: Dict[str, float]) -> Dict[str, Any]:
+def generate_lab_report(patient: dict[str, Any], lab_results: dict[str, float]) -> dict[str, Any]:
     """
     Compiles the comprehensive 18-point Laboratory Analysis report.
     """

@@ -5,8 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface AppointmentSchedulerProps {
   isOpen: boolean;
   onClose: () => void;
-}
-
+};
 export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSchedulerProps) {
   const [step, setStep] = useState(1);
   const [selectedDoctor, setSelectedDoctor] = useState<string | null>(null);
@@ -40,7 +39,7 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 20 }}
-          className="bg-card border border-border rounded-2xl p-4 md:p-6 w-full max-w-md shadow-2xl relative"
+          className="bg-card border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6 w-full max-w-md shadow-2xl relative"
         >
           <button onClick={onClose} className="absolute top-4 right-4 text-muted-foreground hover:text-foreground">
             <X className="w-5 h-5" />
@@ -92,7 +91,7 @@ export default function AppointmentScheduler({ isOpen, onClose }: AppointmentSch
               </h2>
               <p className="text-sm text-muted-foreground mb-6">Available slots for {doctors.find(d => d.id === selectedDoctor)?.name}</p>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6">
+              <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-3 mb-6">
                 {timeSlots.map(time => (
                   <div 
                     key={time}

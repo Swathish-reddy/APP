@@ -2,12 +2,18 @@
 Digital Twin Engine
 Computes organ health scores and metric projections from real DB data.
 """
+import random
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-import random
+
 from app.db.models import (
-    Patient, DigitalTwin, TwinPrediction, HealthMetric,
-    MedicalHistory, Medication, Lifestyle
+    DigitalTwin,
+    HealthMetric,
+    Lifestyle,
+    MedicalHistory,
+    Patient,
+    TwinPrediction,
 )
 
 

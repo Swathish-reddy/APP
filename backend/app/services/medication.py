@@ -6,9 +6,9 @@ Module 12: Medication Management System
 - Generates refill reminders
 - Provides adherence scoring
 """
-from typing import Dict, Any, List
-from datetime import datetime, timedelta
-from app.db.db import KNOWN_SIDE_EFFECTS, get_drug_interactions
+from typing import Any
+
+from app.db.db import KNOWN_SIDE_EFFECTS
 
 # Medication database with detailed clinical metadata
 MEDICATION_DATABASE = {
@@ -118,7 +118,7 @@ MEDICATION_DATABASE = {
     }
 }
 
-def get_medication_profile(medication_name: str) -> Dict[str, Any]:
+def get_medication_profile(medication_name: str) -> dict[str, Any]:
     """Returns detailed clinical profile for a given medication."""
     if medication_name in MEDICATION_DATABASE:
         profile = MEDICATION_DATABASE[medication_name].copy()
@@ -136,7 +136,7 @@ def get_medication_profile(medication_name: str) -> Dict[str, Any]:
         "category": "Other"
     }
 
-def generate_medication_schedule(medications: List[Dict[str, Any]], patient_age: int) -> Dict[str, Any]:
+def generate_medication_schedule(medications: list[dict[str, Any]], patient_age: int) -> dict[str, Any]:
     """Generates a complete weekly medication adherence schedule with timing recommendations."""
     schedule = {
         "morning": [],
@@ -200,7 +200,7 @@ def generate_medication_schedule(medications: List[Dict[str, Any]], patient_age:
         "total_medications": len(medications)
     }
 
-def check_contraindications(medication_name: str, patient_labs: Dict[str, Any], patient_history: List[str]) -> List[str]:
+def check_contraindications(medication_name: str, patient_labs: dict[str, Any], patient_history: list[str]) -> list[str]:
     """Cross-checks a medication's contraindications against patient's current lab values and history."""
     warnings = []
     if medication_name not in MEDICATION_DATABASE:

@@ -3,7 +3,7 @@ import { cn } from "@/lib/utils";
 interface RiskBadgeProps {
   score: number;
   className?: string;
-}
+};
 export default function RiskBadge({ score, className }: RiskBadgeProps) {
   let riskLevel = "Critical Risk";
   let colorClass = "bg-red-500/10 text-red-500 border-red-500/20";

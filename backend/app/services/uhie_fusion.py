@@ -2,16 +2,24 @@
 UHIE Fusion Service
 Unified Health Intelligence Engine – builds knowledge graphs and health state snapshots.
 """
-import uuid
 import random
-from typing import Dict, Any
+import uuid
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.db.models import (
-    Patient, KnowledgeNode, KnowledgeEdge, HealthStateSnapshot,
-    HealthEvent, HealthCorrelation, MedicalHistory,
-    Medication, Lifestyle, Document, WearableData
+    Document,
+    HealthCorrelation,
+    HealthEvent,
+    HealthStateSnapshot,
+    KnowledgeEdge,
+    KnowledgeNode,
+    Lifestyle,
+    MedicalHistory,
+    Medication,
+    Patient,
+    WearableData,
 )
 
 
@@ -126,7 +134,7 @@ async def generate_health_state(patient_id: int, db: AsyncSession) -> dict:
     patient = pat_res.scalars().first()
 
     base_score = 100
-    age = patient.age if patient and patient.age else 30
+    patient.age if patient and patient.age else 30
 
     if patient and patient.bmi and patient.bmi > 25:
         base_score -= 5

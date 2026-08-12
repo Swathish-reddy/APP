@@ -1,14 +1,12 @@
-import pytest
 from app.db.db import (
     INITIAL_PATIENTS,
-    patients_db,
     DOCTORS_DB,
     get_drug_interactions
 )
 
 def test_patients_db_initialized():
-    assert "P101" in patients_db
-    assert patients_db["P101"]["name"] == "Sarah Jenkins"
+    assert "P101" in INITIAL_PATIENTS
+    assert INITIAL_PATIENTS["P101"]["name"] == "Sarah Jenkins"
 
 def test_doctors_db_initialized():
     assert len(DOCTORS_DB) > 0

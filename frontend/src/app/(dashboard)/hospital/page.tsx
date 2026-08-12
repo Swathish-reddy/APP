@@ -110,8 +110,8 @@ export default function HospitalCommandCenter() {
       initial="hidden"
       animate="show"
     >
-      {/* HEADER SECTION (NASA/Tesla Mission Control Style) */}
-      <motion.div variants={itemVariants} className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 bg-card/80 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-2xl shadow-2xl relative overflow-hidden">
+      {}
+      <motion.div variants={itemVariants} className="flex flex-col xl:flex-row items-start xl:items-center justify-between gap-6 bg-card/80 border border-border/50 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-2xl shadow-2xl relative overflow-hidden">
         <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-cyan-500 via-indigo-500 to-purple-500"></div>
         <div className="absolute -top-24 -right-24 w-48 h-48 bg-indigo-500/20 rounded-full blur-3xl"></div>
         
@@ -120,7 +120,7 @@ export default function HospitalCommandCenter() {
             <ActivitySquare className="w-10 h-10 text-cyan-400" />
           </div>
           <div>
-            <h1 className="text-2xl md:text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight flex items-center gap-4">
+            <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-400 tracking-tight flex items-center gap-4">
               Operations Command Center
               {connectionStatus === "connected" ? (
                 <div className="flex items-center gap-2 px-3 py-1 bg-emerald-500/10 rounded-full border border-emerald-500/20">
@@ -166,15 +166,15 @@ export default function HospitalCommandCenter() {
         </div>
       </motion.div>
 
-      {/* TOP KPI DASHBOARD */}
+      {}
       <motion.div variants={itemVariants}>
         <TopKPIDashboard data={data} />
       </motion.div>
 
-      {/* MAIN GRID */}
+      {}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
         
-        {/* LEFT COLUMN: Flow & Capacity (7 cols) */}
+        {}
         <div className="xl:col-span-7 space-y-6">
           <motion.div variants={itemVariants}>
             <LivePatientFlow data={data} history={history} />
@@ -182,13 +182,13 @@ export default function HospitalCommandCenter() {
           <motion.div variants={itemVariants}>
             <CapacityIntelligence data={data} />
           </motion.div>
-          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div variants={itemVariants} className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
             <WorkforceIntelligence data={data} />
             <ResourceManagement data={data} />
           </motion.div>
         </div>
 
-        {/* RIGHT COLUMN: AI, Emergency, Summary (5 cols) */}
+        {}
         <div className="xl:col-span-5 space-y-6 flex flex-col">
           <motion.div variants={itemVariants}>
             <EmergencyIntegration data={data} />

@@ -1,7 +1,10 @@
 import json
-from typing import Dict, Any, Tuple
+from typing import Any
+
 from sqlalchemy.ext.asyncio import AsyncSession
-from app.db.models import AuditLog, Patient
+
+from app.db.models import AuditLog
+
 
 class DataFusionEngine:
     """
@@ -10,7 +13,7 @@ class DataFusionEngine:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def ingest_payload(self, source: str, payload_type: str, data: Any) -> Dict[str, Any]:
+    async def ingest_payload(self, source: str, payload_type: str, data: Any) -> dict[str, Any]:
         """
         Main entry point for data ingestion.
         payload_type: 'json', 'fhir', 'hl7', 'csv'
@@ -33,18 +36,18 @@ class DataFusionEngine:
             "message": "Data ingested and synchronized successfully."
         }
         
-    def _parse_data(self, payload_type: str, data: Any) -> Dict[str, Any]:
+    def _parse_data(self, payload_type: str, data: Any) -> dict[str, Any]:
         if payload_type == 'json':
             return data if isinstance(data, dict) else json.loads(data)
         # Placeholder for FHIR/HL7 parsers
         return {}
 
-    async def _identify_patient(self, parsed_data: Dict[str, Any]) -> Tuple[int, bool]:
+    async def _identify_patient(self, parsed_data: dict[str, Any]) -> tuple[int, bool]:
         # Basic deduplication logic by matching name/dob
         # Placeholder for now, returning dummy ID
         return 1, False
 
-    async def _log_audit(self, patient_id: int, action: str, source: str, details: Dict[str, Any]):
+    async def _log_audit(self, patient_id: int, action: str, source: str, details: dict[str, Any]):
         audit = AuditLog(
             patient_id=patient_id,
             action_type=action,

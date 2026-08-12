@@ -1,6 +1,7 @@
-from typing import Dict, Any, List
+from typing import Any
 
-def evaluate_renal_hepatic_clearance(medications: List[Dict[str, Any]], labs: Dict[str, float]) -> List[Dict[str, str]]:
+
+def evaluate_renal_hepatic_clearance(medications: list[dict[str, Any]], labs: dict[str, float]) -> list[dict[str, str]]:
     """Evaluates drug doses against kidney and liver function."""
     alerts = []
     egfr = labs.get("egfr", 100.0)
@@ -17,7 +18,7 @@ def evaluate_renal_hepatic_clearance(medications: List[Dict[str, Any]], labs: Di
                 
     return alerts
 
-def detect_critical_interactions(medications: List[Dict[str, Any]]) -> List[Dict[str, str]]:
+def detect_critical_interactions(medications: list[dict[str, Any]]) -> list[dict[str, str]]:
     """Flags dangerous drug-drug combinations."""
     alerts = []
     names = [m.get("name", "").lower() for m in medications]
@@ -34,7 +35,7 @@ def detect_critical_interactions(medications: List[Dict[str, Any]]) -> List[Dict
         
     return alerts
 
-def generate_medication_intelligence_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_medication_intelligence_report(patient: dict[str, Any]) -> dict[str, Any]:
     """Compiles the 20-point Pharmacotherapy report."""
     meds = patient.get("medications", [])
     labs = patient.get("labs", {})

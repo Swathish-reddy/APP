@@ -1,6 +1,7 @@
-from typing import Dict, Any, List
+from typing import Any
 
-def calculate_clinical_kpis(state: Dict[str, Any]) -> Dict[str, Any]:
+
+def calculate_clinical_kpis(state: dict[str, Any]) -> dict[str, Any]:
     """Aggregates high-level clinical and operational performance scores."""
     total_pts = state.get("active_patients", 1000)
     readmissions = state.get("readmissions", 50)
@@ -16,7 +17,7 @@ def calculate_clinical_kpis(state: Dict[str, Any]) -> Dict[str, Any]:
         "readmission_rate_pct": round(readmission_rate, 1)
     }
 
-def forecast_population_health(state: Dict[str, Any]) -> Dict[str, Any]:
+def forecast_population_health(state: dict[str, Any]) -> dict[str, Any]:
     """Generates predictive analytics for population health surges."""
     predictions = []
     
@@ -33,7 +34,7 @@ def forecast_population_health(state: Dict[str, Any]) -> Dict[str, Any]:
         "anomalies": ["15% spike in metabolic-related ER visits detected this quarter."]
     }
 
-def generate_executive_analytics_report(state: Dict[str, Any]) -> Dict[str, Any]:
+def generate_executive_analytics_report(state: dict[str, Any]) -> dict[str, Any]:
     """Compiles the 20-point Executive Business Intelligence Report."""
     
     kpis = calculate_clinical_kpis(state)

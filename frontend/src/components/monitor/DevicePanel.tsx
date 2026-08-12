@@ -21,7 +21,7 @@ interface DevicePanelProps {
   devices: Device[];
   patientId: string;
   onDeviceAdded?: (device: Device) => void;
-}
+};
 export const DevicePanel: React.FC<DevicePanelProps> = ({ devices, patientId, onDeviceAdded }) => {
   const [scanning, setScanning] = React.useState(false);
   const [scannedDevices, setScannedDevices] = React.useState<Device[]>([]);
@@ -61,7 +61,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({ devices, patientId, on
         method: "POST"
       });
       // A quick reload to sync state since we don't have a specific `onDeviceRemoved` callback
-      // Or we can just let the polling interval fetch the updated list
+      // let the polling interval fetch the updated list
     } catch (e) {
       console.error(e);
     }

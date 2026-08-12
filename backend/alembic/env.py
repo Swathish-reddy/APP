@@ -27,7 +27,7 @@ target_metadata = Base.metadata
 
 config.set_main_option(
     "sqlalchemy.url",
-    settings.SQLALCHEMY_DATABASE_URI.replace("postgresql+asyncpg", "postgresql").replace("sqlite+aiosqlite", "sqlite")
+    settings.DATABASE_URL.replace("postgresql+asyncpg", "postgresql").replace("sqlite+aiosqlite", "sqlite")
 )
 
 # other values from the config, defined by the needs of env.py,
@@ -54,6 +54,7 @@ def run_migrations_offline() -> None:
         target_metadata=target_metadata,
         literal_binds=True,
         dialect_opts={"paramstyle": "named"},
+        render_as_batch=True,
     )
 
     with context.begin_transaction():

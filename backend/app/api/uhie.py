@@ -3,12 +3,17 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.db.session import get_db
-from app.db.models import (
-    Patient, KnowledgeNode, KnowledgeEdge, HealthStateSnapshot,
-    HealthEvent, HealthCorrelation, User
-)
 from app.api.deps import get_current_user
+from app.db.models import (
+    HealthCorrelation,
+    HealthEvent,
+    HealthStateSnapshot,
+    KnowledgeEdge,
+    KnowledgeNode,
+    Patient,
+    User,
+)
+from app.db.session import get_db
 from app.services.uhie_fusion import trigger_uhie_fusion
 
 router = APIRouter()

@@ -1,15 +1,16 @@
+from datetime import datetime
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
-from datetime import datetime
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
 from app.db.models import Document, Patient
-from sqlalchemy.future import select
 
 router = APIRouter()
 
-async def _simulate_hospital_state(hospital_id: int, db: AsyncSession) -> Dict[str, Any]:
+async def _simulate_hospital_state(hospital_id: int, db: AsyncSession) -> dict[str, Any]:
     """
     Aggregates hospital-wide state dynamically from actual Patient and Document tables.
     """
@@ -135,7 +136,7 @@ async def _simulate_hospital_state(hospital_id: int, db: AsyncSession) -> Dict[s
 
     return state
 
-@router.get("/{hospital_id}/intelligence", response_model=Dict[str, Any])
+@router.get("/{hospital_id}/intelligence", response_model=dict[str, Any])
 async def get_hospital_intelligence(hospital_id: int, db: AsyncSession = Depends(get_db)):
     """
     Generates structured Hospital Operational Intelligence for the Command Center dashboard.
@@ -146,5 +147,5 @@ async def get_hospital_intelligence(hospital_id: int, db: AsyncSession = Depends
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate hospital intelligence report: {str(e)}"
+            detail=f"Failed to generate hospital intelligence report: {e!s}"
         )

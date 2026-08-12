@@ -1,21 +1,23 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
 from pydantic import BaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
 from app.db.models import Patient
-from sqlalchemy.future import select
 from app.services.whatif_simulator import run_comprehensive_simulation
 
 router = APIRouter()
 
 class WhatIfSimulationRequest(BaseModel):
-    modified_params: Dict[str, Any]
+    modified_params: dict[str, Any]
 
-from app.db.models import HealthMetric, Document
+from app.db.models import Document, HealthMetric
 
-async def _build_patient_dict(patient_obj: Patient, db: AsyncSession) -> Dict[str, Any]:
+
+async def _build_patient_dict(patient_obj: Patient, db: AsyncSession) -> dict[str, Any]:
     """Helper to convert Patient ORM to dictionary suitable for AI services, enriching with reports."""
     metrics_result = await db.execute(select(HealthMetric).where(HealthMetric.patient_id == patient_obj.patient_id))
     metrics_list = metrics_result.scalars().all()
@@ -56,7 +58,7 @@ async def _build_patient_dict(patient_obj: Patient, db: AsyncSession) -> Dict[st
         "active_medications": []
     }
 
-@router.post("/{patient_id}/simulate", response_model=Dict[str, Any])
+@router.post("/{patient_id}/simulate", response_model=dict[str, Any])
 async def simulate_what_if_scenario(patient_id: int, req: WhatIfSimulationRequest, db: AsyncSession = Depends(get_db)):
     """
     Executes a comprehensive 20-point What-If simulation.
@@ -79,5 +81,5 @@ async def simulate_what_if_scenario(patient_id: int, req: WhatIfSimulationReques
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to execute simulation: {str(e)}"
+            detail=f"Failed to execute simulation: {e!s}"
         )

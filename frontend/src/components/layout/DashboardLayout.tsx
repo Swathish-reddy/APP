@@ -25,9 +25,11 @@ import {
   ChevronRight,
   Plus,
   Network,
+  X,
 } from "lucide-react";
 import { PatientSummary } from "../../services/api";
 import { AIHelpAssistant } from "../intelligence/AIHelpAssistant";
+import DocumentUpload from "@/components/documents/DocumentUpload";
 import { useTheme } from "next-themes";
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -70,6 +72,7 @@ export default function DashboardLayout({
   const [assistantOpen, setAssistantOpen] = React.useState(false);
   const [notificationsOpen, setNotificationsOpen] = React.useState(false);
   const [notifications, setNotifications] = React.useState<any[]>([]);
+  const [isGlobalUploading, setIsGlobalUploading] = React.useState(false);
   const { theme, setTheme } = useTheme();
   
   React.useEffect(() => {
@@ -222,11 +225,11 @@ export default function DashboardLayout({
         </div>{" "}
       </motion.aside>
       )}
-      {/* Main Content */}
+      {}
       <div className={`flex-1 flex flex-col min-w-0 ${activeTab === "emergency" ? "bg-background" : "bg-[#f8fafc]"} w-full`}>
-        {/* Header */}
+        {}
         {activeTab !== "emergency" && (
-        <header className="h-16 bg-card/80 backdrop-blur-md border-b border-slate-200 dark:bg-card/80 dark:border-border px-4 md:px-4 md:px-6 flex items-center justify-between shrink-0 sticky top-0 z-10 shadow-sm">
+        <header className="h-16 bg-card/80 backdrop-blur-md border-b border-slate-200 dark:bg-card/80 dark:border-border px-4 md:px-4 md:px-4 md:px-4 md:px-6 flex items-center justify-between shrink-0 sticky top-0 z-10 shadow-sm">
           <div className="flex items-center space-x-2 md:space-x-4 flex-1">
             <button
               className="md:hidden p-2 text-muted-foreground hover:bg-slate-100 dark:hover:bg-muted rounded-lg"
@@ -262,7 +265,9 @@ export default function DashboardLayout({
               </select>
             </div>
             <button 
-              onClick={() => setActiveTab("labs")}
+              onClick={() => {
+                setIsGlobalUploading(true);
+              }}
               className="hidden sm:flex items-center justify-center space-x-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 border border-blue-500/30 px-3 py-1.5 rounded-full text-sm font-bold transition-colors shadow-[0_0_10px_rgba(59,130,246,0.2)]"
             >
               <Plus className="h-4 w-4" /> <span>Ingest</span>
@@ -286,7 +291,7 @@ export default function DashboardLayout({
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-full md:w-80 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-xl shadow-xl z-50 overflow-hidden"
+                    className="absolute right-0 mt-2 w-full md:w-full md:w-full md:w-80 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-xl shadow-xl z-50 overflow-hidden"
                   >
                     <div className="px-4 py-3 border-b border-slate-100 dark:border-border flex justify-between items-center bg-slate-50/50 dark:bg-card/50">
                       <h3 className="font-semibold text-sm text-slate-900 dark:text-foreground">Notifications</h3>
@@ -299,7 +304,7 @@ export default function DashboardLayout({
                           <p className="text-xs text-muted-foreground dark:text-muted-foreground line-clamp-2">{n.description || 'System event recorded.'}</p>
                         </div>
                       )) : (
-                        <div className="p-4 md:p-6 text-center text-muted-foreground dark:text-muted-foreground text-sm">
+                        <div className="p-4 md:p-4 md:p-4 md:p-6 text-center text-muted-foreground dark:text-muted-foreground text-sm">
                           No recent alerts found.
                         </div>
                       )}
@@ -324,8 +329,8 @@ export default function DashboardLayout({
           </div>
         </header>
         )}
-        {/* Main Area */}
-        <main className={`flex-1 overflow-y-auto ${activeTab === "emergency" ? "p-0" : "p-4 md:p-4 md:p-6 lg:p-4 md:p-8"} relative w-full`}>
+        {}
+        <main className={`flex-1 overflow-y-auto ${activeTab === "emergency" ? "p-0" : "p-4 md:p-4 md:p-4 md:p-4 md:p-6 lg:p-4 md:p-4 md:p-4 md:p-8"} relative w-full`}>
           {" "}
           <AnimatePresence mode="wait">
             {" "}
@@ -354,8 +359,40 @@ export default function DashboardLayout({
           <AIHelpAssistant
             isOpen={assistantOpen}
             onClose={() => setAssistantOpen(false)}
-            patientId={selectedPatientId}
           />{" "}
+          <AnimatePresence>
+            {isGlobalUploading && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
+              >
+                <motion.div
+                  initial={{ scale: 0.95, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  exit={{ scale: 0.95, opacity: 0 }}
+                  className="bg-card w-full max-w-2xl rounded-3xl p-6 shadow-2xl border border-border relative overflow-y-auto max-h-[90vh]"
+                >
+                  <button
+                    onClick={() => setIsGlobalUploading(false)}
+                    className="absolute top-4 right-4 p-2 text-muted-foreground hover:text-foreground hover:bg-slate-100 dark:hover:bg-slate-800 rounded-full transition-colors z-10"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                  <DocumentUpload
+                    patientId={selectedPatientId}
+                    autoOpenPicker={true}
+                    onUploadComplete={() => {
+                      setIsGlobalUploading(false);
+                      setActiveTab("labs");
+                      window.dispatchEvent(new CustomEvent("documentUploaded"));
+                    }}
+                  />
+                </motion.div>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </main>{" "}
       </div>{" "}
     </div>

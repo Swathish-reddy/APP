@@ -14,7 +14,7 @@ import { BrainCircuit, TrendingUp, TrendingDown, BookOpen } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 interface SHAPPanelProps {
   shap: any;
-}
+};
 export const SHAPPanel: React.FC<SHAPPanelProps> = ({ shap }) => {
   if (!shap) return null;
   const features = shap.all_features || [];
@@ -107,7 +107,7 @@ export const SHAPPanel: React.FC<SHAPPanelProps> = ({ shap }) => {
           </ResponsiveContainer>{" "}
         </div>{" "}
         {}{" "}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4">
           {" "}
           <div>
             {" "}

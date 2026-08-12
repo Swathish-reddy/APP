@@ -5,7 +5,7 @@ import { ArrowRightLeft } from "lucide-react";
 export default function LivePatientFlow({ data, history }: { data: any, history: any[] }) {
   if (!data) return null;
   return (
-    <div className="bg-card/60 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl">
+    <div className="bg-card/60 border border-border/50 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-foreground flex items-center gap-2">
           <ArrowRightLeft className="w-6 h-6 text-indigo-400" /> Live Patient Flow

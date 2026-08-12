@@ -1,19 +1,20 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
 from pydantic import BaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
 from app.db.models import Patient
-from sqlalchemy.future import select
 from app.services.lab_analysis_engine import generate_lab_report
 
 router = APIRouter()
 
 class LabResultPayload(BaseModel):
-    lab_results: Dict[str, float]
+    lab_results: dict[str, float]
 
-def _build_patient_baseline(patient_obj: Patient) -> Dict[str, Any]:
+def _build_patient_baseline(patient_obj: Patient) -> dict[str, Any]:
     """Helper to convert Patient ORM to dictionary suitable for baseline comparison."""
     return {
         "patient_id": patient_obj.patient_id,
@@ -26,7 +27,7 @@ def _build_patient_baseline(patient_obj: Patient) -> Dict[str, Any]:
         "active_medications": []
     }
 
-@router.post("/{patient_id}/analyze", response_model=Dict[str, Any])
+@router.post("/{patient_id}/analyze", response_model=dict[str, Any])
 async def analyze_laboratory_report(patient_id: int, req: LabResultPayload, db: AsyncSession = Depends(get_db)):
     """
     Ingests raw laboratory results (e.g., from OCR or FHIR).
@@ -49,5 +50,5 @@ async def analyze_laboratory_report(patient_id: int, req: LabResultPayload, db: 
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to process laboratory report: {str(e)}"
+            detail=f"Failed to process laboratory report: {e!s}"
         )

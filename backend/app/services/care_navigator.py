@@ -1,12 +1,18 @@
-from typing import Dict, Any, List
 import datetime
+from typing import Any
+
 from app.db.db import (
-    DOCTORS_DB, HOSPITALS_DB, DIAGNOSTIC_CENTERS_DB, 
-    APPOINTMENTS_DB, REFERRALS_DB, PATIENT_JOURNEYS_DB
+    APPOINTMENTS_DB,
+    DIAGNOSTIC_CENTERS_DB,
+    DOCTORS_DB,
+    HOSPITALS_DB,
+    PATIENT_JOURNEYS_DB,
+    REFERRALS_DB,
 )
 from app.services.fusion import run_ai_fusion
 
-def calculate_doctor_match(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+
+def calculate_doctor_match(patient: dict[str, Any]) -> list[dict[str, Any]]:
     ai_fusion = run_ai_fusion(patient)
     predictions = ai_fusion.get("predictions", {})
     
@@ -59,7 +65,7 @@ def calculate_doctor_match(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
     recommendations.sort(key=lambda x: x["match_score"], reverse=True)
     return recommendations
 
-def calculate_hospital_match(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+def calculate_hospital_match(patient: dict[str, Any]) -> list[dict[str, Any]]:
     recommendations = []
     
     # Check if emergency
@@ -85,7 +91,7 @@ def calculate_hospital_match(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
     recommendations.sort(key=lambda x: x["match_score"], reverse=True)
     return recommendations
 
-def get_diagnostic_centers(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+def get_diagnostic_centers(patient: dict[str, Any]) -> list[dict[str, Any]]:
     # Just sort by rating for now
     centers = [c.copy() for c in DIAGNOSTIC_CENTERS_DB]
     for c in centers:
@@ -93,9 +99,9 @@ def get_diagnostic_centers(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
     centers.sort(key=lambda x: x["match_score"], reverse=True)
     return centers
 
-def generate_care_pathway(patient_id: str, patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+def generate_care_pathway(patient_id: str, patient: dict[str, Any]) -> list[dict[str, Any]]:
     ai_fusion = run_ai_fusion(patient)
-    predictions = ai_fusion.get("predictions", {})
+    ai_fusion.get("predictions", {})
     
     pathway = []
     pathway.append({"step": "Diagnosis", "status": "Completed", "detail": "AI Fusion detected elevated risks.", "date": datetime.datetime.now().strftime("%Y-%m-%d")})
@@ -106,7 +112,7 @@ def generate_care_pathway(patient_id: str, patient: Dict[str, Any]) -> List[Dict
     PATIENT_JOURNEYS_DB[patient_id] = pathway
     return pathway
 
-def book_appointment(patient_id: str, provider_id: str, type: str, date: str) -> Dict[str, Any]:
+def book_appointment(patient_id: str, provider_id: str, type: str, date: str) -> dict[str, Any]:
     if patient_id not in APPOINTMENTS_DB:
         APPOINTMENTS_DB[patient_id] = []
         
@@ -120,8 +126,8 @@ def book_appointment(patient_id: str, provider_id: str, type: str, date: str) ->
     APPOINTMENTS_DB[patient_id].append(appt)
     return appt
 
-def get_appointments(patient_id: str) -> List[Dict[str, Any]]:
+def get_appointments(patient_id: str) -> list[dict[str, Any]]:
     return APPOINTMENTS_DB.get(patient_id, [])
 
-def get_referrals(patient_id: str) -> List[Dict[str, Any]]:
+def get_referrals(patient_id: str) -> list[dict[str, Any]]:
     return REFERRALS_DB.get(patient_id, [])

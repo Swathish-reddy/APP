@@ -49,7 +49,7 @@ export default function SettingsDashboard() {
     setTheme("system");
   };
   return (
-    <div className="p-4 md:p-8 max-w-7xl mx-auto space-y-6 relative">
+    <div className="p-4 md:p-4 md:p-4 md:p-8 max-w-7xl mx-auto space-y-6 relative">
       {" "}
       {showToast && (
         <div className="absolute top-4 right-4 bg-emerald-500 text-foreground px-4 py-2 rounded-lg shadow-lg flex items-center gap-2 animate-in slide-in-from-top-2">
@@ -61,7 +61,7 @@ export default function SettingsDashboard() {
         {" "}
         <div>
           {" "}
-          <h1 className="text-2xl md:text-3xl font-bold text-slate-900 flex items-center gap-2">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold text-slate-900 flex items-center gap-2">
             {" "}
             <Settings className="w-8 h-8 text-blue-500" /> Platform
             Settings{" "}
@@ -74,7 +74,7 @@ export default function SettingsDashboard() {
       <div className="flex flex-col md:flex-row gap-8 mt-8">
         {" "}
         {}{" "}
-        <div className="w-full md:w-full md:w-64 space-y-1 shrink-0">
+        <div className="w-full md:w-full md:w-full md:w-full md:w-64 space-y-1 shrink-0">
           {" "}
           {[
             { id: "profile", icon: User, label: "Profile" },
@@ -101,7 +101,7 @@ export default function SettingsDashboard() {
           ))}{" "}
         </div>{" "}
         {}{" "}
-        <div className="flex-1 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-3xl p-4 md:p-8 shadow-sm">
+        <div className="flex-1 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-3xl p-4 md:p-4 md:p-4 md:p-8 shadow-sm">
           {" "}
           {}{" "}
           {activeTab === "appearance" && (
@@ -115,7 +115,7 @@ export default function SettingsDashboard() {
                 <label className="block text-sm font-semibold text-foreground dark:text-muted-foreground">
                   Theme Preference
                 </label>{" "}
-                <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                   {" "}
                   <button
                     onClick={() => setTheme("light")}
@@ -239,7 +239,7 @@ export default function SettingsDashboard() {
               </h2>
               <div className="flex flex-col md:flex-row gap-8 items-start">
                 <div className="flex flex-col items-center gap-4">
-                  <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-foreground font-bold text-2xl md:text-3xl md:text-4xl shadow-lg border-4 border-white dark:border-border">
+                  <div className="w-32 h-32 rounded-full bg-gradient-to-tr from-indigo-500 to-purple-500 flex items-center justify-center text-foreground font-bold text-2xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl shadow-lg border-4 border-white dark:border-border">
                     JD
                   </div>
                   <button className="px-4 py-2 bg-slate-100 dark:bg-muted text-slate-700 dark:text-foreground font-medium rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors text-sm">
@@ -247,7 +247,7 @@ export default function SettingsDashboard() {
                   </button>
                 </div>
                 <div className="flex-1 space-y-4 w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label className="text-sm font-semibold text-slate-700 dark:text-foreground">First Name</label>
                       <input type="text" defaultValue="John" className="w-full bg-slate-50 dark:bg-muted border border-slate-300 dark:border-border rounded-lg p-2.5 text-slate-900 dark:text-foreground focus:ring-2 focus:ring-blue-500 outline-none transition-all" />
@@ -345,7 +345,7 @@ export default function SettingsDashboard() {
             {" "}
             <button
               onClick={handleReset}
-              className="px-4 md:px-6 py-2.5 rounded-xl font-semibold text-foreground dark:text-muted-foreground hover:bg-slate-100 dark:hover:bg-muted transition-colors"
+              className="px-4 md:px-4 md:px-4 md:px-6 py-2.5 rounded-xl font-semibold text-foreground dark:text-muted-foreground hover:bg-slate-100 dark:hover:bg-muted transition-colors"
             >
               {" "}
               Reset to Defaults{" "}
@@ -353,7 +353,7 @@ export default function SettingsDashboard() {
             <button
               onClick={handleSave}
               disabled={isSaving}
-              className="px-4 md:px-6 py-2.5 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-foreground shadow-lg shadow-blue-500/30 transition-all disabled:opacity-70 flex items-center gap-2"
+              className="px-4 md:px-4 md:px-4 md:px-6 py-2.5 rounded-xl font-bold bg-blue-600 hover:bg-blue-700 text-foreground shadow-lg shadow-blue-500/30 transition-all disabled:opacity-70 flex items-center gap-2"
             >
               {" "}
               {isSaving ? (

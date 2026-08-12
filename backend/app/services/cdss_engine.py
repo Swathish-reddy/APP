@@ -1,8 +1,15 @@
-from typing import Dict, Any, List
-from app.db.db import EVIDENCE_STORE, TREATMENT_PATHWAYS_DB, get_drug_interactions, KNOWN_SIDE_EFFECTS
+from typing import Any
+
+from app.db.db import (
+    EVIDENCE_STORE,
+    KNOWN_SIDE_EFFECTS,
+    TREATMENT_PATHWAYS_DB,
+    get_drug_interactions,
+)
 from app.services.fusion import run_ai_fusion
 
-def generate_recommendations(patient: Dict[str, Any]) -> Dict[str, List[Dict[str, Any]]]:
+
+def generate_recommendations(patient: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
     """
     Generates categorized clinical recommendations based on patient digital twin data.
     """
@@ -93,7 +100,7 @@ def generate_recommendations(patient: Dict[str, Any]) -> Dict[str, List[Dict[str
 
     return recommendations
 
-def get_medication_intelligence(patient: Dict[str, Any]) -> Dict[str, Any]:
+def get_medication_intelligence(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Analyzes current medications for interactions and side effect risks.
     """
@@ -117,7 +124,7 @@ def get_medication_intelligence(patient: Dict[str, Any]) -> Dict[str, Any]:
         ]
     }
 
-def get_treatment_pathway(condition: str) -> List[Dict[str, Any]]:
+def get_treatment_pathway(condition: str) -> list[dict[str, Any]]:
     """
     Retrieves predefined clinical treatment pathways.
     """
@@ -125,7 +132,7 @@ def get_treatment_pathway(condition: str) -> List[Dict[str, Any]]:
         {"step": 1, "action": "General Evaluation", "details": "Consult primary care.", "duration": "Immediate"}
     ])
 
-def generate_care_plan(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_care_plan(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Creates a time-bound care plan based on patient profile.
     """
@@ -153,7 +160,7 @@ def generate_care_plan(patient: Dict[str, Any]) -> Dict[str, Any]:
 # Doctor Intelligence / CDSS Engine Extensions
 # ─────────────────────────────────────────────
 
-def generate_differential_diagnosis(patient: Dict[str, Any]) -> List[Dict[str, Any]]:
+def generate_differential_diagnosis(patient: dict[str, Any]) -> list[dict[str, Any]]:
     """Generates probabilistic differential diagnoses based on patient baseline."""
     differentials = []
     
@@ -193,7 +200,7 @@ def generate_differential_diagnosis(patient: Dict[str, Any]) -> List[Dict[str, A
         
     return differentials
 
-def generate_soap_note(patient: Dict[str, Any], differentials: List[Dict[str, Any]], recommendations: Dict[str, Any]) -> str:
+def generate_soap_note(patient: dict[str, Any], differentials: list[dict[str, Any]], recommendations: dict[str, Any]) -> str:
     """Generates an automated SOAP note for the physician."""
     age = patient.get("age", 45)
     gender = patient.get("gender", "Male")
@@ -238,7 +245,7 @@ def generate_soap_note(patient: Dict[str, Any], differentials: List[Dict[str, An
     )
     return soap
 
-def generate_doctor_intelligence_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_doctor_intelligence_report(patient: dict[str, Any]) -> dict[str, Any]:
     """Generates the full 20-point CDSS Doctor Intelligence Report."""
     age = patient.get("age", 45)
     gender = patient.get("gender", "Male")

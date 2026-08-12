@@ -1,15 +1,16 @@
+import datetime
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
-import datetime
 
-from app.api.deps import get_db, get_current_user
+from app.api.deps import get_current_user, get_db
 from app.db.models import User
 from app.services.settings_engine import generate_settings_intelligence_report
 
 router = APIRouter()
 
-def _simulate_user_preferences(user: User) -> Dict[str, Any]:
+def _simulate_user_preferences(user: User) -> dict[str, Any]:
     """
     Simulates a UserPreferences table load.
     """
@@ -23,7 +24,7 @@ def _simulate_user_preferences(user: User) -> Dict[str, Any]:
         "theme": "Dark Mode"
     }
 
-def _simulate_active_sessions() -> list[Dict[str, Any]]:
+def _simulate_active_sessions() -> list[dict[str, Any]]:
     """
     Simulates querying a DeviceSessions table.
     We inject one stale session to trigger the AI Security Recommendation.
@@ -37,7 +38,7 @@ def _simulate_active_sessions() -> list[Dict[str, Any]]:
         {"device_name": "iPad Pro (Home)", "last_active": stale_date}
     ]
 
-@router.get("/{user_id}/configuration", response_model=Dict[str, Any])
+@router.get("/{user_id}/configuration", response_model=dict[str, Any])
 async def get_settings_configuration(
     user_id: int,
     db: AsyncSession = Depends(get_db),
@@ -62,5 +63,5 @@ async def get_settings_configuration(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate settings report: {str(e)}"
+            detail=f"Failed to generate settings report: {e!s}"
         )

@@ -9,7 +9,7 @@ import {
 interface NavigatorTopSectionProps {
   recommendations: any;
   pathway: any;
-}
+};
 export const NavigatorTopSection: React.FC<NavigatorTopSectionProps> = ({
   recommendations,
   pathway,
@@ -20,7 +20,7 @@ export const NavigatorTopSection: React.FC<NavigatorTopSectionProps> = ({
     topHosp?.match_score > 90 &&
     topHosp?.emergency_readiness?.includes("Level 1");
   return (
-    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+    <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
       {" "}
       <Card className="bg-gradient-to-br from-indigo-500/10 to-indigo-600/5 border-indigo-500/20">
         {" "}

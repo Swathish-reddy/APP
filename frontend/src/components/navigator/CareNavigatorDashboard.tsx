@@ -7,7 +7,7 @@ import { AIInsightsPanel } from "./AIInsightsPanel";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 interface CareNavigatorDashboardProps {
   patientId: string;
-}
+};
 export const CareNavigatorDashboard: React.FC<CareNavigatorDashboardProps> = ({
   patientId,
 }) => {
@@ -78,7 +78,7 @@ export const CareNavigatorDashboard: React.FC<CareNavigatorDashboardProps> = ({
         {" "}
         <div>
           {" "}
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold tracking-tight">
             Care Navigator Intelligence Center
           </h1>{" "}
           <p className="text-muted-foreground mt-1">
@@ -97,7 +97,7 @@ export const CareNavigatorDashboard: React.FC<CareNavigatorDashboardProps> = ({
           {" "}
           <Tabs defaultValue="doctors" className="h-full flex flex-col">
             {" "}
-            <TabsList className="grid w-full grid-cols-1 md:grid-cols-2 mb-4">
+            <TabsList className="grid w-full grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 mb-4">
               {" "}
               <TabsTrigger value="doctors">Doctors</TabsTrigger>{" "}
               <TabsTrigger value="hospitals">Hospitals</TabsTrigger>{" "}

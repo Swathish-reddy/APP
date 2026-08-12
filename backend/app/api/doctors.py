@@ -1,13 +1,11 @@
-from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from typing import List, Optional
-from pydantic import BaseModel
 import random
 
-from app.db.session import get_db
+from fastapi import APIRouter, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
+
 from app.db.models import DoctorProfile, HospitalProfile
-from app.api.deps import get_current_user
+from app.db.session import get_db
 
 router = APIRouter()
 
@@ -29,7 +27,7 @@ async def seed_data_if_empty(db: AsyncSession):
 
 @router.get("/nearby")
 async def get_nearby_doctors(
-    specialty: Optional[str] = None,
+    specialty: str | None = None,
     db: AsyncSession = Depends(get_db)
 ):
     await seed_data_if_empty(db)

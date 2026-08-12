@@ -1,21 +1,20 @@
-from fastapi import APIRouter, HTTPException, Depends
-from typing import List, Optional
+
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from sqlalchemy import or_
 
-from app.db.session import get_db
-from app.db.models import DoctorProfile, HospitalProfile, User
 from app.api.deps import get_current_user
+from app.db.models import DoctorProfile, HospitalProfile, User
+from app.db.session import get_db
 
 router = APIRouter()
 
 @router.get("/doctors")
 async def find_doctors(
-    specialty: Optional[str] = None,
-    max_distance: Optional[float] = None,
-    available_today: Optional[bool] = None,
-    telemedicine: Optional[bool] = None,
+    specialty: str | None = None,
+    max_distance: float | None = None,
+    available_today: bool | None = None,
+    telemedicine: bool | None = None,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -51,9 +50,9 @@ async def find_doctors(
 
 @router.get("/hospitals")
 async def find_hospitals(
-    specialty: Optional[str] = None,
-    emergency_available: Optional[bool] = None,
-    icu_available: Optional[bool] = None,
+    specialty: str | None = None,
+    emergency_available: bool | None = None,
+    icu_available: bool | None = None,
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):

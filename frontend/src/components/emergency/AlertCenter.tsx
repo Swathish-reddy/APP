@@ -6,7 +6,7 @@ export default function AlertCenter() {
   const [alerts, setAlerts] = useState<any[]>([]);
 
   useEffect(() => {
-    // Simulate incoming critical alerts for the demo
+    // alerts for the demo
     const timer = setTimeout(() => {
       setAlerts([
         {

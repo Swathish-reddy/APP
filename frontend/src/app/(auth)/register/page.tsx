@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Activity } from "lucide-react";
+import { BASE_URL } from "../../../services/api";
 export default function RegisterPage() {
   const router = useRouter();
   const [formData, setFormData] = useState({
@@ -17,18 +18,33 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
     try {
-      const response = await fetch(
-        "http://localhost:8000/api/v1/auth/register",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            full_name: formData.fullName,
-            email: formData.email,
-            password: formData.password,
-          }),
-        },
-      );
+      const registerUrl = `${BASE_URL}/auth/register`;
+
+      let response;
+      try {
+        response = await fetch(
+          registerUrl,
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              full_name: formData.fullName,
+              email: formData.email,
+              password: formData.password,
+            }),
+          },
+        );
+      } catch (networkError: any) {
+        if (
+          process.env.NEXT_PUBLIC_DEMO_MODE === "true" ||
+          networkError.message.includes("Failed to fetch") ||
+          networkError.message.includes("NetworkError")
+        ) {
+          throw new Error("Registration is disabled in Demo/Offline Mode");
+        }
+        throw networkError;
+      }
+
       if (!response.ok) {
         const data = await response.json();
         throw new Error(data.detail || "Registration failed");
@@ -36,8 +52,9 @@ export default function RegisterPage() {
       const loginData = new URLSearchParams();
       loginData.append("username", formData.email);
       loginData.append("password", formData.password);
+      const loginUrl = `${BASE_URL}/auth/login`;
       const loginResponse = await fetch(
-        "http://localhost:8000/api/v1/auth/login",
+        loginUrl,
         {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -58,7 +75,7 @@ export default function RegisterPage() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-4 md:px-6 lg:px-4 md:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-4 md:px-4 md:px-4 md:px-6 lg:px-4 md:px-4 md:px-4 md:px-8">
       {" "}
       <div className="max-w-md w-full space-y-8 glass-card p-10 rounded-2xl">
         {" "}
@@ -71,7 +88,7 @@ export default function RegisterPage() {
               <Activity className="h-8 w-8" />{" "}
             </div>{" "}
           </div>{" "}
-          <h2 className="mt-6 text-center text-2xl md:text-3xl font-extrabold text-foreground font-display">
+          <h2 className="mt-6 text-center text-2xl md:text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground font-display">
             {" "}
             Create an account{" "}
           </h2>{" "}

@@ -21,14 +21,14 @@ export const DietIntelligenceReport = ({
   }, [patientId]);
   if (!dietData) return null;
   return (
-    <div className="dark bg-card/40 border border-border rounded-3xl p-4 md:p-6 mb-6">
+    <div className="dark bg-card/40 border border-border rounded-3xl p-4 md:p-4 md:p-4 md:p-6 mb-6">
       {" "}
       <h3 className="text-xl font-bold text-foreground flex items-center gap-2 mb-4">
         {" "}
         <Utensils className="w-6 h-6 text-green-400" /> AI Diet
         Intelligence{" "}
       </h3>{" "}
-      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {" "}
         <div className="dark bg-muted/50 p-4 rounded-xl border border-border/50">
           {" "}

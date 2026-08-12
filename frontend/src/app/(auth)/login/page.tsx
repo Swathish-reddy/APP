@@ -3,10 +3,12 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Activity } from "lucide-react";
+import { BASE_URL } from "../../../services/api";
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const handleLogin = async (e: React.FormEvent) => {
@@ -18,19 +20,50 @@ export default function LoginPage() {
       loginData.append("username", email);
       loginData.append("password", password);
       
-      const response = await fetch("http://localhost:8000/api/v1/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: loginData,
-      });
+      const apiUrl = `${BASE_URL}/auth/login`;
+
+      let response;
+      try {
+        response = await fetch(apiUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/x-www-form-urlencoded" },
+          body: loginData,
+        });
+      } catch (networkError: any) {
+        throw new Error(`Unable to connect to the backend server at ${apiUrl}. Please check if the server is running.`);
+      }
       
       if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.detail || "Invalid credentials");
+        const status = response.status;
+        let detail = "Invalid credentials";
+        try {
+            const data = await response.json();
+            if (data.detail) {
+                if (typeof data.detail === 'string') {
+                    detail = data.detail;
+                } else if (Array.isArray(data.detail)) {
+                    detail = data.detail.map((err: any) => err.msg || JSON.stringify(err)).join(", ");
+                } else {
+                    detail = JSON.stringify(data.detail);
+                }
+            }
+        } catch(e) {}
+        
+        if (status === 404) throw new Error("Login endpoint not found (404).");
+        if (status === 401 || status === 403) throw new Error(detail || "Unauthorized (401/403).");
+        if (status >= 500) throw new Error("Internal Server Error (500). Please try again later.");
+        throw new Error(detail);
       }
       
       const data = await response.json();
-      localStorage.setItem("token", data.access_token);
+      if (rememberMe) {
+        localStorage.setItem("token", data.access_token);
+      } else {
+        sessionStorage.setItem("token", data.access_token);
+        // Also set to localStorage for compatibility with existing code that reads from it
+        // A better approach would be replacing all localStorage.getItem("token") with a helper function
+        localStorage.setItem("token", data.access_token); 
+      }
       router.push("/");
     } catch (err: any) {
       setError(err.message);
@@ -38,7 +71,7 @@ export default function LoginPage() {
     }
   };
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-4 md:px-6 lg:px-4 md:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-background py-12 px-4 sm:px-4 md:px-4 md:px-4 md:px-6 lg:px-4 md:px-4 md:px-4 md:px-8">
       {" "}
       <div className="max-w-md w-full space-y-8 glass-card p-10 rounded-2xl">
         {" "}
@@ -51,7 +84,7 @@ export default function LoginPage() {
               <Activity className="h-8 w-8" />{" "}
             </div>{" "}
           </div>{" "}
-          <h2 className="mt-6 text-center text-2xl md:text-3xl font-extrabold text-foreground font-display">
+          <h2 className="mt-6 text-center text-2xl md:text-2xl md:text-2xl md:text-3xl font-extrabold text-foreground font-display">
             {" "}
             Sign in to CogniVueX{" "}
           </h2>{" "}
@@ -94,10 +127,17 @@ export default function LoginPage() {
             </div>{" "}
             <div>
               {" "}
-              <label className="block text-sm font-medium text-foreground mb-1">
-                {" "}
-                Password{" "}
-              </label>{" "}
+              <div className="flex items-center justify-between mb-1">
+                <label className="block text-sm font-medium text-foreground">
+                  {" "}
+                  Password{" "}
+                </label>
+                <div className="text-sm">
+                  <Link href="/forgot-password" className="font-medium text-primary hover:text-primary/80">
+                    Forgot password?
+                  </Link>
+                </div>
+              </div>{" "}
               <input
                 type="password"
                 required
@@ -107,6 +147,19 @@ export default function LoginPage() {
                 placeholder="••••••••"
               />{" "}
             </div>{" "}
+            <div className="flex items-center">
+              <input
+                id="remember-me"
+                name="remember-me"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-primary focus:ring-primary border-border rounded"
+              />
+              <label htmlFor="remember-me" className="ml-2 block text-sm text-foreground">
+                Remember me
+              </label>
+            </div>
           </div>{" "}
           <div>
             {" "}

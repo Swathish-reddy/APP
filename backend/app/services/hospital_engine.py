@@ -1,6 +1,7 @@
-from typing import Dict, Any, List
+from typing import Any
 
-def calculate_bed_utilization(state: Dict[str, Any]) -> Dict[str, Any]:
+
+def calculate_bed_utilization(state: dict[str, Any]) -> dict[str, Any]:
     """Evaluates ward and ICU bed capacity."""
     icu_total = state.get("icu_beds_total", 40)
     icu_occ = state.get("icu_beds_occupied", 38)
@@ -19,7 +20,7 @@ def calculate_bed_utilization(state: Dict[str, Any]) -> Dict[str, Any]:
         "available_icu_beds": icu_total - icu_occ
     }
 
-def predict_operational_bottlenecks(state: Dict[str, Any]) -> List[Dict[str, str]]:
+def predict_operational_bottlenecks(state: dict[str, Any]) -> list[dict[str, str]]:
     """Identifies process slowdowns across the hospital."""
     bottlenecks = []
     
@@ -41,7 +42,7 @@ def predict_operational_bottlenecks(state: Dict[str, Any]) -> List[Dict[str, str
         
     return bottlenecks
 
-def generate_hospital_intelligence_report(state: Dict[str, Any]) -> Dict[str, Any]:
+def generate_hospital_intelligence_report(state: dict[str, Any]) -> dict[str, Any]:
     """Compiles the macro-level 20-point Hospital Intelligence Report."""
     
     beds = calculate_bed_utilization(state)

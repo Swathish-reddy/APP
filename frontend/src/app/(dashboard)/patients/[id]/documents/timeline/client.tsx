@@ -29,7 +29,7 @@ export default function DocumentTimeline() {
     fetchDocuments();
   }, [params.id]);
   return (
-    <div className="py-4 md:py-6 max-w-4xl mx-auto">
+    <div className="py-4 md:py-4 md:py-4 md:py-6 max-w-4xl mx-auto">
       {" "}
       <div className="flex items-center gap-4 mb-8">
         {" "}

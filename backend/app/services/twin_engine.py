@@ -1,5 +1,6 @@
-from typing import Dict, Any, List
 import copy
+from typing import Any
+
 
 def calculate_bmi(weight_kg: float, height_cm: float) -> float:
     """Calculates BMI given weight in kg and height in cm."""
@@ -8,7 +9,7 @@ def calculate_bmi(weight_kg: float, height_cm: float) -> float:
     height_m = height_cm / 100.0
     return round(weight_kg / (height_m * height_m), 1)
 
-def estimate_metrics(patient: Dict[str, Any]) -> Dict[str, Any]:
+def estimate_metrics(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Computes key Digital Twin metrics:
     - Overall Health Score (0-100)
@@ -27,7 +28,7 @@ def estimate_metrics(patient: Dict[str, Any]) -> Dict[str, Any]:
     sleep = lifestyle.get("sleep_hours", 7.0)
     stress = lifestyle.get("stress_level_scale_10", 5)
     smoking = lifestyle.get("smoking_status", "Never Smoked")
-    diet = lifestyle.get("diet_type", "Balanced")
+    lifestyle.get("diet_type", "Balanced")
     
     # Extract physiological metrics
     vitals = patient["vitals"]
@@ -138,7 +139,7 @@ def estimate_metrics(patient: Dict[str, Any]) -> Dict[str, Any]:
         }
     }
 
-def simulate_what_if(patient: Dict[str, Any], scenarios: Dict[str, Any]) -> Dict[str, Any]:
+def simulate_what_if(patient: dict[str, Any], scenarios: dict[str, Any]) -> dict[str, Any]:
     """
     Simulates changes to patient's health based on hypothetical adjustments:
     - weight_change_kg (float, e.g. -10.0)

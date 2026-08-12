@@ -1,17 +1,19 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
 from app.db.models import Patient
-from sqlalchemy.future import select
 from app.services.medication_engine import generate_medication_intelligence_report
 
 router = APIRouter()
 
-from app.db.models import HealthMetric, Document
+from app.db.models import Document, HealthMetric
 
-async def _build_pharmacotherapy_baseline(patient_obj: Patient, db: AsyncSession) -> Dict[str, Any]:
+
+async def _build_pharmacotherapy_baseline(patient_obj: Patient, db: AsyncSession) -> dict[str, Any]:
     """
     Helper to convert Patient ORM to dictionary suitable for the Medication Center, enriching with reports.
     """
@@ -56,7 +58,7 @@ async def _build_pharmacotherapy_baseline(patient_obj: Patient, db: AsyncSession
         "medications": db_meds if db_meds else []
     }
 
-@router.get("/{patient_id}/intelligence", response_model=Dict[str, Any])
+@router.get("/{patient_id}/intelligence", response_model=dict[str, Any])
 async def get_medication_intelligence(patient_id: int, db: AsyncSession = Depends(get_db)):
     """
     Generates the comprehensive 20-point Pharmacotherapy Intelligence report.
@@ -80,5 +82,5 @@ async def get_medication_intelligence(patient_id: int, db: AsyncSession = Depend
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate pharmacotherapy report: {str(e)}"
+            detail=f"Failed to generate pharmacotherapy report: {e!s}"
         )

@@ -1,11 +1,16 @@
-from typing import Dict, Any, List
+from typing import Any
+
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from app.db.models import Patient
+from app.services.cdss_engine import (
+    generate_recommendations,
+    get_medication_intelligence,
+)
 from app.services.fusion import run_ai_fusion
-from app.services.cdss_engine import generate_recommendations, get_medication_intelligence
 from app.services.xai_engine import compute_shap_analysis, generate_reasoning_chain
+
 
 class AIInsightsEngine:
     """
@@ -15,7 +20,7 @@ class AIInsightsEngine:
     def __init__(self, db: AsyncSession):
         self.db = db
 
-    async def generate_clinical_report(self, patient_id: int) -> Dict[str, Any]:
+    async def generate_clinical_report(self, patient_id: int) -> dict[str, Any]:
         pat_res = await self.db.execute(select(Patient).where(Patient.patient_id == patient_id))
         patient_obj = pat_res.scalars().first()
         if not patient_obj:
@@ -60,7 +65,7 @@ class AIInsightsEngine:
         }
         return report
         
-    def _build_patient_dict(self, patient_obj: Patient) -> Dict[str, Any]:
+    def _build_patient_dict(self, patient_obj: Patient) -> dict[str, Any]:
         """Convert Patient ORM to dictionary suitable for existing AI pipelines."""
         return {
             "patient_id": patient_obj.patient_id,
@@ -72,11 +77,11 @@ class AIInsightsEngine:
             "active_medications": []
         }
         
-    def _calculate_health_score(self, ai_fusion: Dict[str, Any]) -> int:
+    def _calculate_health_score(self, ai_fusion: dict[str, Any]) -> int:
         return 85
         
-    def _extract_key_insights(self, ai_fusion: Dict[str, Any], recommendations: Dict[str, Any]) -> List[str]:
+    def _extract_key_insights(self, ai_fusion: dict[str, Any], recommendations: dict[str, Any]) -> list[str]:
         return ["Patient is generally healthy", "Maintain current lifestyle"]
         
-    def _generate_alerts(self, ai_fusion: Dict[str, Any]) -> List[Dict[str, str]]:
+    def _generate_alerts(self, ai_fusion: dict[str, Any]) -> list[dict[str, str]]:
         return []

@@ -8,7 +8,7 @@ interface ProvidersPanelProps {
   doctors: any[];
   onSelectProvider: (provider: any, type: string) => void;
   onBook: (providerId: string) => void;
-}
+};
 export const ProvidersPanel: React.FC<ProvidersPanelProps> = ({
   doctors,
   onSelectProvider,

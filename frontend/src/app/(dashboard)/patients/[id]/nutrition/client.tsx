@@ -10,7 +10,7 @@ export default function NutritionPage({ params, patientId: propPatientId }: { pa
   if (!patientId) return null;
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-4 md:p-4 md:p-6">
       <DietIntelligenceReport patientId={patientId} />
       <NutritionDashboard patientId={patientId} />
     </div>

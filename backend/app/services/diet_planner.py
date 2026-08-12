@@ -1,4 +1,4 @@
-from typing import Dict, Any, List
+from typing import Any
 
 # Basic menus depending on clinical diets
 DIET_PLANS = {
@@ -85,7 +85,7 @@ DIET_PLANS = {
 }
 
 def generate_diet_plan(age: int, gender: str, weight_kg: float, height_cm: float,
-                       medical_history: List[str], allergies: List[str], activity_level: str) -> Dict[str, Any]:
+                       medical_history: list[str], allergies: list[str], activity_level: str) -> dict[str, Any]:
     """Generates a customized, disease-specific daily/weekly meal plan and nutrient guidelines."""
     # Determine the primary clinical diet target
     primary_diet = "Weight Loss" # default

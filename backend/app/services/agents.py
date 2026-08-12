@@ -3,11 +3,12 @@ Multi-Agent Medical AI System — CogniVueX
 Specialized AI agents that collaborate to produce a unified patient recommendation.
 """
 import datetime
-from typing import Dict, Any, List
+from typing import Any
+
+from app.db.db import get_drug_interactions
 from app.services.fusion import run_ai_fusion
-from app.services.twin_engine import estimate_metrics
 from app.services.nutrition_engine import get_therapeutic_program
-from app.db.db import patients_db, get_drug_interactions, DOCTORS_DB
+from app.services.twin_engine import estimate_metrics
 
 
 # ── Base Agent
@@ -15,7 +16,7 @@ class BaseAgent:
     name: str = "BaseAgent"
     role: str = "Generic"
 
-    def analyze(self, patient: Dict[str, Any], context: Dict[str, Any]) -> Dict[str, Any]:
+    def analyze(self, patient: dict[str, Any], context: dict[str, Any]) -> dict[str, Any]:
         raise NotImplementedError
 
 
@@ -153,7 +154,10 @@ class HospitalAgent(BaseAgent):
     role = "Provider & Facility Matching Specialist"
 
     def analyze(self, patient, context):
-        from app.services.care_navigator import calculate_doctor_match, calculate_hospital_match
+        from app.services.care_navigator import (
+            calculate_doctor_match,
+            calculate_hospital_match,
+        )
         top_doctor = calculate_doctor_match(patient)
         top_hospital = calculate_hospital_match(patient)
         doc = top_doctor[0] if top_doctor else {}
@@ -178,12 +182,10 @@ AGENT_REGISTRY = [
     HospitalAgent(),
 ]
 
-def run_agent_consensus(patient_id: str) -> Dict[str, Any]:
-    """Runs all agents and synthesizes a unified recommendation."""
-    if patient_id not in patients_db:
-        return {"error": "Patient not found"}
-
-    patient = patients_db[patient_id]
+def run_agent_consensus(patient: dict) -> dict[str, Any]:
+    """
+    Coordinates all agents to analyze a patient and build a consensus.
+    """
     fusion = run_ai_fusion(patient)
     context = {"fusion": fusion}
 
@@ -205,7 +207,7 @@ def run_agent_consensus(patient_id: str) -> Dict[str, Any]:
     )
 
     return {
-        "patient_id": patient_id,
+        "patient_id": patient.get("id") if isinstance(patient, dict) else getattr(patient, "id", None),
         "agent_outputs": agent_outputs,
         "consensus": {
             "priority": consensus_priority,

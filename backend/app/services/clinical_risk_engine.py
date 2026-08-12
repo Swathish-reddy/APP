@@ -1,10 +1,10 @@
 import random
-from typing import Dict, Any, List
+from typing import Any
 
 from app.services.explainable_ai import get_xai_report
 
 # Standard clinical reference ranges for common lab metrics
-REFERENCE_RANGES: Dict[str, Dict] = {
+REFERENCE_RANGES: dict[str, dict] = {
     "hba1c":          {"min": 4.0,  "max": 5.7,  "unit": "%"},
     "glucose":        {"min": 70.0, "max": 99.0,  "unit": "mg/dL"},
     "ldl":            {"min": 0.0,  "max": 100.0, "unit": "mg/dL"},
@@ -28,7 +28,7 @@ REFERENCE_RANGES: Dict[str, Dict] = {
     "uric_acid":      {"min": 3.5,  "max": 7.2,   "unit": "mg/dL"},
 }
 
-def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
+def calculate_disease_risk(disease_name: str, patient: dict[str, Any]) -> float:
     """
     Mock predictive engine for various diseases.
     Returns a risk percentage 0.0 to 100.0.
@@ -39,11 +39,22 @@ def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
     age = patient.get("age", 45)
     bmi = patient.get("bmi", 24)
     med_history = patient.get("medical_history", [])
-    meds = patient.get("medications", [])
+    meds = patient.get("medications", patient.get("active_medications", []))
     
     # Extract condition names
-    conditions = [c.get("disease_name", "").lower() for c in med_history]
-    med_names = [m.get("medicine_name", "").lower() for m in meds]
+    conditions = []
+    for c in med_history:
+        if isinstance(c, dict):
+            conditions.append(c.get("disease_name", "").lower())
+        elif isinstance(c, str):
+            conditions.append(c.lower())
+            
+    med_names = []
+    for m in meds:
+        if isinstance(m, dict):
+            med_names.append(m.get("medicine_name", m.get("name", "")).lower())
+        elif isinstance(m, str):
+            med_names.append(m.lower())
     
     risk = 10.0 # base risk
     
@@ -93,7 +104,7 @@ def calculate_disease_risk(disease_name: str, patient: Dict[str, Any]) -> float:
         
     return min(100.0, max(0.0, risk))
 
-def generate_organ_risk_scores(patient: Dict[str, Any]) -> Dict[str, float]:
+def generate_organ_risk_scores(patient: dict[str, Any]) -> dict[str, float]:
     """Generates 0-100 risk score for major organs."""
     return {
         "Heart": calculate_disease_risk("Cardiovascular Risk", patient),
@@ -105,7 +116,7 @@ def generate_organ_risk_scores(patient: Dict[str, Any]) -> Dict[str, float]:
         "Immune": random.uniform(5.0, 20.0) # Mock
     }
 
-def run_multi_model_fusion(patient: Dict[str, Any]) -> Dict[str, Any]:
+def run_multi_model_fusion(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Executes the Multi-Model AI Fusion Strategy.
     Aggregates inputs from all disease models to generate:
@@ -129,8 +140,7 @@ def run_multi_model_fusion(patient: Dict[str, Any]) -> Dict[str, Any]:
     for d in diseases:
         risk_val = calculate_disease_risk(d, patient)
         total_risk += risk_val
-        if risk_val > max_risk:
-            max_risk = risk_val
+        max_risk = max(max_risk, risk_val)
             
         # Get XAI explanations
         xai_report = get_xai_report(d, patient)
@@ -170,7 +180,7 @@ def run_multi_model_fusion(patient: Dict[str, Any]) -> Dict[str, Any]:
 # Disease Risk Center Enhancements
 # ─────────────────────────────────────────────
 
-def generate_predictive_analytics(current_risk: float) -> Dict[str, Any]:
+def generate_predictive_analytics(current_risk: float) -> dict[str, Any]:
     """Extrapolates current risk into future timeline buckets."""
     return {
         "30_days": min(100.0, current_risk * 1.05),
@@ -180,7 +190,7 @@ def generate_predictive_analytics(current_risk: float) -> Dict[str, Any]:
         "mortality_risk_5yr": min(100.0, current_risk * 0.4)
     }
 
-def simulate_what_if(patient: Dict[str, Any], modified_params: Dict[str, Any]) -> Dict[str, Any]:
+def simulate_what_if(patient: dict[str, Any], modified_params: dict[str, Any]) -> dict[str, Any]:
     """Calculates alternate risk realities based on parameter changes."""
     # Create a deep copy of the patient state to simulate
     simulated_patient = {
@@ -207,7 +217,7 @@ def simulate_what_if(patient: Dict[str, Any], modified_params: Dict[str, Any]) -
         "confidence": 0.85
     }
 
-def analyze_disease_interactions(patient: Dict[str, Any]) -> Dict[str, Any]:
+def analyze_disease_interactions(patient: dict[str, Any]) -> dict[str, Any]:
     """Matrix of synergistic risks (e.g. Diabetes + Hypertension)."""
     # Simple static matrix for demonstration
     return {
@@ -217,39 +227,82 @@ def analyze_disease_interactions(patient: Dict[str, Any]) -> Dict[str, Any]:
         "complication_risk": "High risk of early-stage nephropathy."
     }
 
-def generate_disease_risk_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def check_insufficient_data(patient: dict[str, Any]) -> list[str]:
+    vitals = patient.get("vitals", {})
+    labs = patient.get("labs", {})
+    missing = []
+    if "systolic_bp" not in vitals: missing.append("Systolic BP")
+    if "cholesterol_ldl" not in labs and "ldl" not in labs: missing.append("LDL Cholesterol")
+    if "hba1c" not in labs: missing.append("HbA1c")
+    if "glucose" not in vitals and "glucose" not in labs: missing.append("Glucose")
+    if "egfr" not in labs and "creatinine" not in labs: missing.append("Kidney Markers (eGFR/Creatinine)")
+    return missing
+
+def generate_disease_risk_report(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Compiles the comprehensive 20-point Disease Risk report.
     """
+    missing = check_insufficient_data(patient)
+    if len(missing) > 2:
+        return {
+            "insufficient_data": True,
+            "message": "Insufficient report data for this prediction",
+            "missing_inputs": missing,
+            "1_patient_overview": "Insufficient report data. Please upload lab reports.",
+            "2_overall_disease_risk_score": 0,
+            "3_disease_risk_summary": "N/A",
+            "4_organ_risk_analysis": {},
+            "5_disease_probability_table": [],
+            "6_risk_factor_analysis": [],
+            "7_protective_factors": [],
+            "8_laboratory_contributions": [],
+            "9_vital_sign_contributions": [],
+            "10_disease_interaction_analysis": {},
+            "11_predictive_analytics": {},
+            "12_what_if_simulations": [],
+            "13_ai_recommendations": [],
+            "14_clinical_decision_support": {},
+            "15_alerts": [],
+            "16_explainable_ai": "N/A",
+            "17_confidence_scores": {},
+            "18_follow_up_recommendations": "Upload recent blood work.",
+            "19_report_summary": "Data insufficient for full analysis.",
+            "20_export_options": ["PDF", "JSON"]
+        }
+        
     fusion_results = run_multi_model_fusion(patient)
     overall_score = fusion_results["overall_risk_score"]
     
     predictive = generate_predictive_analytics(overall_score)
     interactions = analyze_disease_interactions(patient)
+    
+    # What-if using baseline from patient data
+    baseline_bmi = patient.get("bmi", 24)
+    baseline_bp = patient.get("vitals", {}).get("systolic_bp", 120)
     what_if = [
-        {"scenario": "BMI reduced to 24", "result": simulate_what_if(patient, {"bmi": 24})},
-        {"scenario": "Systolic BP reduced to 120", "result": simulate_what_if(patient, {"systolic_bp": 120})}
+        {"scenario": f"BMI reduced to {max(20, baseline_bmi - 2)}", "result": simulate_what_if(patient, {"bmi": max(20, baseline_bmi - 2)})},
+        {"scenario": f"Systolic BP reduced to {max(110, baseline_bp - 10)}", "result": simulate_what_if(patient, {"systolic_bp": max(110, baseline_bp - 10)})}
     ]
     
     return {
-        "1_patient_overview": "Patient is at High Risk for compounding metabolic complications.",
+        "1_patient_overview": "Patient Risk Analysis based on uploaded report data.",
         "2_overall_disease_risk_score": overall_score,
-        "3_disease_risk_summary": "Active progression phase for Metabolic Syndrome.",
+        "3_disease_risk_summary": fusion_results["risk_category"] + " Risk Category.",
         "4_organ_risk_analysis": fusion_results["organ_risks"],
         "5_disease_probability_table": fusion_results["predictions"],
-        "6_risk_factor_analysis": ["Nocturnal SpO2 Drops", "HbA1c", "High Sodium"],
+        "6_risk_factor_analysis": ["Based on uploaded report data"],
         "7_protective_factors": ["High Daily Steps", "Never Smoked"],
-        "8_laboratory_contributions": ["HbA1c 7.4%", "LDL 110 mg/dL"],
-        "9_vital_sign_contributions": ["Systolic BP 145 mmHg", "SpO2 89%"],
+        "8_laboratory_contributions": [f"{k}: {v}" for k, v in patient.get("labs", {}).items()][:3],
+        "9_vital_sign_contributions": [f"{k}: {v}" for k, v in patient.get("vitals", {}).items()][:3],
         "10_disease_interaction_analysis": interactions,
         "11_predictive_analytics": predictive,
         "12_what_if_simulations": what_if,
-        "13_ai_recommendations": ["Order Polysomnography", "Adjust Antihypertensives"],
-        "14_clinical_decision_support": {"suggested_labs": ["Microalbuminuria"]},
-        "15_alerts": ["NSAID + ACE Inhibitor Interaction Detected"],
-        "16_explainable_ai": "Predictions heavily weight sustained Systolic BP of 145 mmHg.",
+        "13_ai_recommendations": ["Discuss findings with physician"],
+        "14_clinical_decision_support": {"suggested_labs": missing},
+        "15_alerts": [],
+        "16_explainable_ai": "Predictions based on extracted report values.",
         "17_confidence_scores": {"overall": fusion_results["overall_confidence"]},
-        "18_follow_up_recommendations": "Sleep Medicine consult in 14 days.",
-        "19_report_summary": "Critical intervention window to prevent permanent organ damage.",
+        "18_follow_up_recommendations": "Routine follow up.",
+        "19_report_summary": "Analysis completed using actual report data.",
         "20_export_options": ["PDF", "JSON", "FHIR"]
     }

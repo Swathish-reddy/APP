@@ -1,7 +1,9 @@
+import random
+from typing import Any
+
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
-from typing import Dict, Any, List
-import random
+
 
 # Synthetic data generator to fit a real classifier on startup
 def generate_synthetic_data(n_samples: int = 300):
@@ -50,7 +52,7 @@ rf_cvd.fit(X_train, y_train_cvd)
 rf_diab = RandomForestClassifier(n_estimators=50, random_state=42)
 rf_diab.fit(X_train, y_train_diab)
 
-def get_clinical_guidelines_risk(patient: Dict[str, Any], disease: str) -> Dict[str, Any]:
+def get_clinical_guidelines_risk(patient: dict[str, Any], disease: str) -> dict[str, Any]:
     """Evaluates rules from WHO and CDC guidelines."""
     vitals = patient["vitals"]
     labs = patient["labs"]
@@ -104,7 +106,7 @@ def get_clinical_guidelines_risk(patient: Dict[str, Any], disease: str) -> Dict[
     # Normalize score between 0 and 1
     return {"prob": min(1.0, score), "rules": rules_triggered}
 
-def run_ai_fusion(patient: Dict[str, Any]) -> Dict[str, Any]:
+def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Ensemble AI: Fuses Machine Learning (Random Forest), Deep Learning, 
     and Clinical Rules (WHO/CDC guidelines) using Bayesian weighted fusion.

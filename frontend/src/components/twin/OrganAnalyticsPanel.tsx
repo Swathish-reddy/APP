@@ -14,7 +14,7 @@ interface OrganAnalyticsPanelProps {
   organName: string | null;
   twinState: TwinState | null;
   predictions: Prediction[];
-}
+};
 export default function OrganAnalyticsPanel({
   organName,
   twinState,
@@ -22,7 +22,7 @@ export default function OrganAnalyticsPanel({
 }: OrganAnalyticsPanelProps) {
   if (!organName || !twinState) {
     return (
-      <div className="dark h-full min-h-[500px] flex flex-col items-center justify-center bg-card/50 border border-border rounded-2xl p-4 md:p-6 text-center">
+      <div className="dark h-full min-h-[500px] flex flex-col items-center justify-center bg-card/50 border border-border rounded-2xl p-4 md:p-4 md:p-4 md:p-6 text-center">
         {" "}
         <Activity className="w-12 h-12 text-foreground mb-4" />{" "}
         <h3 className="text-lg font-medium text-muted-foreground">
@@ -78,13 +78,13 @@ export default function OrganAnalyticsPanel({
     return false;
   });
   return (
-    <div className="dark h-full bg-gradient-to-br from-slate-900/90 to-slate-800/95 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-6 flex flex-col shadow-2xl relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+    <div className="dark h-full bg-gradient-to-br from-slate-900/90 to-slate-800/95 backdrop-blur-xl border border-white/10 rounded-3xl p-4 md:p-4 md:p-4 md:p-6 flex flex-col shadow-2xl relative overflow-hidden">
+      <div className="absolute top-0 right-0 w-full md:w-full md:w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-full md:w-full md:w-64 h-64 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
       
       <div className="relative z-10 flex justify-between items-start mb-8">
         <div>
-          <h2 className="text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 mb-1 drop-shadow-lg">
+          <h2 className="text-2xl md:text-2xl md:text-3xl font-black bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-indigo-400 to-purple-400 mb-1 drop-shadow-lg">
             {organName} Analytics
           </h2>
           <span
@@ -94,7 +94,7 @@ export default function OrganAnalyticsPanel({
           </span>
         </div>
         <div className="text-right">
-          <div className="text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-300 drop-shadow-md">
+          <div className="text-2xl md:text-2xl md:text-3xl md:text-2xl md:text-3xl md:text-4xl md:text-2xl md:text-3xl md:text-4xl md:text-4xl md:text-5xl font-black bg-clip-text text-transparent bg-gradient-to-br from-white to-gray-300 drop-shadow-md">
             {score}
           </div>
           <div className="text-xs text-indigo-200/80 uppercase tracking-widest font-black mt-1">
@@ -114,7 +114,7 @@ export default function OrganAnalyticsPanel({
               return (
                 <div
                   key={idx}
-                  className="bg-white/5 rounded-2xl p-5 border border-white/10 shadow-lg backdrop-blur-sm transition-all hover:bg-white/10"
+                  className="bg-card/5 rounded-2xl p-5 border border-white/10 shadow-lg backdrop-blur-sm transition-all hover:bg-card/10"
                 >
                   <div className="flex justify-between items-center mb-3 border-b border-white/5 pb-2">
                     <span className="text-indigo-100 font-bold text-lg drop-shadow-sm">
@@ -129,7 +129,7 @@ export default function OrganAnalyticsPanel({
                       <div className="text-xs text-indigo-200/70 font-bold uppercase tracking-wider mb-1">
                         Current
                       </div>
-                      <div className="text-2xl font-black text-white drop-shadow-sm">
+                      <div className="text-2xl font-black text-foreground drop-shadow-sm">
                         {p.current_value}
                       </div>
                     </div>
@@ -160,7 +160,7 @@ export default function OrganAnalyticsPanel({
             })}
           </div>
         ) : (
-          <div className="bg-white/5 rounded-2xl p-6 border border-white/10 text-center shadow-inner">
+          <div className="bg-card/5 rounded-2xl p-4 md:p-4 md:p-6 border border-white/10 text-center shadow-inner">
             <Minus className="w-8 h-8 text-indigo-400/50 mx-auto mb-3" />
             <p className="text-base text-indigo-100/90 font-bold leading-relaxed">
               Stable trajectory. No critical shifts projected for this system.

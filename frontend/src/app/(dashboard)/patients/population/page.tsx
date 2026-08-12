@@ -104,14 +104,14 @@ export default function PopulationPage() {
     ([k, v]) => ({ name: k, value: v as number }),
   );
   return (
-    <div className="min-h-screen bg-[#030712] text-foreground p-4 md:p-6 space-y-6">
+    <div className="min-h-screen bg-[#030712] text-foreground p-4 md:p-4 md:p-4 md:p-6 space-y-6">
       {" "}
       {}{" "}
       <div className="flex items-end justify-between">
         {" "}
         <div>
           {" "}
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-3">
             {" "}
             <BrainCircuit className="w-8 h-8 text-cyan-400" /> Health
             Intelligence & Research Command Center{" "}
@@ -161,7 +161,7 @@ export default function PopulationPage() {
         <div className="space-y-6">
           {" "}
           {}{" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {" "}
             {[
               {
@@ -201,7 +201,7 @@ export default function PopulationPage() {
             ))}{" "}
           </div>{" "}
           {}{" "}
-          <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
             {" "}
             {}{" "}
             <div className="dark bg-card border border-border rounded-2xl p-5">
@@ -336,7 +336,7 @@ export default function PopulationPage() {
       {activeTab === "surveillance" && (
         <div className="space-y-6">
           {" "}
-          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {" "}
             {surveillance?.signals?.map((sig: any, i: number) => (
               <div
@@ -426,7 +426,7 @@ export default function PopulationPage() {
       {activeTab === "operations" && (
         <div className="space-y-6">
           {" "}
-          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
             {" "}
             {operations?.hospitals?.map((h: any, i: number) => (
               <div
@@ -437,7 +437,7 @@ export default function PopulationPage() {
                 <h4 className="font-semibold text-foreground mb-4">
                   {h.hospital}
                 </h4>{" "}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                   {" "}
                   {[
                     {
@@ -503,7 +503,7 @@ export default function PopulationPage() {
       {activeTab === "outcomes" && (
         <div className="space-y-6">
           {" "}
-          <div className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-1 md:grid-cols-2 xl:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
             {" "}
             {[
               {

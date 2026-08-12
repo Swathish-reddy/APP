@@ -5,13 +5,13 @@ export default function ResourceManagement({ data }: { data: any }) {
   if (!data) return null;
   
   return (
-    <div className="bg-card/60 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col">
+    <div className="bg-card/60 border border-border/50 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col">
       <h2 className="text-xl font-bold text-foreground mb-4 flex items-center">
         <Package className="w-5 h-5 mr-2 text-cyan-400" />
         Resource Inventory
       </h2>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 flex-grow">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-3 flex-grow">
         <div className="bg-muted/40 rounded-2xl p-4 border border-border/50 flex flex-col justify-between">
           <div className="flex justify-between items-start mb-2">
             <Beaker className="w-5 h-5 text-purple-400" />

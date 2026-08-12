@@ -37,7 +37,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
     }, 2000);
   };
 
-  if (loading) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Loading medical reports...</div>;
+  if (loading) return <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Loading medical reports...</div>;
 
   return (
     <div className="space-y-6">
@@ -55,8 +55,8 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
       </div>
 
       <div className="flex flex-col md:flex-row gap-6">
-        {/* Left column: Report List */}
-        <div className="w-full md:w-full md:w-full lg:w-1/3 space-y-3">
+        {}
+        <div className="w-full md:w-full md:w-full lg:w-full md:w-full lg:w-full md:w-full lg:w-1/3 space-y-3">
           {reports.map((report) => (
             <Card 
               key={report.id} 
@@ -88,17 +88,17 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
             </Card>
           ))}
           {reports.length === 0 && (
-            <div className="p-4 md:p-8 text-center text-muted-foreground border border-dashed rounded-xl">
+            <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground border border-dashed rounded-xl">
               No reports available for analysis.
             </div>
           )}
         </div>
 
-        {/* Right column: Analysis View */}
+        {}
         <div className="w-full md:w-2/3">
           {selectedReport ? (
             <Card className="h-full border-none shadow-md bg-card/50 dark:bg-card/50 backdrop-blur">
-              <CardContent className="p-4 md:p-6">
+              <CardContent className="p-4 md:p-4 md:p-4 md:p-6">
                 <div className="flex justify-between items-center mb-6 pb-4 border-b">
                   <div>
                     <h2 className="text-xl font-bold">{selectedReport.file_name}</h2>
@@ -121,7 +121,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
                   </div>
                 ) : (
                   <div className="space-y-6 animate-in fade-in duration-500">
-                    {/* Summary */}
+                    {}
                     <div>
                       <h4 className="text-sm font-bold text-slate-800 dark:text-foreground uppercase tracking-wider mb-2">Clinical Summary</h4>
                       <p className="text-sm text-slate-600 dark:text-muted-foreground bg-slate-50 dark:bg-muted/50 p-4 rounded-xl leading-relaxed">
@@ -129,8 +129,8 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
                       </p>
                     </div>
 
-                    {/* Abnormalities */}
-                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4">
+                    {}
+                    <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="border border-red-100 dark:border-red-900/30 bg-red-50/50 dark:bg-red-950/10 p-4 rounded-xl">
                         <h4 className="text-sm font-bold text-red-600 dark:text-red-400 uppercase tracking-wider flex items-center mb-3">
                           <AlertTriangle className="w-4 h-4 mr-2" /> Abnormal Findings

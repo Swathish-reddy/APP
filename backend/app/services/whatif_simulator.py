@@ -1,7 +1,11 @@
-from typing import Dict, Any, List
-from app.services.clinical_risk_engine import run_multi_model_fusion, generate_predictive_analytics, generate_organ_risk_scores
+from typing import Any
 
-def calculate_biological_age(patient: Dict[str, Any]) -> float:
+from app.services.clinical_risk_engine import (
+    run_multi_model_fusion,
+)
+
+
+def calculate_biological_age(patient: dict[str, Any]) -> float:
     """
     Simulates phenotypic/biological age based on key biomarkers.
     Chronological age is modified by systemic inflammation, metabolic health, and cardiovascular stress.
@@ -45,7 +49,7 @@ def estimate_life_expectancy(biological_age: float, gender: str) -> float:
     remaining = max(5.0, base_expectancy - biological_age)
     return round(biological_age + remaining, 1)
 
-def calculate_cost_benefit(risk_reduction: float, interventions: List[str]) -> Dict[str, Any]:
+def calculate_cost_benefit(risk_reduction: float, interventions: list[str]) -> dict[str, Any]:
     """Calculates financial impact based on avoided adverse events."""
     cost = 0
     savings = 0
@@ -69,7 +73,7 @@ def calculate_cost_benefit(risk_reduction: float, interventions: List[str]) -> D
         "net_financial_benefit": round(total_savings - cost, 0)
     }
 
-def run_comprehensive_simulation(patient: Dict[str, Any], modified_params: Dict[str, Any]) -> Dict[str, Any]:
+def run_comprehensive_simulation(patient: dict[str, Any], modified_params: dict[str, Any]) -> dict[str, Any]:
     """
     Orchestrates the full 20-point What-If Simulation.
     """

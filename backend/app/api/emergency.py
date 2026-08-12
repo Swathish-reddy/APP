@@ -1,21 +1,22 @@
-from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any, Optional
-from pydantic import BaseModel
 import random
+from typing import Any
+
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.future import select
 
 from app.api.deps import get_db
-from app.db.models import Patient, HealthMetric, Document
-from sqlalchemy.future import select
+from app.db.models import HealthMetric, Patient
 from app.services.emergency_engine import generate_emergency_intelligence_report
 
 router = APIRouter()
 
 class EmergencyPayload(BaseModel):
-    vitals: Optional[Dict[str, float]] = None
-    labs: Optional[Dict[str, float]] = None
+    vitals: dict[str, float] | None = None
+    labs: dict[str, float] | None = None
 
-async def _build_emergency_baseline(patient_obj: Patient, db: AsyncSession) -> Dict[str, Any]:
+async def _build_emergency_baseline(patient_obj: Patient, db: AsyncSession) -> dict[str, Any]:
     metrics_result = await db.execute(select(HealthMetric).where(HealthMetric.patient_id == patient_obj.patient_id))
     metrics_list = metrics_result.scalars().all()
     
@@ -40,7 +41,7 @@ async def _build_emergency_baseline(patient_obj: Patient, db: AsyncSession) -> D
         "baseline_labs": labs
     }
 
-@router.get("/active-cases", response_model=Dict[str, Any])
+@router.get("/active-cases", response_model=dict[str, Any])
 async def get_active_emergency_cases():
     """Returns a mock list of active cases in the Emergency Department queue."""
     return {
@@ -57,7 +58,7 @@ async def get_active_emergency_cases():
         ]
     }
 
-@router.get("/capacity", response_model=Dict[str, Any])
+@router.get("/capacity", response_model=dict[str, Any])
 async def get_hospital_capacity():
     """Returns real-time simulated hospital resource capacities for the EOC."""
     return {
@@ -72,7 +73,7 @@ async def get_hospital_capacity():
         "ambulances": {"total": 12, "dispatched": 8, "available": 4}
     }
 
-@router.post("/{patient_id}/triage", response_model=Dict[str, Any])
+@router.post("/{patient_id}/triage", response_model=dict[str, Any])
 async def trigger_emergency_triage(patient_id: int, req: EmergencyPayload, db: AsyncSession = Depends(get_db)):
     pat_res = await db.execute(select(Patient).where(Patient.patient_id == patient_id))
     patient_obj = pat_res.scalars().first()
@@ -107,10 +108,10 @@ async def trigger_emergency_triage(patient_id: int, req: EmergencyPayload, db: A
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to process emergency triage: {str(e)}"
+            detail=f"Failed to process emergency triage: {e!s}"
         )
 
-@router.get("/doctors/recommend", response_model=Dict[str, Any])
+@router.get("/doctors/recommend", response_model=dict[str, Any])
 async def recommend_doctors(emergency_type: str = "General"):
     """Recommends doctors for the emergency based on specialization and availability."""
     doctors = [
@@ -123,7 +124,7 @@ async def recommend_doctors(emergency_type: str = "General"):
         doctors = [d for d in doctors if d["specialty"] == "Cardiology"]
     return {"recommended": doctors}
 
-@router.get("/action-plan/{patient_id}", response_model=Dict[str, Any])
+@router.get("/action-plan/{patient_id}", response_model=dict[str, Any])
 async def generate_action_plan(patient_id: str):
     """Generates a dynamic emergency action plan for a specific patient."""
     return {
@@ -135,7 +136,7 @@ async def generate_action_plan(patient_id: str):
         "reasoning": "Symptoms and vitals indicate high probability of ACS (Acute Coronary Syndrome). Immediate medical therapy and monitoring required to prevent myocardial damage."
     }
 
-@router.get("/map-data", response_model=Dict[str, Any])
+@router.get("/map-data", response_model=dict[str, Any])
 async def get_emergency_map_data():
     """Provides live data for the emergency map (ambulances, traffic, hospitals)."""
     return {

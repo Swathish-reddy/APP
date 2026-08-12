@@ -23,7 +23,7 @@ export const HospitalRecommendations = ({ patientId }: { patientId: string }) =>
     fetchHospitals();
   }, []);
 
-  if (loading) return <div className="p-4 md:p-8 text-center text-muted-foreground animate-pulse">Scanning nearby healthcare facilities...</div>;
+  if (loading) return <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Scanning nearby healthcare facilities...</div>;
 
   return (
     <div className="space-y-4">
@@ -34,7 +34,7 @@ export const HospitalRecommendations = ({ patientId }: { patientId: string }) =>
         </h3>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {hospitals.map(hosp => (
           <Card key={hosp.id} className="border-none shadow-sm hover:shadow-md transition-shadow bg-card/50 dark:bg-card/50 backdrop-blur">
             <CardContent className="p-5">

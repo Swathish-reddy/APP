@@ -1,6 +1,7 @@
-from typing import Dict, Any, List
+from typing import Any
 
-def calculate_energy_requirements(patient: Dict[str, Any]) -> Dict[str, Any]:
+
+def calculate_energy_requirements(patient: dict[str, Any]) -> dict[str, Any]:
     """Calculates BMR and TDEE using Mifflin-St Jeor Equation."""
     age = patient.get("age", 45)
     gender = patient.get("gender", "Male")
@@ -29,7 +30,7 @@ def calculate_energy_requirements(patient: Dict[str, Any]) -> Dict[str, Any]:
         "fats_g": round((target_calories * 0.35) / 9, 0)
     }
 
-def detect_food_drug_interactions(medications: List[str]) -> List[Dict[str, str]]:
+def detect_food_drug_interactions(medications: list[str]) -> list[dict[str, str]]:
     """Maps prescribed medications to dangerous dietary interactions."""
     interactions = []
     meds_lower = [m.lower() for m in medications]
@@ -57,7 +58,7 @@ def detect_food_drug_interactions(medications: List[str]) -> List[Dict[str, str]
         
     return interactions
 
-def generate_diet_intelligence_report(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_diet_intelligence_report(patient: dict[str, Any]) -> dict[str, Any]:
     """
     Compiles the comprehensive 20-point Diet Intelligence report.
     """

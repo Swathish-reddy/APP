@@ -59,6 +59,29 @@ export default function RiskCenterPage({
   }
   if (!data)
     return <div className="text-foreground">Failed to load risk intelligence.</div>;
+
+  if (data.insufficient_data) {
+    return (
+      <div className="bg-amber-500/10 border border-amber-500/50 rounded-2xl p-6 flex flex-col items-center justify-center min-h-[40vh] shadow-lg shadow-amber-500/5 text-center">
+        <AlertTriangle className="w-12 h-12 text-amber-500 mb-4" />
+        <h2 className="text-amber-400 font-bold text-xl mb-2">Insufficient Report Data</h2>
+        <p className="text-amber-200/80 mb-6 max-w-md">
+          {data.message || "Please upload lab reports in the Lab Reports tab to generate predictive analytics."}
+        </p>
+        {data.missing_inputs && data.missing_inputs.length > 0 && (
+          <div className="bg-card/50 border border-amber-500/20 rounded-xl p-4 text-left w-full max-w-md">
+            <h3 className="text-amber-300 font-bold text-sm mb-2">Missing Required Indicators:</h3>
+            <ul className="list-disc list-inside text-amber-100/70 text-sm space-y-1">
+              {data.missing_inputs.map((input: string, idx: number) => (
+                <li key={idx}>{input}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-6">
       {" "}
@@ -88,8 +111,8 @@ export default function RiskCenterPage({
         </motion.div>
       ) : null}{" "}
       {}{" "}
-      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="dark bg-gradient-to-br from-slate-900 to-violet-950 border border-violet-500/20 rounded-3xl p-4 md:p-6 shadow-2xl backdrop-blur-xl flex flex-col justify-center items-center relative overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="dark bg-gradient-to-br from-slate-900 to-violet-950 border border-violet-500/20 rounded-3xl p-4 md:p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl flex flex-col justify-center items-center relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-fuchsia-500/20 rounded-full blur-3xl pointer-events-none -mr-10 -mt-10"></div>
           <div className="absolute bottom-0 left-0 w-32 h-32 bg-violet-500/20 rounded-full blur-3xl pointer-events-none -ml-10 -mb-10"></div>
           <h3 className="text-violet-300/80 text-sm font-black uppercase tracking-widest mb-3 drop-shadow-sm z-10">
@@ -98,7 +121,7 @@ export default function RiskCenterPage({
           <div className="text-7xl font-black bg-clip-text text-transparent bg-gradient-to-br from-white to-fuchsia-300 drop-shadow-md z-10 mb-2">
             {data.overall_risk_score}
           </div>
-          <div className="mt-2 px-5 py-2 rounded-full bg-black/30 border border-violet-500/30 text-sm font-black tracking-widest uppercase z-10 shadow-inner">
+          <div className="mt-2 px-5 py-2 rounded-full bg-background/30 border border-violet-500/30 text-sm font-black tracking-widest uppercase z-10 shadow-inner">
             Category:{" "}
             <span
               className={
@@ -116,7 +139,7 @@ export default function RiskCenterPage({
           </div>
         </div>
         
-        <div className="dark md:col-span-2 bg-gradient-to-br from-slate-900 to-indigo-950 border border-indigo-500/20 rounded-3xl p-6 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div className="dark md:col-span-2 bg-gradient-to-br from-slate-900 to-indigo-950 border border-indigo-500/20 rounded-3xl p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl relative overflow-hidden">
           <div className="absolute top-0 left-0 w-48 h-48 bg-indigo-500/10 rounded-full blur-3xl pointer-events-none -ml-20 -mt-20"></div>
           
           <div className="relative z-10 flex items-center gap-4 mb-6 border-b border-indigo-500/20 pb-4">
@@ -127,8 +150,8 @@ export default function RiskCenterPage({
               Multi-Model Fusion Engine
             </h3>
           </div>
-          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 shadow-inner hover:bg-white/10 transition-colors">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="bg-card/5 p-5 rounded-2xl border border-white/10 shadow-inner hover:bg-card/10 transition-colors">
               <div className="text-indigo-300/80 text-xs font-black mb-2 uppercase tracking-widest drop-shadow-sm">
                 Fusion Method
               </div>
@@ -136,7 +159,7 @@ export default function RiskCenterPage({
                 {data.fusion_method}
               </div>
             </div>
-            <div className="bg-white/5 p-5 rounded-2xl border border-white/10 shadow-inner hover:bg-white/10 transition-colors">
+            <div className="bg-card/5 p-5 rounded-2xl border border-white/10 shadow-inner hover:bg-card/10 transition-colors">
               <div className="text-indigo-300/80 text-xs font-black mb-2 uppercase tracking-widest drop-shadow-sm">
                 Overall Confidence
               </div>
@@ -150,7 +173,7 @@ export default function RiskCenterPage({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
-        <div className="dark lg:col-span-4 bg-gradient-to-b from-slate-900 to-purple-950 border border-purple-500/20 rounded-3xl p-6 shadow-2xl backdrop-blur-xl relative overflow-hidden">
+        <div className="dark lg:col-span-4 bg-gradient-to-b from-slate-900 to-purple-950 border border-purple-500/20 rounded-3xl p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl relative overflow-hidden">
           <div className="absolute top-0 right-0 w-48 h-48 bg-purple-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
           
           <div className="relative z-10 flex items-center gap-4 mb-6 border-b border-purple-500/20 pb-4">
@@ -164,7 +187,7 @@ export default function RiskCenterPage({
               <div
                 key={pred.disease}
                 onClick={() => setSelectedPrediction(pred)}
-                className={`p-5 rounded-2xl cursor-pointer transition-all border shadow-lg ${selectedPrediction?.disease === pred.disease ? "bg-fuchsia-500/15 border-fuchsia-400/50 shadow-[0_0_20px_rgba(217,70,239,0.15)]" : "bg-white/5 border-white/10 hover:bg-white/10"}`}
+                className={`p-5 rounded-2xl cursor-pointer transition-all border shadow-lg ${selectedPrediction?.disease === pred.disease ? "bg-fuchsia-500/15 border-fuchsia-400/50 shadow-[0_0_20px_rgba(217,70,239,0.15)]" : "bg-card/5 border-white/10 hover:bg-card/10"}`}
               >
                 <div className="flex justify-between items-start mb-3">
                   <h4 className="text-purple-50 font-bold text-base drop-shadow-sm">
@@ -176,7 +199,7 @@ export default function RiskCenterPage({
                     {pred.risk_percent}%
                   </div>
                 </div>
-                <div className="w-full bg-black/40 rounded-full h-2 mt-3 shadow-inner">
+                <div className="w-full bg-background/40 rounded-full h-2 mt-3 shadow-inner">
                   <div
                     className={`h-2 rounded-full shadow-lg ${pred.risk_percent > 75 ? "bg-gradient-to-r from-rose-500 to-rose-400" : pred.risk_percent > 40 ? "bg-gradient-to-r from-orange-500 to-orange-400" : "bg-gradient-to-r from-emerald-500 to-emerald-400"}`}
                     style={{ width: `${pred.risk_percent}%` }}
@@ -191,7 +214,7 @@ export default function RiskCenterPage({
           </div>
         </div>
 
-        <div className="dark lg:col-span-4 bg-gradient-to-b from-slate-900 to-fuchsia-950 border border-fuchsia-500/20 rounded-3xl p-6 shadow-2xl backdrop-blur-xl flex flex-col relative overflow-hidden">
+        <div className="dark lg:col-span-4 bg-gradient-to-b from-slate-900 to-fuchsia-950 border border-fuchsia-500/20 rounded-3xl p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl flex flex-col relative overflow-hidden">
           <div className="absolute bottom-0 right-0 w-48 h-48 bg-pink-500/10 rounded-full blur-3xl pointer-events-none -mr-20 -mb-20"></div>
 
           <div className="relative z-10 flex items-center gap-4 mb-2">
@@ -203,7 +226,7 @@ export default function RiskCenterPage({
           <p className="relative z-10 text-xs font-bold text-fuchsia-200/70 mb-6 uppercase tracking-widest pb-4 border-b border-fuchsia-500/20">
             Multi-system risk vulnerability mapping
           </p>
-          <div className="relative z-10 flex-1 flex items-center justify-center min-h-[300px] bg-white/5 rounded-2xl border border-white/10 shadow-inner p-4">
+          <div className="relative z-10 flex-1 flex items-center justify-center min-h-[300px] bg-card/5 rounded-2xl border border-white/10 shadow-inner p-4">
             <RiskRadar data={data.organ_risks || {}} />
           </div>
         </div>{" "}
@@ -213,7 +236,7 @@ export default function RiskCenterPage({
           {selectedPrediction ? (
             <XAIExplanationPanel prediction={selectedPrediction} />
           ) : (
-            <div className="dark h-full bg-card/50 border border-border rounded-2xl flex items-center justify-center p-4 md:p-6 text-center text-muted-foreground">
+            <div className="dark h-full bg-card/50 border border-border rounded-2xl flex items-center justify-center p-4 md:p-4 md:p-4 md:p-6 text-center text-muted-foreground">
               {" "}
               Select a disease prediction to view Explainable AI insights.{" "}
             </div>

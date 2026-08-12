@@ -1,11 +1,13 @@
 "use client";
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { UploadCloud, File, X, CheckCircle, AlertCircle } from "lucide-react";
 export default function DocumentUpload({
   patientId,
+  autoOpenPicker = false,
   onUploadComplete,
 }: {
   patientId: string;
+  autoOpenPicker?: boolean;
   onUploadComplete: () => void;
 }) {
   const [files, setFiles] = useState<File[]>([]);
@@ -13,19 +15,32 @@ export default function DocumentUpload({
   const [uploadProgress, setUploadProgress] = useState(0);
   const [error, setError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (autoOpenPicker && fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  }, [autoOpenPicker]);
+  const validateFiles = (newFiles: File[]) => {
+    return newFiles;
+  };
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      setFiles(Array.from(e.target.files));
+      setError("");
+      const valid = validateFiles(Array.from(e.target.files));
+      setFiles((prev) => [...prev, ...valid]);
     }
   };
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
     if (e.dataTransfer.files) {
-      setFiles(Array.from(e.dataTransfer.files));
+      setError("");
+      const valid = validateFiles(Array.from(e.dataTransfer.files));
+      setFiles((prev) => [...prev, ...valid]);
     }
   };
   const removeFile = (index: number) => {
     setFiles(files.filter((_, i) => i !== index));
+    if (files.length <= 1) setError("");
   };
   const handleUpload = async () => {
     if (files.length === 0) return;
@@ -39,19 +54,40 @@ export default function DocumentUpload({
         const apiUrl =
           process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
         const token = localStorage.getItem("token");
-        const res = await fetch(`${apiUrl}/api/v1/documents/upload`, {
+        let res = await fetch(`${apiUrl}/api/v1/documents/upload`, {
           method: "POST",
           headers: (token
             ? { Authorization: `Bearer ${token}` }
             : {}) as Record<string, string>,
           body: formData,
         });
+        
+        if (res.status === 409) {
+          const proceed = window.confirm(`File "${files[i].name}" already exists. Do you want to upload anyway?`);
+          if (proceed) {
+            formData.append("force", "true");
+            res = await fetch(`${apiUrl}/api/v1/documents/upload`, {
+              method: "POST",
+              headers: (token
+                ? { Authorization: `Bearer ${token}` }
+                : {}) as Record<string, string>,
+              body: formData,
+            });
+          } else {
+            // User chose to use existing / skip
+            continue;
+          }
+        }
+        
         if (res.status === 401) {
           localStorage.removeItem('token');
           window.location.href = '/login';
           throw new Error("Session expired. Redirecting to login...");
         }
-        if (!res.ok) throw new Error("Upload failed");
+        if (!res.ok) {
+          const errData = await res.json().catch(() => ({}));
+          throw new Error(errData.detail || "Upload failed");
+        }
         setUploadProgress(Math.round(((i + 1) / files.length) * 100));
       }
       onUploadComplete();
@@ -64,7 +100,7 @@ export default function DocumentUpload({
     }
   };
   return (
-    <div className="bg-card border border-border/80 rounded-3xl p-4 md:p-6 shadow-2xl backdrop-blur-xl w-full">
+    <div className="bg-card border border-border/80 rounded-3xl p-4 md:p-4 md:p-4 md:p-6 shadow-2xl backdrop-blur-xl w-full">
       <div
         className="border-2 border-dashed border-border rounded-2xl p-10 flex flex-col items-center justify-center text-center cursor-pointer hover:border-emerald-500 hover:bg-emerald-500/5 transition-all group relative overflow-hidden"
         onDragOver={(e) => e.preventDefault()}
@@ -77,15 +113,16 @@ export default function DocumentUpload({
           Drop Medical Records Here
         </h3>
         <p className="text-sm text-muted-foreground mb-6 relative z-10">
-          Supports securely encrypted PDF, DICOM, JPEG up to 20MB
+          Supports any file format (PDF, DOCX, TXT, CSV, JSON, XML, Images, and more) up to 20MB
         </p>
-        <button className="px-4 md:px-6 py-2.5 bg-muted hover:bg-slate-700 border border-border hover:border-slate-600 text-foreground rounded-xl text-sm font-semibold transition-all relative z-10 shadow-lg">
+        <button className="px-4 md:px-4 md:px-4 md:px-6 py-2.5 bg-muted hover:bg-slate-700 border border-border hover:border-slate-600 text-foreground rounded-xl text-sm font-semibold transition-all relative z-10 shadow-lg">
           Browse Files
         </button>
         <input
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
+          accept="*/*"
           className="hidden"
           multiple
         />
@@ -138,7 +175,7 @@ export default function DocumentUpload({
             <button
               onClick={handleUpload}
               disabled={isUploading}
-              className="px-4 md:px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold rounded-xl flex items-center gap-2 disabled:opacity-50 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5"
+              className="px-4 md:px-4 md:px-4 md:px-6 py-3 bg-gradient-to-r from-emerald-500 to-cyan-500 hover:from-emerald-400 hover:to-cyan-400 text-slate-950 font-bold rounded-xl flex items-center gap-2 disabled:opacity-50 transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:shadow-[0_0_30px_rgba(16,185,129,0.5)] transform hover:-translate-y-0.5"
             >
               {isUploading ? (
                 <>

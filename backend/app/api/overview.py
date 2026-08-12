@@ -1,15 +1,19 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Dict, Any
-
-from app.api.deps import get_db, get_current_user
-from app.db.models import User, Patient
 from sqlalchemy.future import select
-from app.services.overview_engine import generate_patient_overview_report, generate_hospital_overview_report
+
+from app.api.deps import get_current_user, get_db
+from app.db.models import Patient, User
+from app.services.overview_engine import (
+    generate_hospital_overview_report,
+    generate_patient_overview_report,
+)
 
 router = APIRouter()
 
-@router.get("/patient/{patient_id}", response_model=Dict[str, Any])
+@router.get("/patient/{patient_id}", response_model=dict[str, Any])
 async def get_patient_overview(
     patient_id: int,
     db: AsyncSession = Depends(get_db),
@@ -29,16 +33,16 @@ async def get_patient_overview(
         )
 
     try:
-        report = generate_patient_overview_report(patient_id)
+        report = await generate_patient_overview_report(patient_id, db)
         return report
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate unified patient overview: {str(e)}"
+            detail=f"Failed to generate unified patient overview: {e!s}"
         )
 
 
-@router.get("/hospital/{hospital_id}", response_model=Dict[str, Any])
+@router.get("/hospital/{hospital_id}", response_model=dict[str, Any])
 async def get_hospital_overview(
     hospital_id: int,
     db: AsyncSession = Depends(get_db),
@@ -61,5 +65,5 @@ async def get_hospital_overview(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate unified hospital overview: {str(e)}"
+            detail=f"Failed to generate unified hospital overview: {e!s}"
         )

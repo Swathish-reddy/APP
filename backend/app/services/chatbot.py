@@ -1,6 +1,6 @@
-import os
-from typing import Dict, Any, List
 import json
+import os
+from typing import Any
 
 # Try to import google-generativeai
 try:
@@ -33,7 +33,7 @@ def clean_response(text: str) -> str:
     """Helper to ensure response formats cleanly."""
     return text.strip()
 
-def run_clinical_chatbot(message: str, patient_context: Dict[str, Any] = None) -> str:
+def run_clinical_chatbot(message: str, patient_context: dict[str, Any] = None) -> str:
     """Clinical rule-based keyword match chatbot."""
     msg_lower = message.lower()
     
@@ -78,7 +78,7 @@ def run_clinical_chatbot(message: str, patient_context: Dict[str, Any] = None) -
         "- *'Tell me about my profile twin status'*"
     )
 
-def query_chatbot(message: str, patient_context: Dict[str, Any] = None, history: List[Dict[str, str]] = None) -> str:
+def query_chatbot(message: str, patient_context: dict[str, Any] = None, history: list[dict[str, str]] = None) -> str:
     """
     Primary endpoint for clinical chat.
     Uses Gemini API if key is set, otherwise falls back to clinical rules classifier.
@@ -125,12 +125,9 @@ def query_chatbot(message: str, patient_context: Dict[str, Any] = None, history:
             
             # Clean up the response in case Gemini wrapped it in markdown json block
             res_text = response.text.strip()
-            if res_text.startswith("```json"):
-                res_text = res_text[7:]
-            if res_text.startswith("```"):
-                res_text = res_text[3:]
-            if res_text.endswith("```"):
-                res_text = res_text[:-3]
+            res_text = res_text.removeprefix("```json")
+            res_text = res_text.removeprefix("```")
+            res_text = res_text.removesuffix("```")
                 
             return res_text.strip()
         except Exception as e:

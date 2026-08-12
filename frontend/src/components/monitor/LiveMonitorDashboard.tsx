@@ -7,9 +7,11 @@ import { AlertsPanel } from "./AlertsPanel";
 import { AIPredictionsPanel } from "./AIPredictionsPanel";
 import { Button } from "@/components/ui/button";
 import { AlertOctagon, CloudOff, Activity } from "lucide-react";
+import { BASE_URL } from "../../services/api";
+
 interface LiveMonitorDashboardProps {
   patientId: string;
-}
+};
 export const LiveMonitorDashboard: React.FC<LiveMonitorDashboardProps> = ({
   patientId,
 }) => {
@@ -27,8 +29,8 @@ export const LiveMonitorDashboard: React.FC<LiveMonitorDashboardProps> = ({
     const fetchStatic = async () => {
       try {
         const [devRes, predRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/monitor/patients/${patientId}/devices`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/monitor/patients/${patientId}/predictions`)
+          fetch(`${BASE_URL}/monitor/patients/${patientId}/devices`),
+          fetch(`${BASE_URL}/monitor/patients/${patientId}/predictions`)
         ]);
         setDevices(await devRes.json());
         setPredictions(await predRes.json());
@@ -46,8 +48,8 @@ export const LiveMonitorDashboard: React.FC<LiveMonitorDashboardProps> = ({
       if (!isSubscribed) return;
       try {
         const url = simulationEvent
-          ? `${process.env.NEXT_PUBLIC_API_URL}/api/v1/monitor/patients/${patientId}/stream?event=${simulationEvent}`
-          : `${process.env.NEXT_PUBLIC_API_URL}/api/v1/monitor/patients/${patientId}/stream`;
+          ? `${BASE_URL}/monitor/patients/${patientId}/stream?event=${simulationEvent}`
+          : `${BASE_URL}/monitor/patients/${patientId}/stream`;
         
         const res = await fetch(url);
         if (!res.ok) throw new Error("Stream connection lost");
@@ -61,7 +63,7 @@ export const LiveMonitorDashboard: React.FC<LiveMonitorDashboardProps> = ({
           });
           
           const alertRes = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/api/v1/monitor/patients/${patientId}/alerts`,
+            `${BASE_URL}/monitor/patients/${patientId}/alerts`,
           );
           setAlerts(await alertRes.json());
           
@@ -105,7 +107,7 @@ export const LiveMonitorDashboard: React.FC<LiveMonitorDashboardProps> = ({
       {" "}
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold tracking-tight">
             Live Health Command Center
           </h1>
           <div className="flex items-center gap-2 mt-1">

@@ -1,6 +1,7 @@
-from typing import Dict, Any, List
+from typing import Any
 
-def calculate_news2_score(vitals: Dict[str, float]) -> int:
+
+def calculate_news2_score(vitals: dict[str, float]) -> int:
     """Calculates the National Early Warning Score (NEWS2)."""
     score = 0
     
@@ -31,7 +32,7 @@ def calculate_news2_score(vitals: Dict[str, float]) -> int:
     
     return score
 
-def detect_critical_events(vitals: Dict[str, float], labs: Dict[str, float]) -> Dict[str, Any]:
+def detect_critical_events(vitals: dict[str, float], labs: dict[str, float]) -> dict[str, Any]:
     """Flags life-threatening conditions (e.g., Sepsis)."""
     alerts = []
     actions = []
@@ -49,7 +50,7 @@ def detect_critical_events(vitals: Dict[str, float], labs: Dict[str, float]) -> 
     if (sys_bp <= 100 or rr >= 22 or is_sirs) and lactate >= 4.0:
         alerts.append("🔴 CRITICAL: Septic Shock Detected (Lactate > 4.0, Hypotension).")
         actions.append("[CRITICAL] Initiate Sepsis Protocol (Surviving Sepsis Campaign bundle).")
-        actions.append(f"[CRITICAL] Administer 30 mL/kg IV crystalloid fluid bolus immediately.")
+        actions.append("[CRITICAL] Administer 30 mL/kg IV crystalloid fluid bolus immediately.")
         actions.append("[CRITICAL] Draw blood cultures NOW, prior to broad-spectrum antibiotics.")
         resources.append("1 ICU Bed (Alerting ICU Charge Nurse).")
         
@@ -59,7 +60,7 @@ def detect_critical_events(vitals: Dict[str, float], labs: Dict[str, float]) -> 
         "resources": resources
     }
 
-def generate_emergency_intelligence_report(patient: Dict[str, Any], payload: Dict[str, Any]) -> Dict[str, Any]:
+def generate_emergency_intelligence_report(patient: dict[str, Any], payload: dict[str, Any]) -> dict[str, Any]:
     """Compiles the 20-point Emergency Intelligence report."""
     vitals = payload.get("vitals", {})
     labs = payload.get("labs", {})

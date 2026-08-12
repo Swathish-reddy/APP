@@ -2,26 +2,32 @@
 CDSS (Clinical Decision Support System) API
 Generates real recommendations from actual patient DB data.
 """
-from fastapi import APIRouter, HTTPException, Depends, status
-from typing import Dict, Any, List, Optional
-from pydantic import BaseModel
+from typing import Any
+
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.db.session import get_db
-from app.db.models import (
-    Patient, HealthMetric, MedicalHistory, Medication, Lifestyle,
-    AIRecommendation, HealthTimeline, User, DiseasePrediction
-)
 from app.api.deps import get_current_user
-from app.services.clinical_risk_engine import run_multi_model_fusion, REFERENCE_RANGES
-from app.services.digital_twin import generate_twin_state
+from app.db.models import (
+    AIRecommendation,
+    HealthMetric,
+    HealthTimeline,
+    Lifestyle,
+    MedicalHistory,
+    Medication,
+    Patient,
+    User,
+)
+from app.db.session import get_db
 from app.services.cdss_engine import generate_doctor_intelligence_report
+from app.services.clinical_risk_engine import run_multi_model_fusion
+from app.services.digital_twin import generate_twin_state
 
 router = APIRouter()
 
 
-async def _build_patient_context(patient_id: int, db: AsyncSession) -> Dict[str, Any]:
+async def _build_patient_context(patient_id: int, db: AsyncSession) -> dict[str, Any]:
     """Assembles a full patient context dict from the database for the AI engines."""
     pat_res = await db.execute(select(Patient).where(Patient.patient_id == patient_id))
     patient = pat_res.scalars().first()
@@ -347,7 +353,7 @@ async def get_doctor_intelligence(
     except Exception as e:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to generate intelligence report: {str(e)}"
+            detail=f"Failed to generate intelligence report: {e!s}"
         )
 
 @router.get("/{patient_id}/xai")
@@ -514,7 +520,7 @@ async def get_action_plan(
     labs = ctx.get("labs", {})
     vitals = ctx.get("vitals", {})
     lifestyle = ctx.get("lifestyle", {})
-    age = ctx.get("age", 45)
+    ctx.get("age", 45)
     bmi = ctx.get("bmi", 24.0)
     
     # 1. Immediate Actions
@@ -557,7 +563,7 @@ async def get_action_plan(
     
     # 9. Weight
     if bmi > 25:
-        plan["Weight Goals"].append({"action": f"Target 5% body weight reduction", "reason": f"BMI is {bmi:.1f} (Overweight)", "status": "Pending"})
+        plan["Weight Goals"].append({"action": "Target 5% body weight reduction", "reason": f"BMI is {bmi:.1f} (Overweight)", "status": "Pending"})
         
     # 10. Stress & Mental Wellness
     if lifestyle.get("stress_level_scale_10", 0) > 6:

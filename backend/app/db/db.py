@@ -1,8 +1,7 @@
-from typing import Dict, List, Any
-import copy
+from typing import Any
 
 # Mock Patients Data
-INITIAL_PATIENTS: Dict[str, Dict[str, Any]] = {
+INITIAL_PATIENTS: dict[str, dict[str, Any]] = {
     "P101": {
         "id": "P101",
         "name": "Sarah Jenkins",
@@ -195,12 +194,11 @@ INITIAL_PATIENTS: Dict[str, Dict[str, Any]] = {
     }
 }
 
-# In-memory patient store mutable during simulation
-patients_db = copy.deepcopy(INITIAL_PATIENTS)
+
 
 
 # Doctors Directory
-DOCTORS_DB: List[Dict[str, Any]] = [
+DOCTORS_DB: list[dict[str, Any]] = [
     {
         "id": "D1",
         "name": "Dr. Aris Vance",
@@ -294,7 +292,7 @@ DOCTORS_DB: List[Dict[str, Any]] = [
 
 
 # Hospitals Directory
-HOSPITALS_DB: List[Dict[str, Any]] = [
+HOSPITALS_DB: list[dict[str, Any]] = [
     {
         "id": "H1",
         "name": "Massachusetts General Hospital (MGH)",
@@ -394,7 +392,7 @@ KNOWN_SIDE_EFFECTS = {
     "Albuterol": ["Tremors", "Tachycardia (fast heart rate)", "Nervousness", "Palpitations", "Hypokalemia"]
 }
 
-def get_drug_interactions(drugs: List[str]) -> List[Dict[str, Any]]:
+def get_drug_interactions(drugs: list[str]) -> list[dict[str, Any]]:
     """Checks for interactions in a list of drugs."""
     interactions = []
     for i in range(len(drugs)):

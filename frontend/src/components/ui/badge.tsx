@@ -37,5 +37,5 @@ function Badge({
     render,
     state: { slot: "badge", variant },
   });
-}
+};
 export { Badge, badgeVariants };

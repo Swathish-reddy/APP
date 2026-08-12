@@ -4,7 +4,7 @@ import { BrainCircuit, Target, Lightbulb, Link } from "lucide-react";
 interface AIInsightsPanelProps {
   provider: any;
   type: string;
-}
+};
 export const AIInsightsPanel: React.FC<AIInsightsPanelProps> = ({
   provider,
   type,

@@ -5,7 +5,7 @@ export default function AIRecommendations({ data }: { data: any }) {
   if (!data) return null;
   
   return (
-    <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col relative overflow-hidden">
+    <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-500/30 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col relative overflow-hidden">
       <div className="absolute top-0 right-0 p-4 opacity-10 pointer-events-none">
         <BrainCircuit className="w-32 h-32 text-indigo-400" />
       </div>

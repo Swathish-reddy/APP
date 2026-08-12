@@ -6,9 +6,9 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
-from app.db.session import get_db
-from app.db.models import Patient, DigitalTwin, TwinPrediction, User
 from app.api.deps import get_current_user
+from app.db.models import DigitalTwin, Patient, TwinPrediction, User
+from app.db.session import get_db
 from app.services.digital_twin import generate_twin_state
 
 router = APIRouter()
@@ -158,7 +158,7 @@ async def get_data_fusion(
         insights.append({
             "type": "warning",
             "title": "Atherogenic Lipid Profile",
-            "description": f"Elevated LDL cholesterol increases risk of plaque formation. Recommend lifestyle intervention."
+            "description": "Elevated LDL cholesterol increases risk of plaque formation. Recommend lifestyle intervention."
         })
         
     if "white_blood_cells" in latest_metrics and "hemoglobin" in latest_metrics:

@@ -14,8 +14,7 @@ import { Activity, Stethoscope, FileText, CheckCircle, Navigation2 } from "lucid
 
 interface DecisionDashboardProps {
   patientId: string;
-}
-
+};
 export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId }) => {
   const [patientData, setPatientData] = useState<any>(null);
   const [recommendations, setRecommendations] = useState<any>(null);
@@ -65,7 +64,7 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
     <div className="space-y-6">
       <div className="flex justify-between items-end">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+          <h1 className="text-2xl md:text-2xl md:text-2xl md:text-3xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
             Clinical Decision Intelligence Center
           </h1>
           <p className="text-muted-foreground mt-1">
@@ -77,7 +76,7 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
       <TopSection patientData={patientData} recommendations={recommendations} />
       
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 min-h-[700px]">
-        {/* Left Column - Core Recommendations */}
+        {}
         <div className="lg:col-span-4 bg-card/60 dark:bg-card/60 border rounded-2xl p-4 shadow-sm backdrop-blur-md h-full flex flex-col">
           <RecommendationPanel
             recommendations={recommendations}
@@ -86,10 +85,10 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
           />
         </div>
 
-        {/* Right Column - Deep Dive Tools */}
+        {}
         <div className="lg:col-span-8 bg-card/60 dark:bg-card/60 border rounded-2xl p-4 shadow-sm backdrop-blur-md h-full flex flex-col">
           <Tabs defaultValue="xai" className="h-full flex flex-col">
-            <TabsList className="grid grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-cols-6 gap-2 mb-4 bg-transparent w-full h-auto">
+            <TabsList className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 md:grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-1 md:grid-cols-2 lg:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-cols-6 gap-2 mb-4 bg-transparent w-full h-auto">
               <TabsTrigger value="xai" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Explainable AI
               </TabsTrigger>

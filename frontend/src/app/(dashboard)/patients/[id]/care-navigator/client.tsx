@@ -5,9 +5,9 @@ import { CareNavigatorDashboard } from "@/components/navigator/CareNavigatorDash
 export default function CareNavigatorPage() {
   const params = useParams();
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-4 md:p-4 md:p-6">
       {" "}
-      <CareNavigatorDashboard patientId={params.id} />{" "}
+      <CareNavigatorDashboard patientId={params.id as string} />{" "}
     </div>
   );
 }

@@ -1,16 +1,11 @@
+
 from pydantic_settings import BaseSettings
-from typing import List
+
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "CogniVueX AI – Digital Twin Platform Backend"
     API_V1_STR: str = "/api/v1"
-    CORS_ORIGINS: List[str] = [
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://127.0.0.1:3000",
-        "http://127.0.0.1:3001",
-        "*"
-    ]
+    CORS_ORIGINS: list[str] = ["*"]
     GEMINI_API_KEY: str = ""
     
     # Database
@@ -18,7 +13,7 @@ class Settings(BaseSettings):
     POSTGRES_USER: str = "postgres"
     POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_DB: str = "cognivuex"
-    SQLALCHEMY_DATABASE_URI: str = "sqlite+aiosqlite:///./cognivuex.db"
+    DATABASE_URL: str = "sqlite+aiosqlite:///./cognivuex.db"
     
     # Security
     SECRET_KEY: str = "09d25e094faa6ca2556c818166b7a9563b93f7099f6f0f4caa6cf63b88e8d3e7" # Should be randomly generated in production

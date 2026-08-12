@@ -33,7 +33,7 @@ export default function RightPanelCapacity() {
     return (
       <div className="h-full flex flex-col bg-card/60 border border-border/80 rounded-2xl backdrop-blur-md overflow-hidden p-4">
         <div className="animate-pulse space-y-4">
-          <div className="h-10 bg-muted/50 rounded w-full md:w-1/2"></div>
+          <div className="h-10 bg-muted/50 rounded w-full md:w-full md:w-full md:w-1/2"></div>
           <div className="h-20 bg-muted/50 rounded"></div>
           <div className="h-20 bg-muted/50 rounded"></div>
         </div>
@@ -44,7 +44,7 @@ export default function RightPanelCapacity() {
   return (
     <div className="h-full flex flex-col bg-card/60 border border-border/80 rounded-2xl backdrop-blur-md overflow-hidden">
       
-      {/* Header */}
+      {}
       <div className="p-4 border-b border-border bg-card/50">
         <h2 className="text-lg font-bold text-foreground flex items-center">
           <Building2 className="w-5 h-5 mr-2 text-indigo-400" />
@@ -54,7 +54,7 @@ export default function RightPanelCapacity() {
 
       <div className="flex-1 overflow-y-auto p-4 space-y-4 scrollbar-hide">
         
-        {/* Beds */}
+        {}
         <div className="space-y-3">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Critical Beds</h3>
           
@@ -85,11 +85,11 @@ export default function RightPanelCapacity() {
           </div>
         </div>
 
-        {/* Equipment */}
+        {}
         <div className="space-y-3 pt-2">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Equipment & Resources</h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 gap-3">
             <div className="bg-muted/40 p-3 rounded-xl border border-border/50 flex flex-col items-center justify-center text-center">
               <Wind className="w-5 h-5 text-blue-400 mb-1" />
               <span className="text-xs text-muted-foreground">Ventilators</span>
@@ -103,7 +103,7 @@ export default function RightPanelCapacity() {
           </div>
         </div>
 
-        {/* Specialists */}
+        {}
         <div className="space-y-3 pt-2">
           <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider flex justify-between">
             <span>On-Call Specialists</span>

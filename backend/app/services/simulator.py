@@ -1,6 +1,8 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-from app.db.models import Patient, DigitalTwin, HealthStateSnapshot
+
+from app.db.models import DigitalTwin
+
 
 async def run_heuristic_simulation(patient_id: int, modifiers: dict, db: AsyncSession) -> dict:
     """

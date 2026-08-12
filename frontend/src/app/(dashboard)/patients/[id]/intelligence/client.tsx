@@ -14,7 +14,7 @@ export default function IntelligencePage({
   const patientId = propPatientId || resolvedParams?.id;
 
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-4 md:p-4 md:p-6">
       {patientId ? <AIIntelligenceDashboard patientId={patientId} /> : <div>Loading...</div>}
     </div>
   );

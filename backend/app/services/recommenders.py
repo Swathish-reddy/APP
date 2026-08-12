@@ -1,7 +1,9 @@
-from typing import Dict, List, Any
+from typing import Any
+
 from app.db.db import DOCTORS_DB, HOSPITALS_DB
 
-def recommend_doctors(diseases: List[str], patient_location: str) -> List[Dict[str, Any]]:
+
+def recommend_doctors(diseases: list[str], patient_location: str) -> list[dict[str, Any]]:
     """
     Matches and ranks doctors based on patient's predicted diseases or conditions.
     Scores them on rating, distance match, and specialization overlap.
@@ -55,7 +57,7 @@ def recommend_doctors(diseases: List[str], patient_location: str) -> List[Dict[s
     recommended.sort(key=lambda x: x["match_score"], reverse=True)
     return recommended
 
-def recommend_hospitals(diseases: List[str], patient_location: str) -> List[Dict[str, Any]]:
+def recommend_hospitals(diseases: list[str], patient_location: str) -> list[dict[str, Any]]:
     """
     Matches and ranks hospitals based on specialties, infrastructure availability, 
     success rate, patient rating, and calculated distance.
@@ -83,11 +85,7 @@ def recommend_hospitals(diseases: List[str], patient_location: str) -> List[Dict
         for d in diseases:
             if d.lower() in hosp_specialties_lower:
                 specialty_match += 10
-            elif d == "Cardiovascular" and "cardiology" in hosp_specialties_lower:
-                specialty_match += 12
-            elif d == "Kidney" and "nephrology" in hosp_specialties_lower:
-                specialty_match += 12
-            elif d == "Respiratory" and "pulmonology" in hosp_specialties_lower:
+            elif d == "Cardiovascular" and "cardiology" in hosp_specialties_lower or d == "Kidney" and "nephrology" in hosp_specialties_lower or d == "Respiratory" and "pulmonology" in hosp_specialties_lower:
                 specialty_match += 12
                 
         # ICU availability bonus during emergency

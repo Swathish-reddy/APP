@@ -7,7 +7,7 @@ export default function LiveMonitorPage({ patientId }: { patientId?: string } = 
   const params = useParams();
   const id = patientId || (params?.id as string);
   return (
-    <div className="p-4 md:p-6">
+    <div className="p-4 md:p-4 md:p-4 md:p-6">
       <LiveMonitorDashboard patientId={id} />
     </div>
   );

@@ -1,9 +1,15 @@
-from typing import Dict, Any, List
-import copy
-from app.db.db import FOOD_DATABASE, RECIPES_DB, NUTRITION_PLANS_DB, GROCERY_LISTS_DB, COMPLIANCE_RECORDS_DB
+from typing import Any
+
+from app.db.db import (
+    COMPLIANCE_RECORDS_DB,
+    FOOD_DATABASE,
+    GROCERY_LISTS_DB,
+    NUTRITION_PLANS_DB,
+)
 from app.services.fusion import run_ai_fusion
 
-def calculate_macros(patient: Dict[str, Any], program_type: str) -> Dict[str, Any]:
+
+def calculate_macros(patient: dict[str, Any], program_type: str) -> dict[str, Any]:
     """Calculates TDEE and macro splits based on the therapeutic program."""
     age = patient["age"]
     weight_kg = patient["weight_kg"]
@@ -55,7 +61,7 @@ def calculate_macros(patient: Dict[str, Any], program_type: str) -> Dict[str, An
         "hydration_liters": round(weight_kg * 0.033, 1)
     }
 
-def get_therapeutic_program(patient: Dict[str, Any], predictions: Dict[str, Any]) -> str:
+def get_therapeutic_program(patient: dict[str, Any], predictions: dict[str, Any]) -> str:
     med_history = "".join(patient["medical_history"]).lower()
     
     if "kidney" in med_history or predictions.get("Kidney", {}).get("risk_percent", 0) > 50:
@@ -69,7 +75,7 @@ def get_therapeutic_program(patient: Dict[str, Any], predictions: Dict[str, Any]
         
     return "General Healthy Nutrition"
 
-def filter_allergens(foods: Dict[str, Any], allergies: List[str]) -> Dict[str, Any]:
+def filter_allergens(foods: dict[str, Any], allergies: list[str]) -> dict[str, Any]:
     safe_foods = {}
     allergies_lower = [a.lower() for a in allergies]
     for name, data in foods.items():
@@ -79,7 +85,7 @@ def filter_allergens(foods: Dict[str, Any], allergies: List[str]) -> Dict[str, A
             safe_foods[name] = data
     return safe_foods
 
-def generate_nutrition_plan(patient: Dict[str, Any]) -> Dict[str, Any]:
+def generate_nutrition_plan(patient: dict[str, Any]) -> dict[str, Any]:
     ai_fusion = run_ai_fusion(patient)
     predictions = ai_fusion.get("predictions", {})
     
@@ -145,7 +151,7 @@ def generate_nutrition_plan(patient: Dict[str, Any]) -> Dict[str, Any]:
     NUTRITION_PLANS_DB[patient["id"]] = plan
     return plan
 
-def get_substitutions(food_name: str) -> List[Dict[str, Any]]:
+def get_substitutions(food_name: str) -> list[dict[str, Any]]:
     if food_name not in FOOD_DATABASE:
         return []
         
@@ -158,7 +164,7 @@ def get_substitutions(food_name: str) -> List[Dict[str, Any]]:
             
     return subs
 
-def generate_grocery_list(patient_id: str) -> Dict[str, Any]:
+def generate_grocery_list(patient_id: str) -> dict[str, Any]:
     if patient_id not in NUTRITION_PLANS_DB:
         return {"items": [], "estimated_cost": "$0.00"}
         

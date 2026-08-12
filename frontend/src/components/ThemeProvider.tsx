@@ -13,8 +13,7 @@ if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
     }
     origError.apply(console, args);
   };
-}
-
+};
 export function ThemeProvider({
   children,
   ...props

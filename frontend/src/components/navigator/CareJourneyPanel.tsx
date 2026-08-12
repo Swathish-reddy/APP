@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, CircleDashed } from "lucide-react";
 interface CareJourneyPanelProps {
   pathway: any[];
-}
+};
 export const CareJourneyPanel: React.FC<CareJourneyPanelProps> = ({
   pathway,
 }) => {

@@ -1,5 +1,5 @@
-import { render, screen, fireEvent, waitFor } from '@testing-library/react'
-import DataFusionCenter from '../dashboard/DataFusionCenter'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import DataFusionCenter from '../dashboard/DataFusionCenter';
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 
 // Mock fetch globally
@@ -66,7 +66,7 @@ describe('DataFusionCenter', () => {
 
     render(<DataFusionCenter patientId="P101" />)
 
-    const btn = screen.getByText('Force Resync')
+    const btn = await screen.findByText('Force Resync')
     fireEvent.click(btn)
 
     await waitFor(() => {

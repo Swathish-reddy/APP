@@ -5,14 +5,14 @@ export default function HospitalMap({ data }: { data: any }) {
   if (!data) return null;
   
   return (
-    <div className="bg-card/60 border border-border/50 p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col relative overflow-hidden">
+    <div className="bg-card/60 border border-border/50 p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-xl h-full flex flex-col relative overflow-hidden">
       <h2 className="text-xl font-bold text-foreground mb-4 flex items-center relative z-10">
         <Map className="w-5 h-5 mr-2 text-cyan-400" />
         Digital Floor Plan
       </h2>
       
       <div className="flex-grow bg-muted/30 rounded-2xl border border-border/50 relative overflow-hidden flex items-center justify-center min-h-[150px]">
-        {/* Abstract Blueprint background */}
+        {}
         <div className="absolute inset-0 opacity-20" style={{ 
           backgroundImage: 'linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)', 
           backgroundSize: '20px 20px' 
