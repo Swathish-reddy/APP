@@ -63,7 +63,7 @@ jobs:
           
           cd ../backend
           pip install bandit
-          bandit -r app/ -f json -o ../security-report/bandit-report.json -s B311
+          bandit -r app/ -f json -o ../security-report/bandit-report.json -s B311 -ll
           
           echo "Security scan completed" > ../security-report/security-summary.txt
           echo "<html><body><h1>Security Report</h1></body></html>" > ../security-report/security-report.html
