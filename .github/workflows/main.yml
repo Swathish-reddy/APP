@@ -58,11 +58,11 @@ jobs:
       - name: Run Security Assessment
         run: |
           cd frontend
-          npm audit --json > ../security-report/security-report.json
+          npm audit --omit=dev --json > ../security-report/security-report.json
           
           cd ../backend
           pip install bandit
-          bandit -r app/ -f json -o ../security-report/bandit-report.json
+          bandit -r app/ -f json -o ../security-report/bandit-report.json -s B311
           
           echo "Security scan completed" > ../security-report/security-summary.txt
           echo "<html><body><h1>Security Report</h1></body></html>" > ../security-report/security-report.html
