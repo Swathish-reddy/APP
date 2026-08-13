@@ -88,18 +88,18 @@ def get_clinical_guidelines_risk(patient: dict[str, Any], disease: str) -> dict[
             
     elif disease == "Diabetes":
         # ADA / WHO guidelines
-        if labs.get("hba1c", 5.4) >= 6.5:
+        if (labs.get("hba1c") or 5.4) >= 6.5:
             score += 0.45
             rules_triggered.append("HbA1c >= 6.5% indicates Type 2 Diabetes range (ADA Guideline)")
-        elif labs.get("hba1c", 5.4) >= 5.7:
+        elif (labs.get("hba1c") or 5.4) >= 5.7:
             score += 0.2
             rules_triggered.append("HbA1c between 5.7% and 6.4% indicates Pre-diabetes (ADA Guideline)")
             
-        if vitals.get("glucose", 90) >= 126:
+        if (vitals.get("glucose") or 90) >= 126:
             score += 0.3
             rules_triggered.append("Fasting Plasma Glucose >= 126 mg/dL indicates Diabetes (ADA Guideline)")
             
-        if patient.get("bmi", 22) >= 30:
+        if (patient.get("bmi") or 22) >= 30:
             score += 0.2
             rules_triggered.append("Obesity Class 1 or higher (BMI >= 30) (WHO Guideline)")
             
@@ -113,13 +113,13 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
     """
     # 1. Prepare patient features
     age = patient["age"]
-    bmi = patient.get("bmi") or (patient["weight_kg"] / ((patient["height_cm"]/100.0)**2))
-    sys_bp = patient["vitals"]["systolic_bp"]
-    glucose = patient["vitals"]["glucose"]
-    ldl = patient["labs"]["cholesterol_ldl"]
-    steps_k = patient["lifestyle"]["average_steps_day"] / 1000.0
-    sleep = patient["lifestyle"]["sleep_hours"]
-    smoking = 1 if patient["lifestyle"]["smoking_status"] == "Current Smoker" else 0
+    bmi = patient.get("bmi") or ((patient.get("weight_kg") or 70) / (((patient.get("height_cm") or 170)/100.0)**2))
+    sys_bp = patient.get("vitals", {}).get("systolic_bp", 120)
+    glucose = patient.get("vitals", {}).get("glucose", 90)
+    ldl = patient.get("labs", {}).get("cholesterol_ldl", 100)
+    steps_k = patient.get("lifestyle", {}).get("average_steps_day", 5000) / 1000.0
+    sleep = patient.get("lifestyle", {}).get("sleep_hours", 7.0)
+    smoking = 1 if patient.get("lifestyle", {}).get("smoking_status") == "Current Smoker" else 0
     
     features = np.array([[age, bmi, sys_bp, glucose, ldl, steps_k, sleep, smoking]])
     
@@ -158,8 +158,8 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
             # Rule based on smoking, FEV1, SpO2, Asthma history
             has_asthma = "Asthma" in patient.get("medical_history", [])
             has_copd = "COPD" in patient.get("medical_history", [])
-            fev1 = patient["labs"]["fev1_percent"]
-            spo2 = patient["vitals"]["spo2"]
+            fev1 = patient.get("labs", {}).get("fev1_percent", 95)
+            spo2 = patient.get("vitals", {}).get("spo2", 98)
             
             rule_prob = 0.1
             rules = []
@@ -185,8 +185,8 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
             
         elif d == "Kidney":
             # CKD risk based on eGFR, Creatinine, HbA1c, and BP
-            egfr = patient["labs"]["egfr"]
-            creatinine = patient["labs"]["creatinine"]
+            egfr = patient.get("labs", {}).get("egfr", 90)
+            creatinine = patient.get("labs", {}).get("creatinine", 0.9)
             
             rules = []
             rule_prob = 0.05
@@ -212,8 +212,8 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
             
         elif d == "Liver":
             # Fatty liver risk / NAFLD based on ALT/AST and BMI
-            alt = patient["labs"]["alt"]
-            ast = patient["labs"]["ast"]
+            alt = patient.get("labs", {}).get("alt", 25)
+            ast = patient.get("labs", {}).get("ast", 25)
             
             rules = []
             rule_prob = 0.05
@@ -223,7 +223,7 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
             if bmi >= 30:
                 rule_prob += 0.35
                 rules.append("Obesity BMI increases hepatic steatosis risk (AASLD Guidelines)")
-            if patient["lifestyle"]["diet_type"] == "High Sodium, Processed Foods":
+            if patient.get("lifestyle", {}).get("diet_type") == "High Sodium, Processed Foods":
                 rule_prob += 0.1
                 rules.append("Atherogenic diet promotes visceral fat storage")
                 
@@ -236,8 +236,8 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
             
         else: # Neurological (Dementia Risk)
             # Sleep hours, age, stress levels, physical inactivity
-            sleep_hours = patient["lifestyle"]["sleep_hours"]
-            stress = patient["lifestyle"]["stress_level_scale_10"]
+            sleep_hours = patient.get("lifestyle", {}).get("sleep_hours", 7.0)
+            stress = patient.get("lifestyle", {}).get("stress_level_scale_10", 3)
             
             rules = []
             rule_prob = 0.05
@@ -292,9 +292,9 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
         {"name": "Systolic Blood Pressure", "value": f"{sys_bp} mmHg", "impact": 0.0, "reason": ""},
         {"name": "Body Mass Index (BMI)", "value": f"{round(bmi,1)}", "impact": 0.0, "reason": ""},
         {"name": "Blood Glucose Level", "value": f"{glucose} mg/dL", "impact": 0.0, "reason": ""},
-        {"name": "Daily Steps Walked", "value": f"{patient['lifestyle']['average_steps_day']} steps", "impact": 0.0, "reason": ""},
+        {"name": "Daily Steps Walked", "value": f"{patient.get('lifestyle', {}).get('average_steps_day', 5000)} steps", "impact": 0.0, "reason": ""},
         {"name": "Average Sleep Duration", "value": f"{sleep} hrs", "impact": 0.0, "reason": ""},
-        {"name": "Tobacco Use Status", "value": f"{patient['lifestyle']['smoking_status']}", "impact": 0.0, "reason": ""},
+        {"name": "Tobacco Use Status", "value": f"{patient.get('lifestyle', {}).get('smoking_status', 'Never Smoked')}", "impact": 0.0, "reason": ""},
         {"name": "LDL Cholesterol", "value": f"{ldl} mg/dL", "impact": 0.0, "reason": ""},
         {"name": "Mental Stress Index", "value": f"{stress}/10", "impact": 0.0, "reason": ""}
     ]
@@ -314,7 +314,7 @@ def run_ai_fusion(patient: dict[str, Any]) -> dict[str, Any]:
             item["impact"] = round(diff * 0.35, 1)
             item["reason"] = "Elevated systemic glycemia" if diff > 0 else "Normal metabolic glucose profile"
         elif item["name"] == "Daily Steps Walked":
-            diff = patient['lifestyle']['average_steps_day'] - 7500
+            diff = patient.get('lifestyle', {}).get('average_steps_day', 5000) - 7500
             item["impact"] = round(-diff * 0.002, 1) # Walking reduces risk (negative SHAP)
             item["reason"] = "Cardioprotective activity index" if diff > 0 else "Sedentary lifestyle risk"
         elif item["name"] == "Average Sleep Duration":

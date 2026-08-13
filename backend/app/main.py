@@ -9,15 +9,12 @@ from fastapi.middleware.cors import CORSMiddleware
 import traceback
 from sqlalchemy import func, select
 
-from app.api.analytics import router as analytics_router
 from app.api.appointments import router as appointments_router
 from app.api.auth import router as auth_router
 from app.api.cdss import router as cdss_router
 from app.api.diet import router as diet_router
 from app.api.doctors import router as doctors_router
 from app.api.documents import router as documents_router
-from app.api.emergency import router as emergency_router
-from app.api.hospital import router as hospital_router
 from app.api.intelligence import router as intelligence_router
 from app.api.medications import router as medications_router
 from app.api.monitor import router as monitor_router
@@ -25,7 +22,6 @@ from app.api.navigator import router as navigator_router
 from app.api.nutrition import router as nutrition_router
 from app.api.overview import router as overview_router
 from app.api.patients import router as patients_router
-from app.api.population import router as population_router
 from app.api.risk_intelligence import router as risk_router
 from app.api.simulator import router as simulator_router
 from app.api.twin import router as twin_router
@@ -72,13 +68,9 @@ app.include_router(nutrition_router, prefix=f"{settings.API_V1_STR}/nutrition", 
 app.include_router(navigator_router, prefix=f"{settings.API_V1_STR}/navigator", tags=["navigator"])
 app.include_router(monitor_router, prefix=f"{settings.API_V1_STR}/monitor", tags=["monitor"])
 app.include_router(intelligence_router, prefix=f"{settings.API_V1_STR}/intelligence", tags=["intelligence"])
-app.include_router(population_router, prefix=f"{settings.API_V1_STR}/population", tags=["population"])
 app.include_router(medications_router, prefix=f"{settings.API_V1_STR}/medications", tags=["medications"])
-app.include_router(hospital_router, prefix=f"{settings.API_V1_STR}/hospital", tags=["hospital"])
 app.include_router(diet_router, prefix=f"{settings.API_V1_STR}/diet", tags=["diet"])
-app.include_router(emergency_router, prefix=f"{settings.API_V1_STR}/emergency", tags=["emergency"])
 app.include_router(overview_router, prefix=f"{settings.API_V1_STR}/overview", tags=["overview"])
-app.include_router(analytics_router, prefix=f"{settings.API_V1_STR}/analytics", tags=["analytics"])
 app.include_router(doctors_router, prefix=f"{settings.API_V1_STR}/doctors", tags=["doctors"])
 app.include_router(appointments_router, prefix=f"{settings.API_V1_STR}/appointments", tags=["appointments"])
 

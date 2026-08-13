@@ -6,7 +6,6 @@ import { DecisionExplorer } from "./DecisionExplorer";
 import { EvidencePanel } from "./EvidencePanel";
 import { ActionPlanPanel } from "./ActionPlanPanel";
 import { DoctorDiscovery } from "./DoctorDiscovery";
-import { HospitalRecommendations } from "./HospitalRecommendations";
 import { ReportAnalysis } from "./ReportAnalysis";
 import { getPatient } from "@/lib/api/patients";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -104,9 +103,6 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
               <TabsTrigger value="doctors" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
                 Find Doctors
               </TabsTrigger>
-              <TabsTrigger value="hospitals" className="text-xs py-2 data-[state=active]:bg-blue-600 data-[state=active]:text-foreground rounded-lg shadow-sm">
-                Hospitals
-              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="xai" className="flex-1 mt-0">
@@ -129,10 +125,6 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
             
             <TabsContent value="doctors" className="flex-1 mt-0 overflow-y-auto custom-scrollbar pr-2">
               <DoctorDiscovery patientId={patientId} />
-            </TabsContent>
-            
-            <TabsContent value="hospitals" className="flex-1 mt-0 overflow-y-auto custom-scrollbar pr-2">
-              <HospitalRecommendations patientId={patientId} />
             </TabsContent>
           </Tabs>
         </div>

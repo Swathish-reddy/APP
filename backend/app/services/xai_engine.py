@@ -69,133 +69,118 @@ EVIDENCE_DATABASE = {
 # ─────────────────────────────────────────────
 def compute_shap_analysis(patient: dict[str, Any], primary_disease: str) -> dict[str, Any]:
     """
-    Computes patient-specific SHAP values for the primary disease.
+    Computes patient-specific SHAP values for the primary disease using actual verified report data.
     Returns risk drivers (+), protective factors (-), and neutral factors.
     """
     vitals = patient.get("vitals", {})
     labs = patient.get("labs", {})
     lifestyle = patient.get("lifestyle", {})
-    age = patient.get("age", 45)
-    bmi = patient.get("bmi", 24.0)
+    metadata = patient.get("metric_metadata", {})
+    age = patient.get("age")
+    bmi = patient.get("bmi")
+
+    # ── Feature Normalization Aliases
+    aliases = {
+        "systolic_bp": ["systolic_bp", "sbp", "systolic_blood_pressure", "blood_pressure_-_systolic", "blood_pressure"],
+        "hba1c": ["hba1c", "hemoglobin_a1c", "glycated_hemoglobin", "a1c"],
+        "cholesterol_ldl": ["cholesterol_ldl", "ldl", "ldl-c", "ldl_cholesterol", "low_density_lipoprotein", "ldl_c"],
+    }
+
+    def get_normalized_feature(target: str) -> tuple[Any, str | None]:
+        keys_to_check = aliases.get(target, [target])
+        for k in keys_to_check:
+            if k in vitals:
+                return vitals[k], k
+            if k in labs:
+                return labs[k], k
+        return None, None
+
+    sys_bp_val, sys_bp_key = get_normalized_feature("systolic_bp")
+    hba1c_val, hba1c_key = get_normalized_feature("hba1c")
+    ldl_val, ldl_key = get_normalized_feature("cholesterol_ldl")
+
+    # ── Strict Validation
+    missing = []
+    if sys_bp_val is None: missing.append("Systolic Blood Pressure")
+    if hba1c_val is None: missing.append("HbA1c")
+    if ldl_val is None: missing.append("LDL Cholesterol")
+    if bmi is None: missing.append("BMI")
+    if age is None: missing.append("Age")
+
+    if missing:
+        return {
+            "status": "INCOMPLETE_DATA",
+            "missing_features": missing,
+            "required_count": 5,
+            "available_count": 5 - len(missing),
+            "total_documents": patient.get("total_documents", 0)
+        }
 
     features = []
 
+    # Helper to build a feature dictionary with traceability
+    def build_feature(name, val_str, impact, direction, explanation, evidence, source_key=None):
+        doc_name = "Clinical Profile"
+        doc_date = None
+        if source_key and source_key in metadata:
+            doc_name = metadata[source_key].get("document_name") or doc_name
+            doc_date = metadata[source_key].get("recorded_at")
+        
+        return {
+            "feature": name,
+            "value": val_str,
+            "impact": impact,
+            "direction": direction,
+            "explanation": explanation,
+            "evidence": evidence,
+            "source_document": doc_name,
+            "source_date": doc_date
+        }
+
     # ── Systolic Blood Pressure
-    sys_bp = vitals.get("systolic_bp", 120)
-    bp_impact = round((sys_bp - 120) * 0.42, 1)
-    features.append({
-        "feature": "Systolic Blood Pressure",
-        "value": f"{sys_bp} mmHg",
-        "impact": bp_impact,
-        "direction": "risk" if bp_impact > 0 else "protective",
-        "explanation": "Elevated arterial wall tension accelerates vascular damage." if bp_impact > 0 else "Optimal blood pressure reduces cardiovascular burden.",
-        "evidence": "AHA/ACC 2023"
-    })
+    bp_impact = round((sys_bp_val - 120) * 0.42, 1)
+    features.append(build_feature(
+        "Systolic Blood Pressure", f"{sys_bp_val} mmHg", bp_impact,
+        "risk" if bp_impact > 0 else "protective",
+        "Elevated arterial wall tension accelerates vascular damage." if bp_impact > 0 else "Optimal blood pressure reduces cardiovascular burden.",
+        "AHA/ACC 2023", sys_bp_key
+    ))
 
     # ── HbA1c
-    hba1c = labs.get("hba1c", 5.4)
-    hba1c_impact = round((hba1c - 5.6) * 8.5, 1)
-    features.append({
-        "feature": "HbA1c (Glycated Hemoglobin)",
-        "value": f"{hba1c}%",
-        "impact": hba1c_impact,
-        "direction": "risk" if hba1c_impact > 0 else "protective",
-        "explanation": "HbA1c reflects 90-day average blood glucose — a direct measure of glycemic control.",
-        "evidence": "ADA 2024"
-    })
+    hba1c_impact = round((hba1c_val - 5.6) * 8.5, 1)
+    features.append(build_feature(
+        "HbA1c (Glycated Hemoglobin)", f"{hba1c_val}%", hba1c_impact,
+        "risk" if hba1c_impact > 0 else "protective",
+        "HbA1c reflects 90-day average blood glucose — a direct measure of glycemic control.",
+        "ADA 2024", hba1c_key
+    ))
 
     # ── LDL Cholesterol
-    ldl = labs.get("cholesterol_ldl", 100)
-    ldl_impact = round((ldl - 100) * 0.18, 1)
-    features.append({
-        "feature": "LDL Cholesterol",
-        "value": f"{ldl} mg/dL",
-        "impact": ldl_impact,
-        "direction": "risk" if ldl_impact > 0 else "protective",
-        "explanation": "High LDL drives plaque formation (atherosclerosis) in arterial walls.",
-        "evidence": "ESC/EAS 2021"
-    })
+    ldl_impact = round((ldl_val - 100) * 0.18, 1)
+    features.append(build_feature(
+        "LDL Cholesterol", f"{ldl_val} mg/dL", ldl_impact,
+        "risk" if ldl_impact > 0 else "protective",
+        "High LDL drives plaque formation (atherosclerosis) in arterial walls.",
+        "ESC/EAS 2021", ldl_key
+    ))
 
     # ── BMI
     bmi_impact = round((bmi - 24.9) * 0.65, 1)
-    features.append({
-        "feature": "Body Mass Index (BMI)",
-        "value": f"{round(bmi, 1)}",
-        "impact": bmi_impact,
-        "direction": "risk" if bmi_impact > 0 else "protective",
-        "explanation": "Excess adipose tissue drives systemic inflammation and insulin resistance.",
-        "evidence": "WHO 2023"
-    })
-
-    # ── Physical Activity
-    steps = lifestyle.get("average_steps_day", 5000)
-    steps_impact = round((7500 - steps) * 0.0018, 1)
-    features.append({
-        "feature": "Daily Physical Activity",
-        "value": f"{steps:,} steps/day",
-        "impact": steps_impact,
-        "direction": "protective" if steps_impact < 0 else "risk",
-        "explanation": "Regular physical activity lowers insulin resistance, improves cardiac output, and reduces cortisol.",
-        "evidence": "CDC Physical Activity Guidelines"
-    })
-
-    # ── Sleep
-    sleep_hrs = lifestyle.get("sleep_hours", 7.0)
-    sleep_impact = round((6.5 - sleep_hrs) * 1.8, 1)
-    features.append({
-        "feature": "Sleep Duration",
-        "value": f"{sleep_hrs} hrs/night",
-        "impact": sleep_impact,
-        "direction": "risk" if sleep_impact > 0 else "protective",
-        "explanation": "Short sleep elevates cortisol, disrupts glucose metabolism, and impairs cardiovascular recovery.",
-        "evidence": "AASM 2023"
-    })
-
-    # ── Smoking
-    smoking = lifestyle.get("smoking_status", "Never Smoked")
-    if smoking == "Current Smoker":
-        smoke_impact = 14.2
-        smoke_dir = "risk"
-        smoke_exp = "Active tobacco use causes endothelial inflammation, platelet aggregation, and carcinogenic DNA damage."
-    elif smoking == "Former Smoker":
-        smoke_impact = 4.5
-        smoke_dir = "risk"
-        smoke_exp = "Past tobacco exposure leaves residual vascular and pulmonary risk markers."
-    else:
-        smoke_impact = -3.0
-        smoke_dir = "protective"
-        smoke_exp = "Absence of tobacco exposure is a significant cardiovascular protective factor."
-    features.append({
-        "feature": "Tobacco Use Status",
-        "value": smoking,
-        "impact": smoke_impact,
-        "direction": smoke_dir,
-        "explanation": smoke_exp,
-        "evidence": "WHO 2023"
-    })
-
-    # ── Stress
-    stress = lifestyle.get("stress_level_scale_10", 4)
-    stress_impact = round((stress - 4) * 1.35, 1)
-    features.append({
-        "feature": "Mental Stress Index",
-        "value": f"{stress}/10",
-        "impact": stress_impact,
-        "direction": "risk" if stress_impact > 0 else "protective",
-        "explanation": "High stress chronically elevates cortisol, which drives inflammation and impairs immune function.",
-        "evidence": "AHA 2024"
-    })
+    features.append(build_feature(
+        "Body Mass Index (BMI)", f"{round(bmi, 1)}", bmi_impact,
+        "risk" if bmi_impact > 0 else "protective",
+        "Excess adipose tissue drives systemic inflammation and insulin resistance.",
+        "WHO 2023"
+    ))
 
     # ── Age
     age_impact = round((age - 40) * 0.22, 1)
-    features.append({
-        "feature": "Patient Age",
-        "value": f"{age} years",
-        "impact": age_impact,
-        "direction": "risk" if age_impact > 0 else "protective",
-        "explanation": "Biological aging reduces vascular elasticity, organ reserve, and immune efficiency.",
-        "evidence": "WHO Aging Report 2022"
-    })
+    features.append(build_feature(
+        "Patient Age", f"{age} years", age_impact,
+        "risk" if age_impact > 0 else "protective",
+        "Biological aging reduces vascular elasticity, organ reserve, and immune efficiency.",
+        "WHO Aging Report 2022"
+    ))
 
     # Sort: highest absolute impact first
     features.sort(key=lambda x: abs(x["impact"]), reverse=True)
@@ -207,13 +192,18 @@ def compute_shap_analysis(patient: dict[str, Any], primary_disease: str) -> dict
     total_protective_contribution = abs(sum(f["impact"] for f in protective_factors))
 
     return {
+        "status": "SUCCESS",
         "all_features": features,
         "risk_drivers": risk_drivers,
         "protective_factors": protective_factors,
         "total_risk_score": round(total_risk_contribution, 1),
         "total_protective_score": round(total_protective_contribution, 1),
-        "primary_disease": primary_disease
+        "primary_disease": primary_disease,
+        "required_count": 5,
+        "available_count": 5,
+        "total_documents": patient.get("total_documents", 0)
     }
+
 
 
 # ─────────────────────────────────────────────

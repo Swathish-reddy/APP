@@ -18,8 +18,8 @@ async def _build_patient_baseline(patient_obj: Patient, db: AsyncSession) -> dic
     metrics_result = await db.execute(select(HealthMetric).where(HealthMetric.patient_id == patient_obj.patient_id))
     metrics_list = metrics_result.scalars().all()
     
-    labs = {"hba1c": 7.4, "cholesterol_ldl": 130}
-    vitals = {"systolic_bp": 145, "diastolic_bp": 90, "spo2": 95, "heart_rate": 70}
+    labs = {}
+    vitals = {}
     
     for m in metrics_list:
         if m.value is None: continue

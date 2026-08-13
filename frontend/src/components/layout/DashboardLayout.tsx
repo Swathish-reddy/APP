@@ -26,8 +26,10 @@ import {
   Plus,
   Network,
   X,
+  Users,
 } from "lucide-react";
 import { PatientSummary } from "../../services/api";
+import PatientManagementPanel from "../dashboard/PatientManagementPanel";
 import { AIHelpAssistant } from "../intelligence/AIHelpAssistant";
 import DocumentUpload from "@/components/documents/DocumentUpload";
 import { useTheme } from "next-themes";
@@ -49,16 +51,8 @@ const navItems = [
   { id: "simulator", label: "What-If Simulator", icon: Sliders },
   { id: "monitoring", label: "Real-Time Monitoring", icon: ActivitySquare },
   { id: "diet", label: "Diet Intelligence", icon: Apple },
-  { id: "doctors", label: "Doctor Intelligence", icon: Stethoscope },
-  { id: "hospitals", label: "Hospital Intelligence", icon: Building2 },
+  { id: "doctors", label: "Clinical Review", icon: Stethoscope },
   { id: "medication", label: "Medication Center", icon: Pill },
-  {
-    id: "emergency",
-    label: "Emergency Center",
-    icon: AlertTriangle,
-    className: "text-red-500 hover:bg-red-50 hover:text-red-600",
-  },
-  { id: "analytics", label: "Analytics", icon: BarChart3 },
 ];
 export default function DashboardLayout({
   children,
@@ -73,7 +67,10 @@ export default function DashboardLayout({
   const [notificationsOpen, setNotificationsOpen] = React.useState(false);
   const [notifications, setNotifications] = React.useState<any[]>([]);
   const [isGlobalUploading, setIsGlobalUploading] = React.useState(false);
+  const [patientPanelOpen, setPatientPanelOpen] = React.useState(false);
   const { theme, setTheme } = useTheme();
+  
+  const selectedPatient = patients.find(p => p.id === selectedPatientId);
   
   React.useEffect(() => {
     if (window.innerWidth >= 768) {
@@ -250,20 +247,29 @@ export default function DashboardLayout({
             </div>
           </div>
           <div className="flex items-center space-x-2 sm:space-x-4 shrink-0">
-            <div className="flex items-center space-x-1 sm:space-x-2 bg-slate-50 dark:bg-muted border border-slate-200 dark:border-border rounded-full px-2 py-1 md:px-3 md:py-1.5 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors max-w-[120px] sm:max-w-xs">
-              <User className="h-4 w-4 text-muted-foreground shrink-0" />
-              <select
-                value={selectedPatientId}
-                onChange={(e) => onSelectPatient(e.target.value)}
-                className="bg-transparent text-xs sm:text-sm font-semibold text-foreground focus:outline-none cursor-pointer border-none truncate w-full dark:text-foreground"
+            <div className="flex items-center space-x-2 sm:space-x-3 bg-slate-50 dark:bg-muted border border-slate-200 dark:border-border rounded-xl px-3 py-1.5 hidden sm:flex">
+              <div className="h-7 w-7 rounded-full bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center shrink-0">
+                <User className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] text-muted-foreground font-semibold uppercase tracking-wider leading-none">Selected Patient</span>
+                <span className="text-sm font-bold text-foreground truncate max-w-[120px] leading-tight mt-0.5">
+                  {selectedPatient ? selectedPatient.name : "Select Patient"}
+                </span>
+              </div>
+              <button
+                onClick={() => setPatientPanelOpen(true)}
+                className="ml-2 text-xs font-semibold text-blue-600 hover:text-blue-700 bg-blue-50 hover:bg-blue-100 dark:bg-blue-900/20 dark:hover:bg-blue-900/40 px-2 py-1 rounded-md transition-colors"
               >
-                {patients.map((p) => (
-                  <option key={p.id} value={p.id}>
-                    {p.name}
-                  </option>
-                ))}
-              </select>
+                Change
+              </button>
             </div>
+            <button 
+              onClick={() => setPatientPanelOpen(true)}
+              className="flex items-center justify-center space-x-1.5 bg-card hover:bg-slate-50 text-foreground border border-slate-200 px-3 py-1.5 rounded-full text-sm font-bold transition-colors dark:bg-muted dark:border-border dark:hover:bg-slate-700"
+            >
+              <Users className="h-4 w-4" /> <span className="hidden sm:inline">Patients</span>
+            </button>
             <button 
               onClick={() => {
                 setIsGlobalUploading(true);
@@ -393,6 +399,16 @@ export default function DashboardLayout({
               </motion.div>
             )}
           </AnimatePresence>
+          <PatientManagementPanel
+            isOpen={patientPanelOpen}
+            onClose={() => setPatientPanelOpen(false)}
+            patients={patients}
+            selectedPatientId={selectedPatientId}
+            onSelectPatient={onSelectPatient}
+            onPatientAdded={() => {
+              window.dispatchEvent(new CustomEvent("patientAdded"));
+            }}
+          />
         </main>{" "}
       </div>{" "}
     </div>

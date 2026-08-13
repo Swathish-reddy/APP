@@ -23,7 +23,19 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}): Promise<Re
   return res;
 };
 
-export interface PatientSummary { id: string; name: string; age: number; gender: string; overall_health_score: number; readmission_risk: string; }
+export interface PatientSummary { 
+  id: string; 
+  name: string; 
+  age: number; 
+  gender: string; 
+  overall_health_score: number; 
+  readmission_risk: string;
+  unique_patient_code?: string;
+  last_updated_date?: string;
+  date_of_birth?: string;
+  phone?: string;
+  email?: string;
+}
 export interface VitalRecord { heart_rate: number; systolic_bp: number; diastolic_bp: number; spo2: number; temperature: number; respiratory_rate: number; glucose: number; }
 export interface LabRecord { cholesterol_total: number; cholesterol_ldl: number; cholesterol_hdl: number; hba1c: number; creatinine: number; egfr: number; ast: number; alt: number; fev1_percent: number; }
 export interface LifestyleRecord { average_steps_day: number; sleep_hours: number; sleep_quality_percent: number; stress_level_scale_10: number; smoking_status: string; diet_type: string; alcohol_intake: string; }
@@ -61,13 +73,18 @@ export const api = {
       const res = await fetchWithAuth(`${BASE_URL}/patients`, { headers: { ...getAuthHeaders() } }); 
       if (!res.ok) throw new Error('Failed to fetch patients list'); 
       const data = await res.json();
-      return data.map((p: { patient_id: number | string; full_name: string; age?: number; gender?: string }) => ({
+      return data.map((p: any) => ({
         id: p.patient_id.toString(),
         name: p.full_name,
         age: p.age || 45,
         gender: p.gender || "Unknown",
         overall_health_score: 85,
-        readmission_risk: "Low"
+        readmission_risk: "Low",
+        unique_patient_code: p.unique_patient_code,
+        last_updated_date: p.updated_at || p.created_at || new Date().toISOString(),
+        date_of_birth: p.date_of_birth,
+        phone: p.phone,
+        email: p.email
       }));
     } catch (error) {
       console.error("getPatients error:", error);
@@ -83,6 +100,24 @@ export const api = {
     } catch (error) {
       // Silenced error logging to avoid Next.js dev overlay
       return null;
+    }
+  }, 
+  
+  async createPatient(payload: any): Promise<{ message: string; patient_id: string } | null> {
+    try {
+      const res = await fetchWithAuth(`${BASE_URL}/patients`, { 
+        method: 'POST', 
+        headers: { 'Content-Type': 'application/json', ...getAuthHeaders() }, 
+        body: JSON.stringify(payload) 
+      }); 
+      if (!res.ok) {
+        const errorData = await res.json();
+        throw new Error(errorData.detail || 'Failed to create patient'); 
+      }
+      return await res.json();
+    } catch (error) {
+      console.error("createPatient error:", error);
+      throw error;
     }
   }, 
   

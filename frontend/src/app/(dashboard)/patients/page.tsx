@@ -147,31 +147,25 @@ export default function PatientsPage() {
           />{" "}
         </div>{" "}
         <div className="overflow-x-auto">
-          {" "}
           <table className="w-full text-left border-collapse">
-            {" "}
             <thead>
-              {" "}
               <tr className="dark bg-card/40 text-muted-foreground text-xs uppercase tracking-wider">
-                {" "}
-                <th className="p-4 font-semibold">Patient Info</th>{" "}
-                <th className="p-4 font-semibold">Risk Level</th>{" "}
-                <th className="p-4 font-semibold">Demographics</th>{" "}
-                <th className="p-4 font-semibold">Last Updated</th>{" "}
-                <th className="p-4 font-semibold text-right">Actions</th>{" "}
-              </tr>{" "}
-            </thead>{" "}
+                <th className="p-4 font-semibold">Patient Info</th>
+                <th className="p-4 font-semibold">Risk Level</th>
+                <th className="p-4 font-semibold">Demographics</th>
+                <th className="p-4 font-semibold">Last Updated</th>
+                <th className="p-4 font-semibold text-right">Actions</th>
+              </tr>
+            </thead>
             <tbody className="divide-y divide-slate-800/50">
-              {" "}
               {loading ? (
                 <tr>
-                  {" "}
                   <td
                     colSpan={5}
                     className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground"
                   >
                     Loading patients...
-                  </td>{" "}
+                  </td>
                 </tr>
               ) : (
                 patients.map((patient, i) => (
@@ -182,25 +176,20 @@ export default function PatientsPage() {
                     key={patient.patient_id}
                     className="hover:bg-muted/30 transition-colors group"
                   >
-                    {" "}
                     <td className="p-4">
-                      {" "}
                       <Link
                         href={`/patients/${patient.patient_id}`}
                         className="block"
                       >
-                        {" "}
                         <p className="font-semibold text-foreground group-hover:text-cyan-400 transition-colors">
                           {patient.full_name}
-                        </p>{" "}
+                        </p>
                         <p className="text-xs text-muted-foreground font-mono mt-0.5">
                           {patient.unique_patient_code}
-                        </p>{" "}
-                      </Link>{" "}
-                    </td>{" "}
+                        </p>
+                      </Link>
+                    </td>
                     <td className="p-4">
-                      {" "}
-                      {}{" "}
                       <RiskBadge
                         score={
                           patient.patient_id === 1
@@ -209,38 +198,34 @@ export default function PatientsPage() {
                               ? 65
                               : 95
                         }
-                      />{" "}
-                    </td>{" "}
+                      />
+                    </td>
                     <td className="p-4">
-                      {" "}
                       <p className="text-sm text-muted-foreground">
                         {patient.age} yrs • {patient.gender}
-                      </p>{" "}
+                      </p>
                       <p className="text-xs text-muted-foreground mt-0.5">
                         Blood: {patient.blood_group}
-                      </p>{" "}
-                    </td>{" "}
+                      </p>
+                    </td>
                     <td className="p-4">
-                      {" "}
                       <p className="text-sm text-muted-foreground">
                         {new Date(patient.updated_at).toLocaleDateString()}
-                      </p>{" "}
-                    </td>{" "}
+                      </p>
+                    </td>
                     <td className="p-4 text-right">
-                      {" "}
                       <Link
                         href={`/patients/${patient.patient_id}`}
                         className="dark inline-flex px-3 py-1.5 bg-muted hover:bg-slate-700 text-muted-foreground text-xs font-medium rounded-lg transition-colors border border-border"
                       >
-                        {" "}
-                        View Twin{" "}
-                      </Link>{" "}
-                    </td>{" "}
+                        View Twin
+                      </Link>
+                    </td>
                   </motion.tr>
                 ))
-              )}{" "}
-            </tbody>{" "}
-          </table>{" "}
+              )}
+            </tbody>
+          </table>
         </div>{" "}
       </div>{" "}
     </div>

@@ -176,6 +176,7 @@ class AppointmentResponse(AppointmentBase):
 # =======================
 class PatientBase(BaseModel):
     full_name: str
+    date_of_birth: str | None = None
     age: int | None = None
     gender: str | None = None
     blood_group: str | None = None
@@ -184,6 +185,8 @@ class PatientBase(BaseModel):
     bmi: float | None = None
     marital_status: str | None = None
     occupation: str | None = None
+    phone: str | None = None
+    email: str | None = None
     address: str | None = None
     emergency_contact: str | None = None
 
@@ -192,6 +195,7 @@ class PatientCreate(PatientBase):
 
 class PatientUpdate(BaseModel):
     full_name: str | None = None
+    date_of_birth: str | None = None
     age: int | None = None
     gender: str | None = None
     blood_group: str | None = None
@@ -200,6 +204,8 @@ class PatientUpdate(BaseModel):
     bmi: float | None = None
     marital_status: str | None = None
     occupation: str | None = None
+    phone: str | None = None
+    email: str | None = None
     address: str | None = None
     emergency_contact: str | None = None
 

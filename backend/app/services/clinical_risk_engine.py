@@ -36,8 +36,8 @@ def calculate_disease_risk(disease_name: str, patient: dict[str, Any]) -> float:
     """
     vitals = patient.get("vitals", {})
     labs = patient.get("labs", {})
-    age = patient.get("age", 45)
-    bmi = patient.get("bmi", 24)
+    age = patient.get("age") or 45
+    bmi = patient.get("bmi") or 24
     med_history = patient.get("medical_history", [])
     meds = patient.get("medications", patient.get("active_medications", []))
     

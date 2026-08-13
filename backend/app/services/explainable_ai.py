@@ -11,6 +11,9 @@ def get_xai_report(disease_name: str, patient: dict[str, Any]) -> dict[str, Any]
     # 1. Use the advanced SHAP engine
     advanced_shap = compute_shap_analysis(patient, disease_name)
     
+    if advanced_shap.get("status") == "INCOMPLETE_DATA":
+        return advanced_shap
+    
     # 2. Format feature importance for the frontend Record<string, number>
     shap_vals = {}
     for feature in advanced_shap["all_features"]:
@@ -39,6 +42,11 @@ def get_xai_report(disease_name: str, patient: dict[str, Any]) -> dict[str, Any]
         explanation += "The patient exhibits a baseline clinical profile with no significant anomalous biomarkers or lifestyle risk factors detected."
     
     return {
+        "status": "SUCCESS",
         "feature_importance": sorted_shap,
-        "interpretation": explanation
+        "interpretation": explanation,
+        "all_features": advanced_shap.get("all_features", []),
+        "required_count": advanced_shap.get("required_count", 0),
+        "available_count": advanced_shap.get("available_count", 0),
+        "total_documents": advanced_shap.get("total_documents", 0)
     }

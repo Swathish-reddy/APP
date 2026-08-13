@@ -82,7 +82,7 @@ export const CareNavigatorDashboard: React.FC<CareNavigatorDashboardProps> = ({
             Care Navigator Intelligence Center
           </h1>{" "}
           <p className="text-muted-foreground mt-1">
-            AI-matched doctors, hospitals, and end-to-end care pathways.
+            AI-matched doctors and end-to-end care pathways.
           </p>{" "}
         </div>{" "}
       </div>{" "}
@@ -97,10 +97,9 @@ export const CareNavigatorDashboard: React.FC<CareNavigatorDashboardProps> = ({
           {" "}
           <Tabs defaultValue="doctors" className="h-full flex flex-col">
             {" "}
-            <TabsList className="grid w-full grid-cols-1 md:grid-cols-1 md:grid-cols-1 md:grid-cols-2 mb-4">
+            <TabsList className="grid w-full grid-cols-1 mb-4">
               {" "}
               <TabsTrigger value="doctors">Doctors</TabsTrigger>{" "}
-              <TabsTrigger value="hospitals">Hospitals</TabsTrigger>{" "}
             </TabsList>{" "}
             <TabsContent value="doctors" className="flex-1 mt-0">
               {" "}
@@ -108,16 +107,6 @@ export const CareNavigatorDashboard: React.FC<CareNavigatorDashboardProps> = ({
                 doctors={recommendations?.doctors}
                 onSelectProvider={(p) =>
                   setSelectedProvider({ provider: p, type: "doctor" })
-                }
-                onBook={handleBookAppointment}
-              />{" "}
-            </TabsContent>{" "}
-            <TabsContent value="hospitals" className="flex-1 mt-0">
-              {" "}
-              <ProvidersPanel
-                doctors={recommendations?.hospitals}
-                onSelectProvider={(p) =>
-                  setSelectedProvider({ provider: p, type: "hospital" })
                 }
                 onBook={handleBookAppointment}
               />{" "}

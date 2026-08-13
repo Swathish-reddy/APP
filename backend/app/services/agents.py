@@ -148,29 +148,6 @@ class EmergencyAgent(BaseAgent):
         }
 
 
-# ── 7. Hospital Agent
-class HospitalAgent(BaseAgent):
-    name = "HospitalAgent"
-    role = "Provider & Facility Matching Specialist"
-
-    def analyze(self, patient, context):
-        from app.services.care_navigator import (
-            calculate_doctor_match,
-            calculate_hospital_match,
-        )
-        top_doctor = calculate_doctor_match(patient)
-        top_hospital = calculate_hospital_match(patient)
-        doc = top_doctor[0] if top_doctor else {}
-        hosp = top_hospital[0] if top_hospital else {}
-        return {
-            "agent": self.name,
-            "finding": f"Best matched provider: {doc.get('name', 'N/A')} (Score: {doc.get('match_score', 0)})",
-            "top_doctor": {"name": doc.get("name"), "specialization": doc.get("specialization"), "match_score": doc.get("match_score")},
-            "top_hospital": {"name": hosp.get("name"), "match_score": hosp.get("match_score"), "distance": hosp.get("distance_miles")},
-            "recommendation": f"Refer to {doc.get('name', 'specialist')} at {hosp.get('name', 'nearest facility')}."
-        }
-
-
 # ── Orchestrator
 AGENT_REGISTRY = [
     DiagnosticAgent(),
@@ -179,7 +156,6 @@ AGENT_REGISTRY = [
     MedicationAgent(),
     ClinicalAgent(),
     EmergencyAgent(),
-    HospitalAgent(),
 ]
 
 def run_agent_consensus(patient: dict) -> dict[str, Any]:

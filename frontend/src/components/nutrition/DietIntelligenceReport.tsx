@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Utensils, Droplet, Flame } from "lucide-react";
 import { DietData } from "@/types";
+import { BASE_URL } from "@/services/api";
 
 export const DietIntelligenceReport = ({
   patientId,
@@ -9,17 +10,62 @@ export const DietIntelligenceReport = ({
   patientId: string;
 }) => {
   const [dietData, setDietData] = useState<DietData | null>(null);
-  useEffect(() => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchDietData = () => {
+    setLoading(true);
+    setError(null);
     const id = patientId.replace("P", "");
-    const token = localStorage.getItem("token");
+    const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
-    fetch(`http://localhost:8000/api/v1/diet/${id}/plan`, { headers })
-      .then((res) => res.json())
+    fetch(`${BASE_URL}/diet/${id}/plan`, { headers })
+      .then(async (res) => {
+        if (!res.ok) {
+           throw new Error(`Failed to load Diet Intelligence. Status: ${res.status}`);
+        }
+        return res.json();
+      })
       .then((data) => setDietData(data))
-      .catch((err) => console.error("Error fetching diet intelligence:", err));
+      .catch((err) => {
+         console.error("Error fetching diet intelligence:", err);
+         setError("Unable to load Diet Intelligence.");
+      })
+      .finally(() => setLoading(false));
+  };
+
+  useEffect(() => {
+    fetchDietData();
   }, [patientId]);
-  if (!dietData) return null;
+
+  if (loading) {
+    return (
+      <div className="dark bg-card/40 border border-border rounded-3xl p-4 md:p-6 mb-6 flex items-center justify-center h-40 text-muted-foreground">
+        Analyzing patient data...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="dark bg-card/40 border border-red-500/20 rounded-3xl p-4 md:p-6 mb-6 flex flex-col items-center justify-center h-40 text-red-400">
+        <p className="mb-4">{error}</p>
+        <button onClick={fetchDietData} className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 rounded-lg transition-colors">
+          Retry
+        </button>
+      </div>
+    );
+  }
+
+  if (!dietData) {
+     return (
+      <div className="dark bg-card/40 border border-border rounded-3xl p-4 md:p-6 mb-6 flex items-center justify-center h-40 text-muted-foreground">
+        Insufficient patient report data for personalized diet intelligence.
+      </div>
+    );
+  }
+
   return (
     <div className="dark bg-card/40 border border-border rounded-3xl p-4 md:p-4 md:p-4 md:p-6 mb-6">
       {" "}

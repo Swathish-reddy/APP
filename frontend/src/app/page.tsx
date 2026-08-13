@@ -33,9 +33,6 @@ import LiveMonitor from "./(dashboard)/patients/[id]/live-monitor/client";
 import DietIntelligence from "./(dashboard)/patients/[id]/nutrition/client";
 import DoctorIntelligence from "./(dashboard)/patients/[id]/cdss/client";
 import MedicationCenter from "./(dashboard)/patients/[id]/medications/client";
-import AnalyticsDashboard from "./(dashboard)/analytics/page";
-import EmergencyCenter from "./(dashboard)/emergency/page";
-import HospitalIntelligence from "./(dashboard)/hospital/page";
 import SettingsDashboard from "./(dashboard)/settings/page";
 
 function HumanoidPlaceholder() {
@@ -102,6 +99,16 @@ export default function Home() {
       }
     }
     init();
+
+    const handlePatientAdded = () => {
+      init();
+    };
+    window.addEventListener("patientAdded", handlePatientAdded);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("patientAdded", handlePatientAdded);
+    };
   }, []);
 
   React.useEffect(() => {
@@ -191,9 +198,6 @@ export default function Home() {
         {activeTab === "medication" && (
           <MedicationCenter patientId={selectedPatientId} />
         )}{" "}
-        {activeTab === "analytics" && <AnalyticsDashboard />}{" "}
-        {activeTab === "emergency" && <EmergencyCenter />}
-        {activeTab === "hospitals" && <HospitalIntelligence />}
         {activeTab === "settings" && <SettingsDashboard />}
         {activeTab === "overview" && (
           <>

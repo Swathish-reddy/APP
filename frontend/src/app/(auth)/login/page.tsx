@@ -27,10 +27,10 @@ export default function LoginPage() {
         response = await fetch(apiUrl, {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
-          body: loginData,
+          body: loginData.toString(),
         });
       } catch (networkError: any) {
-        throw new Error(`Unable to connect to the backend server at ${apiUrl}. Please check if the server is running.`);
+        throw new Error(`Unable to connect to the backend server at ${apiUrl}. Error: ${networkError.message}. Please check if the server is running.`);
       }
       
       if (!response.ok) {

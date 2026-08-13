@@ -67,7 +67,44 @@ def generate_diet_intelligence_report(patient: dict[str, Any]) -> dict[str, Any]
     interactions = detect_food_drug_interactions(medications)
     
     bmi = patient.get("bmi", 26.8)
-    
+    labs = patient.get("labs", {})
+    vitals = patient.get("vitals", {})
+
+    # Dynamic lab recommendations
+    lab_recs = []
+    hba1c = labs.get("hba1c")
+    if hba1c is not None:
+        if float(hba1c) >= 6.5:
+            lab_recs.append(f"HbA1c {hba1c}% requires elimination of liquid sugars.")
+        elif float(hba1c) >= 5.7:
+            lab_recs.append(f"HbA1c {hba1c}% indicates prediabetes; reduce simple carbohydrates.")
+        else:
+            lab_recs.append(f"HbA1c {hba1c}% is normal; maintain balanced carb intake.")
+            
+    ldl = labs.get("cholesterol_ldl") or labs.get("ldl")
+    if ldl is not None:
+        if float(ldl) >= 130:
+            lab_recs.append(f"LDL {ldl} requires high soluble fiber.")
+        elif float(ldl) >= 100:
+            lab_recs.append(f"LDL {ldl} is borderline; monitor saturated fats.")
+
+    sys_bp = vitals.get("systolic_bp")
+    if sys_bp is not None:
+        if float(sys_bp) >= 130:
+            lab_recs.append(f"Systolic BP {sys_bp} indicates need for sodium restriction (<1500mg/day).")
+
+    if not lab_recs:
+        lab_recs_str = "Insufficient report data to provide specific laboratory-based dietary recommendations."
+    else:
+        lab_recs_str = " ".join(lab_recs)
+
+    # Dynamic What-If
+    what_if = "Strict adherence to the diet plan predicts improved overall health markers."
+    if sys_bp is not None and float(sys_bp) >= 130:
+        what_if = "Strict adherence to DASH for 90 days predicts 8-12 mmHg systolic BP drop."
+    elif hba1c is not None and float(hba1c) >= 6.5:
+        what_if = "Strict adherence to low-carb diet for 90 days predicts 0.5-1.0% HbA1c drop."
+
     return {
         "1_patient_nutrition_profile": f"{patient.get('age', 45)} yo {patient.get('gender', 'Male')} | BMI: {bmi}",
         "2_nutrition_score": {"current": 42, "target": 85},
@@ -78,7 +115,7 @@ def generate_diet_intelligence_report(patient: dict[str, Any]) -> dict[str, Any]
             "fats": f"{energy['fats_g']}g"
         },
         "5_micronutrient_analysis": "Sodium: <1500mg. Potassium: >3500mg (from natural foods).",
-        "6_laboratory_based_recommendations": "HbA1c 7.4% requires elimination of liquid sugars. LDL 130 requires high soluble fiber.",
+        "6_laboratory_based_recommendations": lab_recs_str,
         "7_disease_specific_diet_plan": "DASH-Mediterranean Hybrid",
         "8_personalized_meal_plan": "Breakfast: Oats & Chia. Lunch: Lean Chicken & Quinoa. Dinner: Baked Salmon & Greens.",
         "9_recommended_foods": ["Leafy Greens", "Fatty Fish", "Legumes", "Olive Oil"],
@@ -87,10 +124,10 @@ def generate_diet_intelligence_report(patient: dict[str, Any]) -> dict[str, Any]
         "12_weight_management_plan": "Lose 10 lbs via sustained 500 kcal daily deficit.",
         "13_medication_food_interactions": interactions,
         "14_nutritional_deficiencies": ["Vitamin B12 (At risk due to Metformin)", "Vitamin D"],
-        "15_what_if_nutrition_simulation": "Strict adherence to DASH for 90 days predicts 8-12 mmHg systolic BP drop.",
+        "15_what_if_nutrition_simulation": what_if,
         "16_ai_recommendations": ["Purge pantry of high-sodium foods", "Track daily sodium intake"],
-        "17_explainable_ai": "Severe sodium restriction is calculated due to compounding hypertensive risk.",
+        "17_explainable_ai": "AI recommendations based on patient's provided laboratory and vital values.",
         "18_confidence_scores": {"dietary_efficacy": 0.92, "adherence_probability": 0.45},
-        "19_clinical_nutrition_summary": "Patient requires DASH dietary overhaul to halt Diabetic Dyslipidemia progression.",
+        "19_clinical_nutrition_summary": "Patient requires dietary adjustments based on current lab profiles.",
         "20_export_options": ["PDF", "JSON", "CSV"]
     }

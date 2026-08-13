@@ -6,6 +6,7 @@ import { NutritionAnalytics } from "./NutritionAnalytics";
 import { AIInsightsPanel } from "./AIInsightsPanel";
 import { getPatient } from "@/lib/api/patients";
 import { NutritionPlan, GroceryList, NutritionCompliance } from "@/types";
+import { BASE_URL } from "@/services/api";
 
 interface NutritionDashboardProps {
   patientId: string;
@@ -20,31 +21,42 @@ export const NutritionDashboard: React.FC<NutritionDashboardProps> = ({
   useEffect(() => {
     const fetchNutritionData = async () => {
       try {
+        const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
+        const headers = token ? { Authorization: `Bearer ${token}` } : {};
+        
         const planRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/nutrition/patients/${patientId}/plan`,
+          `${BASE_URL}/nutrition/patients/${patientId}/plan`,
+          { headers }
         );
-        const planData = await planRes.json();
-        setPlan(planData);
+        if (planRes.ok) {
+           const planData = await planRes.json();
+           setPlan(planData);
+        }
+
         const groceryRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/nutrition/patients/${patientId}/grocery`,
+          `${BASE_URL}/nutrition/patients/${patientId}/grocery`,
+          { headers }
         );
-        const groceryData = await groceryRes.json();
-        setGrocery(groceryData);
+        if (groceryRes.ok) {
+           const groceryData = await groceryRes.json();
+           setGrocery(groceryData);
+        }
+
         const compRes = await fetch(
-          `${process.env.NEXT_PUBLIC_API_URL}/api/v1/nutrition/patients/${patientId}/compliance`,
+          `${BASE_URL}/nutrition/patients/${patientId}/compliance`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
-              ...((localStorage.getItem("token")
-                ? { Authorization: `Bearer ${localStorage.getItem("token")}` }
-                : {}) as Record<string, string>),
+              ...headers,
             },
             body: JSON.stringify({ adherence_percent: 85 }),
           },
         );
-        const compData = await compRes.json();
-        setCompliance(compData);
+        if (compRes.ok) {
+           const compData = await compRes.json();
+           setCompliance(compData);
+        }
       } catch (error) {
         console.error("Error fetching nutrition data:", error);
       } finally {

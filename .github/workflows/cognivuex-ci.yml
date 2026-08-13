@@ -13,16 +13,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Use Node.js 20
+      - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
           cache: 'npm'
-          cache-dependency-path: frontend/package.json
+          cache-dependency-path: frontend/package-lock.json
       - name: Install dependencies
         run: |
           cd frontend
-          npm install
+          npm ci
       - name: Build Web Application
         run: |
           cd frontend
@@ -48,16 +48,17 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
       - name: Run Security Assessment
         run: |
           cd frontend
-          npm install
+          npm ci
           mkdir -p ../security-report
-          npm audit --json > ../security-report/security-report.json || true
+          npm audit --json > ../security-report/security-report.json
           echo "Security scan completed" > ../security-report/security-summary.txt
           echo "<html><body><h1>Security Report</h1></body></html>" > ../security-report/security-report.html
       - name: Upload Security Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: security-report
@@ -80,8 +81,9 @@ jobs:
       - name: Run Selenium Tests
         run: |
           mkdir -p selenium-report/results selenium-report/screenshots selenium-report/logs
-          pytest qa/web_automation/tests/test_cognivuex_web.py --html=selenium-report/results/report.html --junitxml=selenium-report/results/selenium-results.xml > selenium-report/logs/run.log || true
+          pytest qa/web_automation/tests/test_cognivuex_web.py --html=selenium-report/results/report.html --junitxml=selenium-report/results/selenium-results.xml > selenium-report/logs/run.log
       - name: Upload Selenium Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: selenium-report
@@ -104,8 +106,9 @@ jobs:
       - name: Run Appium Tests
         run: |
           mkdir -p appium-report/results appium-report/screenshots appium-report/logs
-          pytest qa/mobile_automation/tests/test_cognivuex_mobile.py --html=appium-report/results/report.html --junitxml=appium-report/results/appium-results.xml > appium-report/logs/appium.log || true
+          pytest qa/mobile_automation/tests/test_cognivuex_mobile.py --html=appium-report/results/report.html --junitxml=appium-report/results/appium-results.xml > appium-report/logs/appium.log
       - name: Upload Appium Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: appium-report
@@ -126,11 +129,12 @@ jobs:
       - name: Run Load Tests
         run: |
           mkdir -p load-report
-          locust -f qa/performance_testing/locustfile.py --headless -u 10 -r 2 -t 5s --csv load-report/performance-results || true
+          locust -f qa/performance_testing/locustfile.py --headless -u 10 -r 2 -t 5s --csv load-report/performance-results
           echo '{"status": "passed", "throughput": "100req/s"}' > load-report/performance-results.json
           echo "<html><body><h1>Performance Report</h1></body></html>" > load-report/performance-report.html
           echo "Performance summary: all good" > load-report/performance-summary.txt
       - name: Upload Load Report
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: load-report

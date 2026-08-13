@@ -2,19 +2,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from fastapi import HTTPException
 from app.db.models import (
-    Patient, HealthMetric, MedicalHistory, Medication, Allergy, Lifestyle, DigitalTwin
+    Patient, HealthMetric, MedicalHistory, Medication, Allergy, Lifestyle, DigitalTwin, Document
 )
 
 async def get_patient_profile_dict(patient_id: str, db: AsyncSession) -> dict:
-    # Handle 'P101' format if passed
-    pid_int = int(patient_id.replace("P", "")) if isinstance(patient_id, str) and patient_id.startswith("P") else int(patient_id)
-    
     # 1. Fetch Patient
-    result = await db.execute(select(Patient).where(Patient.patient_id == pid_int))
+    if isinstance(patient_id, str) and patient_id.startswith("PAT-"):
+        result = await db.execute(select(Patient).where(Patient.unique_patient_code == patient_id))
+    else:
+        # Handle 'P101' format if passed
+        pid_int = int(patient_id.replace("P", "")) if isinstance(patient_id, str) and patient_id.startswith("P") else int(patient_id)
+        result = await db.execute(select(Patient).where(Patient.patient_id == pid_int))
+        
     patient = result.scalars().first()
     
     if not patient:
         raise HTTPException(status_code=404, detail="Patient not found")
+        
+    pid_int = patient.patient_id
         
     # Build base dict
     pat_dict = {
@@ -35,18 +40,32 @@ async def get_patient_profile_dict(patient_id: str, db: AsyncSession) -> dict:
         "active_medications": [],
         "allergies": [],
         "symptoms": [],
-        "organ_health": {}
+        "organ_health": {},
+        "metric_metadata": {},
+        "total_documents": 0
     }
     
-    # 2. Fetch Health Metrics (vitals/labs)
+    # 2. Fetch Health Metrics (vitals/labs) & Documents for lineage
+    docs_res = await db.execute(select(Document).where(Document.patient_id == pid_int))
+    docs_lookup = {d.id: d.file_name for d in docs_res.scalars().all()}
+    pat_dict["total_documents"] = len(docs_lookup)
+
     metrics_res = await db.execute(select(HealthMetric).where(HealthMetric.patient_id == pid_int))
     metrics = metrics_res.scalars().all()
     for m in metrics:
-        k = m.metric_name.lower()
+        k = m.metric_name.lower().replace(" ", "_")
         if "bp" in k or "heart" in k or "spo2" in k or "temp" in k or "respiratory" in k or "glucose" in k:
             pat_dict["vitals"][k] = m.value
         else:
             pat_dict["labs"][k] = m.value
+            
+        pat_dict["metric_metadata"][k] = {
+            "value": m.value,
+            "unit": m.unit,
+            "recorded_at": m.recorded_at.isoformat() if m.recorded_at else None,
+            "document_id": m.document_id,
+            "document_name": docs_lookup.get(m.document_id) if m.document_id else "Clinical Entry"
+        }
             
         if m.status and m.status.lower() in ["high", "low", "abnormal", "critical"]:
             pat_dict["symptoms"].append(f"Abnormal {m.metric_name}: {m.value} {m.unit or ''}")

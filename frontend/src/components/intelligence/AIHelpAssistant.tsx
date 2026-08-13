@@ -29,7 +29,7 @@ const QUICK_ACTIONS = [
 ];
 const INITIAL_MESSAGE: Message = {
   role: "assistant",
-  content: `Hello 👋\n\nI'm the CogniVueX AI Help Assistant.\n\nI can help you understand every feature of the platform.\n\nExamples:\n• How does Digital Twin work?\n• Explain Disease Risk Center\n• Generate Lab Report\n• Help me use Analytics\n• Where are Medication settings?\n• Explain Hospital Dashboard\n• How do I simulate What-If scenarios?`,
+  content: `Hello 👋\n\nI'm the CogniVueX AI Help Assistant.\n\nI can help you understand every feature of the platform.\n\nExamples:\n• How does Digital Twin work?\n• Explain Disease Risk Center\n• Generate Lab Report\n• Help me use Analytics\n• Where are Medication settings?\n• How do I simulate What-If scenarios?`,
 };
 export function AIHelpAssistant({
   isOpen,
