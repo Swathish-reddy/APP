@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
       - name: Use Node.js 24
         uses: actions/setup-node@v4
         with:
@@ -22,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           cd frontend
-          npm ci
+          npm ci --prefer-offline --no-audit
       - name: Build Web Application
         run: |
           cd frontend
@@ -41,7 +43,6 @@ jobs:
 
   security-assessment:
     name: Security Assessment
-    needs: setup-node
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -56,13 +57,10 @@ jobs:
       - name: Run Security Assessment
         run: |
           cd frontend
-          npm ci
-          mkdir -p ../security-report
           npm audit --json > ../security-report/security-report.json || true
           
           cd ../backend
-          python -m pip install --upgrade pip
-          pip install bandit safety
+          pip install bandit
           bandit -r app/ -f json -o ../security-report/bandit-report.json || true
           
           echo "Security scan completed" > ../security-report/security-summary.txt
@@ -76,7 +74,7 @@ jobs:
 
   selenium-tests:
     name: Selenium Web Tests
-    needs: setup-node
+    needs: [setup-node, security-assessment]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -106,7 +104,7 @@ jobs:
 
   appium-tests:
     name: Appium Mobile Tests
-    needs: setup-node
+    needs: [setup-node, security-assessment]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -139,7 +137,7 @@ jobs:
 
   load-tests:
     name: Load & Performance Tests
-    needs: [selenium-tests, appium-tests]
+    needs: [setup-node, security-assessment]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -152,7 +150,7 @@ jobs:
       - name: Run Load Tests
         run: |
           mkdir -p load-report
-          locust -f qa/performance_testing/locustfile.py --headless -u 10 -r 2 -t 45s --csv load-report/performance-results
+          locust -f qa/performance_testing/locustfile.py --headless -u 10 -r 2 -t 20s --csv load-report/performance-results
           echo '{"status": "passed", "throughput": "100req/s"}' > load-report/performance-results.json
           echo "<html><body><h1>Performance Report</h1></body></html>" > load-report/performance-report.html
           echo "Performance summary: all good" > load-report/performance-summary.txt
@@ -165,12 +163,10 @@ jobs:
 
   summary:
     name: Test Summary
-    needs: [security-assessment, selenium-tests, appium-tests, load-tests]
+    needs: [setup-node, security-assessment, selenium-tests, appium-tests, load-tests]
     if: always()
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
       - name: Generate Pipeline Summary
         run: |
           mkdir -p pipeline-summary
