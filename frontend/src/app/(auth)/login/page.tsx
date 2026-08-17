@@ -16,9 +16,13 @@ export default function LoginPage() {
     setLoading(true);
     setError("");
     try {
+      const formData = new FormData(e.currentTarget as HTMLFormElement);
+      const currentEmail = formData.get("email") as string || email;
+      const currentPassword = formData.get("password") as string || password;
+
       const loginData = new URLSearchParams();
-      loginData.append("username", email);
-      loginData.append("password", password);
+      loginData.append("username", currentEmail);
+      loginData.append("password", currentPassword);
       
       const apiUrl = `${BASE_URL}/auth/login`;
 
@@ -118,6 +122,8 @@ export default function LoginPage() {
               </label>{" "}
               <input
                 type="email"
+                name="email"
+                id="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -140,6 +146,8 @@ export default function LoginPage() {
               </div>{" "}
               <input
                 type="password"
+                name="password"
+                id="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

@@ -297,7 +297,7 @@ export default function DashboardLayout({
                     initial={{ opacity: 0, y: 10, scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                    className="absolute right-0 mt-2 w-full md:w-full md:w-full md:w-80 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-xl shadow-xl z-50 overflow-hidden"
+                    className="absolute right-0 mt-2 w-72 sm:w-80 bg-card dark:bg-card border border-slate-200 dark:border-border rounded-xl shadow-xl z-50 overflow-hidden"
                   >
                     <div className="px-4 py-3 border-b border-slate-100 dark:border-border flex justify-between items-center bg-slate-50/50 dark:bg-card/50">
                       <h3 className="font-semibold text-sm text-slate-900 dark:text-foreground">Notifications</h3>

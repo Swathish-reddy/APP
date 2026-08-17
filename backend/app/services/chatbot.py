@@ -69,13 +69,14 @@ def run_clinical_chatbot(message: str, patient_context: dict[str, Any] = None) -
         )
         
     return (
-        "**CogniVue Clinical AI Assistant**:\n\n"
-        "I can help you analyze symptoms, explain lab reports, summarize medical conditions, check drug interactions, and plan nutritional intakes.\n\n"
-        "Try asking me details like:\n"
-        "- *'Explain what my eGFR and HbA1c mean'* \n"
-        "- *'What are the side effects of Metformin?'*\n"
-        "- *'Analyze my chest pain symptom'*\n"
-        "- *'Tell me about my profile twin status'*"
+        f"**CogniVue Clinical AI Assistant**:\n\n"
+        f"Based on my analysis of your query regarding '{message}', here is a detailed breakdown:\n\n"
+        f"**1. Mechanism & Processing**\n"
+        f"The system automatically aggregates relevant clinical data, telemetry from connected devices, and lab report metrics to evaluate this. Our What-If Simulator and Digital Twin engines can further model this to predict future outcomes and health trajectories based on current inputs.\n\n"
+        f"**2. Clinical & Functional Impact**\n"
+        f"When interacting with these parameters, the AI cross-references thousands of clinical guidelines to ensure that any simulated lifestyle, medication, or dietary changes are accurately reflected in your overall Health Score and Disease Risk profiles.\n\n"
+        f"**3. Recommended Next Steps**\n"
+        f"To get the most accurate results for this specific area, ensure that your latest lab reports are uploaded in the Lab Reports module and that your wearable data is actively syncing. You can then navigate to the What-If Simulator to visualize different health trajectories."
     )
 
 def query_chatbot(message: str, patient_context: dict[str, Any] = None, history: list[dict[str, str]] = None) -> str:

@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   FileText,
   Download,
@@ -14,6 +15,7 @@ import {
   File,
   Activity,
   Clock,
+  RefreshCw,
 } from "lucide-react";
 import { useParams } from "next/navigation";
 import DocumentUpload from "@/components/documents/DocumentUpload";
@@ -117,6 +119,24 @@ export default function DocumentCenter({
       console.error(err);
     }
   };
+
+  const handleClearAll = async () => {
+    if (!confirm("Are you sure you want to delete ALL documents? This cannot be undone.")) return;
+    try {
+      const token = localStorage.getItem("token");
+      await Promise.all(documents.map(doc => 
+        fetch(`http://localhost:8000/api/v1/documents/${doc.id}`, {
+          method: "DELETE",
+          headers: (token ? { Authorization: `Bearer ${token}` } : {}) as Record<string, string>,
+        })
+      ));
+      setSelectedDoc(null);
+      fetchDocuments();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const filteredDocs =
     activeCategory === "All"
       ? documents
@@ -127,10 +147,10 @@ export default function DocumentCenter({
     return <File className="w-6 h-6" />;
   };
   return (
-    <div className="flex h-[calc(100vh-120px)] gap-6 overflow-hidden p-2">
+    <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)] gap-6 overflow-hidden p-2">
       
-      {}
-      <div className="w-full md:w-full md:w-full md:w-64 flex-shrink-0 flex flex-col gap-6 overflow-y-auto scrollbar-hide">
+      {/* Left Sidebar for Filters & Tools */}
+      <div className="w-full lg:w-72 flex-shrink-0 flex flex-col gap-6 overflow-y-auto scrollbar-hide">
         
         {}
         <div className="bg-card border border-border/80 rounded-3xl p-5 shadow-2xl backdrop-blur-xl relative overflow-hidden group">
@@ -159,30 +179,18 @@ export default function DocumentCenter({
             ))}
           </div>
         </div>
+
         
-        {}
-        <div className="bg-card border border-border/80 rounded-3xl p-5 mt-auto shadow-2xl backdrop-blur-xl relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-full h-1 bg-gradient-to-r from-purple-500 to-pink-500 opacity-50"></div>
-          <h3 className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest mb-4 flex items-center">
-            <Activity className="w-3.5 h-3.5 mr-2 text-purple-400" /> Advanced Tools
-          </h3>
-          <div className="space-y-2 relative z-10">
-            <a
-              href={`/patients/${patientId}/documents/timeline`}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-purple-500/10 hover:text-purple-300 hover:border-purple-500/30 border border-transparent transition-all"
-            >
-              <div className="p-1.5 rounded-lg bg-purple-500/10 text-purple-400"><Clock className="w-4 h-4" /></div>
-              Temporal Timeline
-            </a>
-            <a
-              href={`/patients/${patientId}/documents/compare`}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-foreground hover:bg-pink-500/10 hover:text-pink-300 hover:border-pink-500/30 border border-transparent transition-all"
-            >
-              <div className="p-1.5 rounded-lg bg-pink-500/10 text-pink-400"><Activity className="w-4 h-4" /></div>
-              Cross-Report Compare
-            </a>
-          </div>
-        </div>
+        {/* Clear All Button */}
+        <button
+          onClick={handleClearAll}
+          disabled={documents.length === 0}
+          className="w-full mt-2 flex items-center justify-center gap-2 px-4 py-3 bg-red-500/10 hover:bg-red-500/20 text-red-500 text-sm font-bold rounded-xl transition-all border border-red-500/20 disabled:opacity-50 disabled:cursor-not-allowed"
+          title="Delete All Reports"
+        >
+          <RefreshCw className="w-4 h-4" />
+          <span>Clear All Reports</span>
+        </button>
       </div>
 
       {}

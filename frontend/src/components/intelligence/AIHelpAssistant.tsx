@@ -11,6 +11,8 @@ import {
   Copy,
   Check,
 } from "lucide-react";
+import { BASE_URL } from "../../services/api";
+
 interface Message {
   role: "assistant" | "user";
   content: string;
@@ -47,22 +49,42 @@ export function AIHelpAssistant({
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
-  const handleSend = (text: string) => {
+  const handleSend = async (text: string) => {
     if (!text.trim()) return;
     const userMsg: Message = { role: "user", content: text };
     setMessages((prev) => [...prev, userMsg]);
     setInput("");
     setIsTyping(true);
-    setTimeout(() => {
-      setIsTyping(false);
+    
+    try {
+      const patientId = "P001";
+      const res = await fetch(`${BASE_URL}/intelligence/patients/${patientId}/chat`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: text, mode: "patient", history: messages.map(m => ({ role: m.role, content: m.content })) }),
+      });
+      
+      if (!res.ok) throw new Error("Failed to fetch response");
+      const data = await res.json();
+      
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: `I am the CogniVueX Help Assistant. You asked about:"${text}".\n\nAs an AI, I can explain platform functionality, guide new users, and suggest workflows. However, I cannot modify user data or perform administrative actions without explicit confirmation.\n\nIs there anything specific in the ${text} module you need help with?`,
+          content: data.response || "I could not generate a response.",
         },
       ]);
-    }, 1500);
+    } catch (error) {
+      setMessages((prev) => [
+        ...prev,
+        {
+          role: "assistant",
+          content: "Sorry, I am having trouble connecting to the intelligence server right now.",
+        },
+      ]);
+    } finally {
+      setIsTyping(false);
+    }
   };
   const clearChat = () => {
     setMessages([INITIAL_MESSAGE]);
@@ -93,7 +115,7 @@ export function AIHelpAssistant({
         >
           {" "}
           {}{" "}
-          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-foreground cursor-move">
+          <div className="flex items-center justify-between p-4 bg-gradient-to-r from-sky-400 to-cyan-400 text-white cursor-move">
             {" "}
             <div className="flex items-center gap-2 font-bold">
               {" "}
@@ -141,7 +163,7 @@ export function AIHelpAssistant({
               >
                 {" "}
                 <div
-                  className={`p-3 rounded-2xl whitespace-pre-wrap text-sm relative group ${msg.role === "user" ? "bg-blue-600 text-foreground rounded-br-sm" : "bg-slate-100 dark:bg-muted text-foreground rounded-bl-sm border border-slate-200 dark:border-border"}`}
+                  className={`p-3 rounded-2xl whitespace-pre-wrap text-sm relative group ${msg.role === "user" ? "bg-sky-100 text-sky-900 dark:bg-sky-900/40 dark:text-sky-100 rounded-br-sm shadow-sm" : "bg-slate-100 dark:bg-muted text-foreground rounded-bl-sm border border-slate-200 dark:border-border"}`}
                 >
                   {" "}
                   {msg.content}{" "}

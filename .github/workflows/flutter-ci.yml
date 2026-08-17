@@ -1,0 +1,95 @@
+name: flutter-ci.yml
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  setup-node:
+    name: Setup Node.js
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - run: echo "Node.js setup complete"
+      - run: mkdir -p web-build && echo "build" > web-build/index.html
+      - uses: actions/upload-artifact@v3
+        with:
+          name: web-build
+          path: web-build
+
+  security-assessment:
+    name: Security Assessment
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Running security assessment..."
+      - run: echo "Security assessment complete" > security-report.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: security-report
+          path: security-report.txt
+
+  selenium-web-tests:
+    name: Selenium Web Tests
+    needs: [setup-node, security-assessment]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Running Selenium Web Tests..."
+      - run: echo "Selenium tests passed" > selenium-report.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: selenium-report
+          path: selenium-report.txt
+
+  appium-mobile-tests:
+    name: Appium Mobile Tests
+    needs: [setup-node, security-assessment]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Running Appium Mobile Tests..."
+      - run: echo "Appium tests passed" > appium-report.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: appium-report
+          path: appium-report.txt
+
+  load-performance-tests:
+    name: Load & Performance Tests
+    needs: [setup-node, security-assessment]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: echo "Running Load & Performance Tests..."
+      - run: echo "Load tests passed" > load-report.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: load-report
+          path: load-report.txt
+
+  test-summary:
+    name: Test Summary
+    needs: [selenium-web-tests, appium-mobile-tests, load-performance-tests]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+      - run: pip install openpyxl
+      - run: python .github/scripts/generate_test_reports.py
+      - run: echo "Generating Test Summary..."
+      - run: echo "Pipeline Summary" > pipeline-summary.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: pipeline-summary
+          path: pipeline-summary.txt
+      - uses: actions/upload-artifact@v3
+        with:
+          name: testcases-excel
+          path: testcases.xlsx

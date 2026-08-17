@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Web E2E Automation Suite" parallel="classes" thread-count="4">
+    <listeners>
+        <listener class-name="com.enterprise.web.listeners.TestListener"/>
+    </listeners>
+    <test name="Live Deployment Tests">
+        <classes>
+            <class name="com.enterprise.web.tests.RegressionTests"/>
+            <class name="com.enterprise.web.tests.CrudTests"/>
+            <class name="com.enterprise.web.tests.NavTests"/>
+            <class name="com.enterprise.web.tests.InputTests"/>
+            <class name="com.enterprise.web.tests.FormTests"/>
+            <class name="com.enterprise.web.tests.A11yTests"/>
+            <class name="com.enterprise.web.tests.AuthzTests"/>
+            <class name="com.enterprise.web.tests.UivalidationTests"/>
+            <class name="com.enterprise.web.tests.SessionTests"/>
+            <class name="com.enterprise.web.tests.PerfTests"/>
+            <class name="com.enterprise.web.tests.AuthTests"/>
+            <class name="com.enterprise.web.tests.ResponsiveTests"/>
+            <class name="com.enterprise.web.tests.ErrorTests"/>
+            <class name="com.enterprise.web.tests.FileTests"/>
+        </classes>
+    </test>
+</suite>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="Android E2E Automation Suite" parallel="classes" thread-count="2">
+    <listeners>
+        <listener class-name="com.enterprise.automation.listeners.TestListener"/>
+    </listeners>
+    <test name="All Modules Test">
+        <classes>
+            <class name="com.enterprise.automation.tests.NotifTests"/>
+            <class name="com.enterprise.automation.tests.RegressionTests"/>
+            <class name="com.enterprise.automation.tests.CrudTests"/>
+            <class name="com.enterprise.automation.tests.NavTests"/>
+            <class name="com.enterprise.automation.tests.FilterTests"/>
+            <class name="com.enterprise.automation.tests.FormTests"/>
+            <class name="com.enterprise.automation.tests.SearchTests"/>
+            <class name="com.enterprise.automation.tests.A11yTests"/>
+            <class name="com.enterprise.automation.tests.ValidationTests"/>
+            <class name="com.enterprise.automation.tests.AuthzTests"/>
+            <class name="com.enterprise.automation.tests.SessionTests"/>
+            <class name="com.enterprise.automation.tests.PerfTests"/>
+            <class name="com.enterprise.automation.tests.DashTests"/>
+            <class name="com.enterprise.automation.tests.ProfileTests"/>
+            <class name="com.enterprise.automation.tests.RegTests"/>
+            <class name="com.enterprise.automation.tests.AuthTests"/>
+            <class name="com.enterprise.automation.tests.ResponsiveTests"/>
+            <class name="com.enterprise.automation.tests.ErrorTests"/>
+            <class name="com.enterprise.automation.tests.FileTests"/>
+            <class name="com.enterprise.automation.tests.OfflineTests"/>
+        </classes>
+    </test>
+</suite>
