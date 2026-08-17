@@ -91,5 +91,5 @@ jobs:
           path: pipeline-summary.txt
       - uses: actions/upload-artifact@v3
         with:
-          name: CognivueX_300Plus_Test_Cases
+          name: CognivueX-300Plus-Test-Cases
           path: CognivueX_300Plus_Test_Cases.xlsx
