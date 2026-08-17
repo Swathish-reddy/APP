@@ -35,6 +35,14 @@ jobs:
           cp -r frontend/.next web-build/
           cp -r frontend/public web-build/
           cp frontend/package.json web-build/
+      - name: Set up Python for web-build QA
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+      - name: Generate Web Build QA Test Cases
+        run: |
+          pip install openpyxl
+          python .github/scripts/generate_test_reports.py WebBuild web-build/qa/web-build-test-report.xlsx
       - name: Upload Web Build
         uses: actions/upload-artifact@v4
         with:
@@ -67,6 +75,9 @@ jobs:
           
           echo "Security scan completed" > ../security-report/security-summary.txt
           echo "<html><body><h1>Security Report</h1></body></html>" > ../security-report/security-report.html
+          
+          pip install openpyxl
+          python ../.github/scripts/generate_test_reports.py Security ../security-report/security-test-cases.xlsx
       - name: Upload Security Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -97,6 +108,9 @@ jobs:
         run: |
           mkdir -p selenium-report/results selenium-report/screenshots selenium-report/logs
           pytest qa/web_automation/tests/test_cognivuex_web.py --html=selenium-report/results/report.html --junitxml=selenium-report/results/selenium-results.xml > selenium-report/logs/run.log || true
+          
+          pip install openpyxl
+          python .github/scripts/generate_test_reports.py Selenium selenium-report/selenium-test-cases.xlsx
       - name: Upload Selenium Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -130,6 +144,9 @@ jobs:
           script: |
             mkdir -p appium-report/results appium-report/screenshots appium-report/logs
             pytest qa/mobile_automation/tests/test_cognivuex_mobile.py --html=appium-report/results/report.html --junitxml=appium-report/results/appium-results.xml > appium-report/logs/appium.log || true
+            
+            pip install openpyxl
+            python .github/scripts/generate_test_reports.py Appium appium-report/appium-test-cases.xlsx
       - name: Upload Appium Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -156,6 +173,9 @@ jobs:
           echo '{"status": "passed", "throughput": "100req/s"}' > load-report/performance-results.json
           echo "<html><body><h1>Performance Report</h1></body></html>" > load-report/performance-report.html
           echo "Performance summary: all good" > load-report/performance-summary.txt
+          
+          pip install openpyxl
+          python .github/scripts/generate_test_reports.py Load load-report/load-test-cases.xlsx
       - name: Upload Load Report
         if: always()
         uses: actions/upload-artifact@v4
@@ -174,17 +194,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-      - name: Generate 300+ Test Cases
-        run: |
-          pip install openpyxl
-          python .github/scripts/generate_test_reports.py
-      - name: Upload Excel Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: CognivueX-300Plus-Test-Cases
-          path: CognivueX_300Plus_Test_Cases.xlsx
       - name: Generate Pipeline Summary
         run: |
+          pip install openpyxl
+          python .github/scripts/generate_test_reports.py Pipeline pipeline-summary/pipeline-test-cases.xlsx
+          
           mkdir -p pipeline-summary
           
           # Machine-readable summary
