@@ -299,7 +299,7 @@ export default function DocumentCenter({
                           const res = await fetch(`${BASE_URL}/documents/${doc.id}/download`, {
                             headers: (token ? { Authorization: `Bearer ${token}` } : {}) as Record<string, string>,
                           });
-                          if (!res.ok) throw new Error(`Failed to download");
+                          if (!res.ok) throw new Error("Failed to download");
                           const blob = await res.blob();
                           const url = window.URL.createObjectURL(blob);
                           window.open(url, '_blank');
@@ -346,7 +346,6 @@ export default function DocumentCenter({
         </div>
       </div>
 
-      {}
       <div className="w-full md:w-full md:w-full md:w-80 flex-shrink-0">
         <DocumentInsights document={selectedDoc} />
       </div>
