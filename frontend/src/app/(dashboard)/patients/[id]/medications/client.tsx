@@ -1,5 +1,5 @@
-import { BASE_URL } from "../../../../../services/api";
 "use client";
+import { BASE_URL } from "../../../../../services/api";
 import React, { useState, useEffect } from "react";
 import { Pill, AlertTriangle, ShieldCheck, Activity, BrainCircuit, HeartPulse, Stethoscope, AlertCircle, TrendingDown, ClipboardList } from "lucide-react";
 import { motion } from "framer-motion";

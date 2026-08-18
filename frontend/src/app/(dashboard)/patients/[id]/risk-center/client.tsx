@@ -1,5 +1,5 @@
-import { BASE_URL } from "../../../../../services/api";
 "use client";
+import { BASE_URL } from "../../../../../services/api";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "next/navigation";

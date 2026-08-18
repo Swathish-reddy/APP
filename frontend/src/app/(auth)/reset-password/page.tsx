@@ -1,5 +1,5 @@
-import { BASE_URL } from "../../../services/api";
 "use client";
+import { BASE_URL } from "../../../services/api";
 
 import { Suspense, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
