@@ -43,13 +43,13 @@ export default function PatientDigitalTwin({
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      const pid = patientId?.replace(`P", "");
+      const pid = patientId?.replace("P", "");
       const token = localStorage.getItem("token");
       const headers: Record<string, string> = token
         ? { Authorization: `Bearer ${token}` }
         : {};
       await fetch(`${BASE_URL}/twin/patient/${pid}/refresh`, {
-        method: `POST",
+        method: "POST",
         headers,
       });
       await fetchTwinData();

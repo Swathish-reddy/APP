@@ -33,7 +33,7 @@ export default function DocumentCompare() {
       try {
         if (!patientId) return;
         const res = await fetch(
-          `${BASE_URL}/documents/patient/${patientId.replace(`P", "")}`,
+          `${BASE_URL}/documents/patient/${patientId.replace("P", "")}`,
         );
         if (res.ok) {
           const data = await res.json();

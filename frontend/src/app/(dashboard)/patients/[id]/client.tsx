@@ -41,7 +41,7 @@ export default function PatientOverview() {
             unique_patient_code: patientData.unique_patient_code,
             full_name: patientData.full_name,
             age: patientData.age || 0,
-            gender: patientData.gender || `Unknown",
+            gender: patientData.gender || "Unknown",
             blood_group: patientData.blood_group || "Unknown",
             height: patientData.height || 0,
             weight: patientData.weight || 0,

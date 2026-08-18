@@ -48,7 +48,7 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
         consultation_type: consultType
       };
 
-      const res = await fetch(`${BASE_URL}/appointments/book/${patientId.replace(`P", "")}`, {
+      const res = await fetch(`${BASE_URL}/appointments/book/${patientId.replace("P", "")}`, {
         method: "POST",
         headers,
         body: JSON.stringify(payload)

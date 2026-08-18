@@ -41,7 +41,7 @@ export default function CenterPanelDashboard() {
       if (token) headers["Authorization"] = `Bearer ${token}`;
       
       const res = await fetch(`${BASE_URL}/emergency/${patientId}/triage`, {
-        method: `POST", headers, body: JSON.stringify({})
+        method: "POST", headers, body: JSON.stringify({})
       });
       if(!res.ok) throw new Error("Failed triage");
       const data = await res.json();
@@ -66,7 +66,7 @@ export default function CenterPanelDashboard() {
     if(actionPlan) {
       setActionPlan({
         ...actionPlan,
-        immediate_actions: [`Analyze New MRI Report", ...actionPlan.immediate_actions],
+        immediate_actions: ["Analyze New MRI Report", ...actionPlan.immediate_actions],
         reasoning: "New imaging data detected. Prioritizing review of cranial structures." + actionPlan.reasoning
       });
     }

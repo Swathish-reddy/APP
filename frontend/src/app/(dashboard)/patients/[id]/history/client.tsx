@@ -22,7 +22,7 @@ export default function PatientHistory({ params, patientId: propPatientId }: { p
             setHistory(data.medical_history);
           }
         })
-        .catch(err => console.error(`Error fetching history:", err))
+        .catch(err => console.error("Error fetching history:", err))
         .finally(() => setLoading(false));
     });
   }, [params]);

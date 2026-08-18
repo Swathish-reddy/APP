@@ -11,7 +11,7 @@ export default function DocumentTimeline() {
     const fetchDocuments = async () => {
       try {
         const res = await fetch(
-          `${BASE_URL}/documents/patient/${(params?.id as string)?.replace(`P", "")}`,
+          `${BASE_URL}/documents/patient/${(params?.id as string)?.replace("P", "")}`,
         );
         if (res.ok) {
           const data = await res.json();

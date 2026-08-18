@@ -37,7 +37,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
         setFusionData(data);
       }
     } catch (err) {
-      console.error(`Failed to fetch fusion data:", err);
+      console.error("Failed to fetch fusion data:", err);
     } finally {
       setIsFusing(false);
     }
@@ -63,7 +63,7 @@ export default function DataFusionCenter({ patientId }: { patientId: string }) {
         headers["Authorization"] = `Bearer ${token}`;
       }
       const res = await fetch(`${BASE_URL}/documents/upload`, {
-        method: `POST",
+        method: "POST",
         headers: headers,
         body: formData,
       });

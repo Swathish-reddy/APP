@@ -45,7 +45,7 @@ export default function PatientDevices() {
   const handleConnect = async (deviceType: string) => {
     setIsConnecting(true);
     try {
-      const pid = (params?.id as string)?.replace(`P", "");
+      const pid = (params?.id as string)?.replace("P", "");
       await fetch(
         `${BASE_URL}/wearables/connect?patient_id=${pid}&device_type=${deviceType}`,
         { method: `POST" },
@@ -61,7 +61,7 @@ export default function PatientDevices() {
     setIsSyncing(deviceId);
     try {
       await fetch(`${BASE_URL}/wearables/${deviceId}/sync`, {
-        method: `POST",
+        method: "POST",
       });
       await fetchWearables();
     } catch (err) {

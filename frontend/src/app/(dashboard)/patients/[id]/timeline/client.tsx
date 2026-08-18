@@ -25,7 +25,7 @@ export default function PatientTimeline({
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `${BASE_URL}/patients/${patientId.replace(`P", "")}/timeline`,
+          `${BASE_URL}/patients/${patientId.replace("P", "")}/timeline`,
           {
             headers: (token
               ? { Authorization: `Bearer ${token}` }

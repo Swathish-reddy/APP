@@ -50,7 +50,7 @@ export default function DocumentCenter({
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `${BASE_URL}/documents/patient/${patientId?.replace(`P", "")}`,
+        `${BASE_URL}/documents/patient/${patientId?.replace("P", "")}`,
         {
           headers: (token
             ? { Authorization: `Bearer ${token}` }
@@ -106,7 +106,7 @@ export default function DocumentCenter({
       const res = await fetch(
         `${BASE_URL}/documents/${docId}`,
         {
-          method: `DELETE",
+          method: "DELETE",
           headers: (token
             ? { Authorization: `Bearer ${token}` }
             : {}) as Record<string, string>,
@@ -127,7 +127,7 @@ export default function DocumentCenter({
       const token = localStorage.getItem("token");
       await Promise.all(documents.map(doc => 
         fetch(`${BASE_URL}/documents/${doc.id}`, {
-          method: `DELETE",
+          method: "DELETE",
           headers: (token ? { Authorization: `Bearer ${token}` } : {}) as Record<string, string>,
         })
       ));

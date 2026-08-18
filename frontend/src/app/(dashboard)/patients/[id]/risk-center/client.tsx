@@ -37,7 +37,7 @@ export default function RiskCenterPage({
           setSelectedPrediction(response.data.predictions[0]);
         }
       } catch (error) {
-        console.warn(`Error fetching risk data", error);
+        console.warn("Error fetching risk data", error);
       } finally {
         setLoading(false);
       }

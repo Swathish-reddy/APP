@@ -25,7 +25,7 @@ export default function PatientMedications({ params, patientId: propPatientId }:
         .then((res) => res.json())
         .then((data) => setMedData(data))
         .catch((err) =>
-          console.error(`Error fetching medication intelligence:", err),
+          console.error("Error fetching medication intelligence:", err),
         )
         .finally(() => setLoading(false));
     });
@@ -78,7 +78,6 @@ export default function PatientMedications({ params, patientId: propPatientId }:
       initial="hidden"
       animate="show"
     >
-      {}
       <motion.div variants={itemVariants} className={`flex flex-col md:flex-row items-start md:items-center justify-between gap-4 bg-muted/80 border ${isHighRisk ? 'border-rose-500/50' : 'border-indigo-500/50'} p-4 md:p-4 md:p-4 md:p-6 rounded-3xl backdrop-blur-xl shadow-2xl relative overflow-hidden`}>
         <div className={`absolute top-0 left-0 w-full h-1 bg-gradient-to-r ${isHighRisk ? 'from-rose-500 via-orange-500 to-amber-500' : 'from-indigo-500 via-purple-500 to-pink-500'}`}></div>
         <div className="relative z-10">

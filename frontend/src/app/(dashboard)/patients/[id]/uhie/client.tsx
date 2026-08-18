@@ -43,9 +43,9 @@ export default function UnifiedHealthIntelligence() {
   const triggerFusion = async () => {
     setIsFusing(true);
     try {
-      const pid = (params?.id as string)?.replace(`P", "") || "";
+      const pid = (params?.id as string)?.replace("P", "") || "";
       await fetch(`${BASE_URL}/uhie/patient/${pid}/fuse`, {
-        method: `POST",
+        method: "POST",
       });
       await fetchUHIEData();
     } catch (err) {

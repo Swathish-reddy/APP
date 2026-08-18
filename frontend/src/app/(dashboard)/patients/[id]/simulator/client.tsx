@@ -56,11 +56,11 @@ export default function HealthSimulationStudio({
   const runSimulation = async () => {
     setIsSimulating(true);
     try {
-      const pid = patientId?.replace(`P", "");
+      const pid = patientId?.replace("P", "");
       const res = await fetch(
         `${BASE_URL}/simulator/patient/${pid}/run`,
         {
-          method: `POST",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(modifiers),
         },
@@ -89,7 +89,7 @@ export default function HealthSimulationStudio({
       await fetch(
         `${BASE_URL}/simulator/patient/${pid}/save`,
         {
-          method: `POST",
+          method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         },

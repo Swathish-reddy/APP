@@ -16,7 +16,7 @@ export const CDSSIntelligenceReport = ({
     fetch(`${BASE_URL}/cdss/${id}/intelligence`, { headers })
       .then((res) => res.json())
       .then((data) => setCdssData(data))
-      .catch((err) => console.error(`Error fetching CDSS intelligence:", err));
+      .catch((err) => console.error("Error fetching CDSS intelligence:", err));
   }, [patientId]);
   if (!cdssData) return null;
   return (
