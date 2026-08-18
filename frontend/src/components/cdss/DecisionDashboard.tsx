@@ -43,7 +43,7 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
         if (actionPlanRes.ok) setActionPlan(await actionPlanRes.json());
         
       } catch (error) {
-        console.error(`Error fetching CDSS data:", error);
+        console.error("Error fetching CDSS data:", error);
       } finally {
         setLoading(false);
       }
