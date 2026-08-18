@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -15,7 +16,7 @@ export const ReportAnalysis = ({ patientId }: { patientId: string }) => {
         const token = localStorage.getItem("token");
         const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
         // Fetch recent documents for the patient
-        const res = await fetch(`http://localhost:8000/api/v1/documents/patient/${patientId.replace("P", "")}`, { headers });
+        const res = await fetch(`${BASE_URL}/documents/patient/${patientId.replace(`P", "")}`, { headers });
         if (res.ok) {
           const data = await res.json();
           setReports(data.slice(0, 5)); // Get top 5 recent reports

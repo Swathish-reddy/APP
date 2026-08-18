@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 import React, { useState, useEffect } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,10 +19,10 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
         const token = localStorage.getItem("token");
         const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
         
-        const docRes = await fetch(`http://localhost:8000/api/v1/doctors/nearby`, { headers });
+        const docRes = await fetch(`${BASE_URL}/doctors/nearby`, { headers });
         if (docRes.ok) setDoctors(await docRes.json());
 
-        const hospRes = await fetch(`http://localhost:8000/api/v1/doctors/hospitals`, { headers });
+        const hospRes = await fetch(`${BASE_URL}/doctors/hospitals`, { headers });
         if (hospRes.ok) setHospitals(await hospRes.json());
       } catch (err) {
         console.error(err);
@@ -32,7 +33,7 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
     fetchData();
   }, []);
 
-  if (loading) return <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
+  if (loading) return <div className=`p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
 
   if (selectedDoctor) {
     return <AppointmentBooking doctor={selectedDoctor} patientId={patientId} onBack={() => setSelectedDoctor(null)} />;

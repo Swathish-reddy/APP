@@ -14,8 +14,7 @@ interface XAIExplanationPanelProps {
       all_features?: any[];
     };
   };
-}
-
+};
 export default function XAIExplanationPanel({
   prediction,
 }: XAIExplanationPanelProps) {
@@ -56,7 +55,7 @@ export default function XAIExplanationPanel({
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       
-      {/* LEFT COLUMN: SHAP CHART */}
+      {}
       <div className="lg:col-span-2 flex flex-col space-y-4">
         <div className="dark bg-gradient-to-br from-slate-900 to-slate-800 rounded-3xl p-6 border border-slate-700 shadow-xl">
           <div className="flex items-center gap-3 mb-4 border-b border-slate-700 pb-3">
@@ -90,7 +89,7 @@ export default function XAIExplanationPanel({
           <p className="text-xs text-slate-400 mt-2 text-center">Click on a bar to view evidence.</p>
         </div>
 
-        {/* CLINICAL INTERPRETATION */}
+        {}
         <div className="bg-indigo-50 border border-indigo-100 p-5 rounded-2xl">
            <h4 className="text-sm font-bold text-indigo-900 mb-2 flex items-center">
              <Info className="w-4 h-4 mr-2 text-indigo-600" /> Why is my risk {prediction.risk_score?.toFixed(1) || 0}%?
@@ -101,7 +100,7 @@ export default function XAIExplanationPanel({
         </div>
       </div>
 
-      {/* RIGHT COLUMN: TRACEABILITY PANEL */}
+      {}
       <div className="lg:col-span-1">
         <div className="bg-white rounded-3xl p-5 border border-slate-200 shadow-md h-full flex flex-col">
           <h3 className="font-bold text-sm text-slate-800 uppercase tracking-wider mb-4 border-b border-slate-100 pb-2">

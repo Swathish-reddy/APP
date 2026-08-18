@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../../services/api";
 "use client";
 import { useParams } from 'next/navigation';
 import React, { useState, useEffect } from "react";
@@ -10,7 +11,7 @@ export default function DocumentTimeline() {
     const fetchDocuments = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8000/api/v1/documents/patient/${(params?.id as string)?.replace("P", "")}`,
+          `${BASE_URL}/documents/patient/${(params?.id as string)?.replace(`P", "")}`,
         );
         if (res.ok) {
           const data = await res.json();

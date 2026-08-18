@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import {
@@ -42,7 +43,7 @@ export default function HealthSimulationStudio({
     try {
       const pid = patientId?.replace("P", "");
       const res = await fetch(
-        `http://localhost:8000/api/v1/simulator/patient/${pid}/history`,
+        `${BASE_URL}/simulator/patient/${pid}/history`,
       );
       if (res.ok) setSavedScenarios(await res.json());
     } catch (e) {
@@ -55,11 +56,11 @@ export default function HealthSimulationStudio({
   const runSimulation = async () => {
     setIsSimulating(true);
     try {
-      const pid = patientId?.replace("P", "");
+      const pid = patientId?.replace(`P", "");
       const res = await fetch(
-        `http://localhost:8000/api/v1/simulator/patient/${pid}/run`,
+        `${BASE_URL}/simulator/patient/${pid}/run`,
         {
-          method: "POST",
+          method: `POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(modifiers),
         },
@@ -86,9 +87,9 @@ export default function HealthSimulationStudio({
         xai_insights: simulationResult.xai_insights,
       };
       await fetch(
-        `http://localhost:8000/api/v1/simulator/patient/${pid}/save`,
+        `${BASE_URL}/simulator/patient/${pid}/save`,
         {
-          method: "POST",
+          method: `POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         },

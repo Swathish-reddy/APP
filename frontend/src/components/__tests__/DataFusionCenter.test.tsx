@@ -1,8 +1,9 @@
+import { BASE_URL } from "../../services/api";
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import DataFusionCenter from '../dashboard/DataFusionCenter';
 import { vi, describe, it, expect, beforeEach } from 'vitest'
 
-// Mock fetch globally
+ fetch globally
 global.fetch = vi.fn()
 
 describe('DataFusionCenter', () => {

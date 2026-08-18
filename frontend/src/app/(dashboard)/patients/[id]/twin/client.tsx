@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import { UserCircle2, RefreshCw } from "lucide-react";
@@ -23,12 +24,12 @@ export default function PatientDigitalTwin({
         ? { Authorization: `Bearer ${token}` }
         : {};
       const stateRes = await fetch(
-        `http://localhost:8000/api/v1/twin/patient/${pid}`,
+        `${BASE_URL}/twin/patient/${pid}`,
         { headers },
       );
       if (stateRes.ok) setTwinState(await stateRes.json());
       const predRes = await fetch(
-        `http://localhost:8000/api/v1/twin/patient/${pid}/predictions`,
+        `${BASE_URL}/twin/patient/${pid}/predictions`,
         { headers },
       );
       if (predRes.ok) setPredictions(await predRes.json());
@@ -42,13 +43,13 @@ export default function PatientDigitalTwin({
   const handleRefresh = async () => {
     setIsRefreshing(true);
     try {
-      const pid = patientId?.replace("P", "");
+      const pid = patientId?.replace(`P", "");
       const token = localStorage.getItem("token");
       const headers: Record<string, string> = token
         ? { Authorization: `Bearer ${token}` }
         : {};
-      await fetch(`http://localhost:8000/api/v1/twin/patient/${pid}/refresh`, {
-        method: "POST",
+      await fetch(`${BASE_URL}/twin/patient/${pid}/refresh`, {
+        method: `POST",
         headers,
       });
       await fetchTwinData();

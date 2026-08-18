@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -49,7 +50,7 @@ export default function DocumentCenter({
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:8000/api/v1/documents/patient/${patientId?.replace("P", "")}`,
+        `${BASE_URL}/documents/patient/${patientId?.replace(`P", "")}`,
         {
           headers: (token
             ? { Authorization: `Bearer ${token}` }
@@ -103,9 +104,9 @@ export default function DocumentCenter({
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        `http://localhost:8000/api/v1/documents/${docId}`,
+        `${BASE_URL}/documents/${docId}`,
         {
-          method: "DELETE",
+          method: `DELETE",
           headers: (token
             ? { Authorization: `Bearer ${token}` }
             : {}) as Record<string, string>,
@@ -125,8 +126,8 @@ export default function DocumentCenter({
     try {
       const token = localStorage.getItem("token");
       await Promise.all(documents.map(doc => 
-        fetch(`http://localhost:8000/api/v1/documents/${doc.id}`, {
-          method: "DELETE",
+        fetch(`${BASE_URL}/documents/${doc.id}`, {
+          method: `DELETE",
           headers: (token ? { Authorization: `Bearer ${token}` } : {}) as Record<string, string>,
         })
       ));
@@ -149,7 +150,7 @@ export default function DocumentCenter({
   return (
     <div className="flex flex-col lg:flex-row h-[calc(100vh-120px)] gap-6 overflow-hidden p-2">
       
-      {/* Left Sidebar for Filters & Tools */}
+      {}
       <div className="w-full lg:w-72 flex-shrink-0 flex flex-col gap-6 overflow-y-auto scrollbar-hide">
         
         {}
@@ -181,7 +182,7 @@ export default function DocumentCenter({
         </div>
 
         
-        {/* Clear All Button */}
+        {}
         <button
           onClick={handleClearAll}
           disabled={documents.length === 0}
@@ -295,10 +296,10 @@ export default function DocumentCenter({
                         e.stopPropagation();
                         try {
                           const token = localStorage.getItem("token");
-                          const res = await fetch(`http://localhost:8000/api/v1/documents/${doc.id}/download`, {
+                          const res = await fetch(`${BASE_URL}/documents/${doc.id}/download`, {
                             headers: (token ? { Authorization: `Bearer ${token}` } : {}) as Record<string, string>,
                           });
-                          if (!res.ok) throw new Error("Failed to download");
+                          if (!res.ok) throw new Error(`Failed to download");
                           const blob = await res.blob();
                           const url = window.URL.createObjectURL(blob);
                           window.open(url, '_blank');

@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import { Pill, AlertTriangle, ShieldCheck, Activity, BrainCircuit, HeartPulse, Stethoscope, AlertCircle, TrendingDown, ClipboardList } from "lucide-react";
@@ -18,13 +19,13 @@ export default function PatientMedications({ params, patientId: propPatientId }:
       const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
       fetch(
-        `http://localhost:8000/api/v1/medications/${cleanId}/intelligence`,
+        `${BASE_URL}/medications/${cleanId}/intelligence`,
         { headers },
       )
         .then((res) => res.json())
         .then((data) => setMedData(data))
         .catch((err) =>
-          console.error("Error fetching medication intelligence:", err),
+          console.error(`Error fetching medication intelligence:", err),
         )
         .finally(() => setLoading(false));
     });

@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import { FlaskConical } from "lucide-react";
@@ -12,10 +13,10 @@ export const CDSSIntelligenceReport = ({
     const token = localStorage.getItem("token");
     const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
-    fetch(`http://localhost:8000/api/v1/cdss/${id}/intelligence`, { headers })
+    fetch(`${BASE_URL}/cdss/${id}/intelligence`, { headers })
       .then((res) => res.json())
       .then((data) => setCdssData(data))
-      .catch((err) => console.error("Error fetching CDSS intelligence:", err));
+      .catch((err) => console.error(`Error fetching CDSS intelligence:", err));
   }, [patientId]);
   if (!cdssData) return null;
   return (

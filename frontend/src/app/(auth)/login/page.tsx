@@ -64,7 +64,7 @@ export default function LoginPage() {
         localStorage.setItem("token", data.access_token);
       } else {
         sessionStorage.setItem("token", data.access_token);
-        // Also set to localStorage for compatibility with existing code that reads from it
+         set to localStorage for compatibility with existing code that reads from it
         // A better approach would be replacing all localStorage.getItem("token") with a helper function
         localStorage.setItem("token", data.access_token); 
       }

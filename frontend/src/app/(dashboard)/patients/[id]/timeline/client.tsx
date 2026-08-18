@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -24,7 +25,7 @@ export default function PatientTimeline({
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:8000/api/v1/patients/${patientId.replace("P", "")}/timeline`,
+          `${BASE_URL}/patients/${patientId.replace(`P", "")}/timeline`,
           {
             headers: (token
               ? { Authorization: `Bearer ${token}` }

@@ -77,7 +77,7 @@ app.include_router(appointments_router, prefix=f"{settings.API_V1_STR}/appointme
 # Set CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origin_regex=".*",
+    allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|172\.\d+\.\d+\.\d+|10\.\d+\.\d+\.\d+)(:\d+)?$",
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -105,6 +105,10 @@ def read_root():
         "service": "CogniVueX AI Platform Backend",
         "version": "1.0.0"
     }
+
+@app.get("/health")
+def health_check():
+    return {"status": "ok", "message": "CognivueX backend is running."}
 
 
 

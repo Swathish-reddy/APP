@@ -1,4 +1,3 @@
-
 from pydantic_settings import BaseSettings
 
 
@@ -7,6 +6,8 @@ class Settings(BaseSettings):
     API_V1_STR: str = "/api/v1"
     CORS_ORIGINS: list[str] = ["*"]
     GEMINI_API_KEY: str = ""
+    OPENAI_API_KEY: str = ""
+    OPENAI_MODEL: str = "gpt-4o-mini"
     
     # Database
     POSTGRES_SERVER: str = "localhost"
@@ -27,6 +28,7 @@ class Settings(BaseSettings):
     class Config:
         env_file = ".env"
         case_sensitive = True
+        extra = "ignore"
 
 settings = Settings()
 export_settings = settings

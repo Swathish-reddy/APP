@@ -86,7 +86,7 @@ export default function XAIModule({ patientId }: { patientId: string }) {
         ) : predictionData ? (
           <div className="space-y-6">
             
-            {/* DATA QUALITY PANEL */}
+            {}
             <div className="flex flex-wrap gap-4 mb-4">
                <div className="flex-1 min-w-[200px] bg-blue-50 border border-blue-100 p-4 rounded-xl flex items-center space-x-3">
                  <Database className="w-8 h-8 text-blue-500" />

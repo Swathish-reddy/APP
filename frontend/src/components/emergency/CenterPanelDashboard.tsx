@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 import React, { useState, useEffect } from 'react';
 import { AlertTriangle, Activity, Stethoscope, Heart, Droplets, Brain, Search, UserCircle, Target, ActivitySquare, UploadCloud, CalendarPlus } from 'lucide-react';
 import EmergencyMap from './EmergencyMap';
@@ -39,14 +40,14 @@ export default function CenterPanelDashboard() {
       const headers: Record<string, string> = { "Content-Type": "application/json" };
       if (token) headers["Authorization"] = `Bearer ${token}`;
       
-      const res = await fetch(`http://localhost:8000/api/v1/emergency/${patientId}/triage`, {
-        method: "POST", headers, body: JSON.stringify({})
+      const res = await fetch(`${BASE_URL}/emergency/${patientId}/triage`, {
+        method: `POST", headers, body: JSON.stringify({})
       });
       if(!res.ok) throw new Error("Failed triage");
       const data = await res.json();
       setTriageData(data);
       
-      const planRes = await fetch(`http://localhost:8000/api/v1/emergency/action-plan/${patientId}`, { headers });
+      const planRes = await fetch(`${BASE_URL}/emergency/action-plan/${patientId}`, { headers });
       if(planRes.ok) {
         const planData = await planRes.json();
         setActionPlan(planData);
@@ -65,7 +66,7 @@ export default function CenterPanelDashboard() {
     if(actionPlan) {
       setActionPlan({
         ...actionPlan,
-        immediate_actions: ["Analyze New MRI Report", ...actionPlan.immediate_actions],
+        immediate_actions: [`Analyze New MRI Report", ...actionPlan.immediate_actions],
         reasoning: "New imaging data detected. Prioritizing review of cranial structures." + actionPlan.reasoning
       });
     }

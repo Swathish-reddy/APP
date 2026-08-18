@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 import React, { useState, useEffect } from 'react';
 import { Search, Filter, AlertCircle, Clock, CheckCircle2, ChevronRight, Activity } from 'lucide-react';
 
@@ -24,7 +25,7 @@ export default function LeftPanelQueue() {
     const fetchData = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await fetch("http://localhost:8000/api/v1/emergency/active-cases", {
+        const res = await fetch(`${BASE_URL}/emergency/active-cases`, {
           headers: token ? { Authorization: `Bearer ${token}` } : {}
         });
         const result = await res.json();
@@ -42,7 +43,7 @@ export default function LeftPanelQueue() {
 
   const renderCase = (c: Case) => (
     <div key={c.id} className="group relative bg-card/40 border border-border/50 p-4 rounded-xl hover:bg-muted/80 hover:border-slate-600 transition-all cursor-pointer overflow-hidden">
-      { /* if critical */ }
+      {  }
       {c.triage === 'ESI-1' && (
         <div className="absolute top-0 left-0 w-1 h-full bg-red-500 shadow-[0_0_10px_rgba(239,68,68,0.8)]"></div>
       )}

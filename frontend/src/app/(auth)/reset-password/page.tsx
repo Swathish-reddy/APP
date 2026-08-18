@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../services/api";
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
@@ -58,8 +59,7 @@ function ResetPasswordContent() {
     setError("");
 
     try {
-      const _envUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const apiUrl = `${_envUrl}/api/v1/auth/reset-password`;
+      const apiUrl = `${BASE_URL}/auth/reset-password`;
 
       let response;
       try {

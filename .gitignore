@@ -32,3 +32,9 @@ frontend/android/jdk17.zip
 *.zip
 *.keystore
 C:/Android/
+
+__pycache__/
+*.pyc
+.coverage
+cognivuex.db
+fix_*.py

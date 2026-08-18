@@ -11,8 +11,7 @@ interface PatientManagementPanelProps {
   onSelectPatient: (id: string) => void;
   selectedPatientId: string;
   onPatientAdded: () => void;
-}
-
+};
 export default function PatientManagementPanel({
   isOpen,
   onClose,

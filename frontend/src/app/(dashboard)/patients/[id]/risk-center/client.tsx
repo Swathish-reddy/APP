@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
@@ -28,7 +29,7 @@ export default function RiskCenterPage({
         const token = localStorage.getItem("token");
         const pid = patientId?.replace("P", "") || "101";
         const response = await axios.get(
-          `http://localhost:8000/api/v1/risk/${pid}/fusion`,
+          `${BASE_URL}/risk/${pid}/fusion`,
           { headers: token ? { Authorization: `Bearer ${token}` } : {} },
         );
         setData(response.data);
@@ -36,7 +37,7 @@ export default function RiskCenterPage({
           setSelectedPrediction(response.data.predictions[0]);
         }
       } catch (error) {
-        console.warn("Error fetching risk data", error);
+        console.warn(`Error fetching risk data", error);
       } finally {
         setLoading(false);
       }

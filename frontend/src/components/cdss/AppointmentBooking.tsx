@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 import React, { useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -47,7 +48,7 @@ export const AppointmentBooking = ({ doctor, patientId, onBack }: AppointmentBoo
         consultation_type: consultType
       };
 
-      const res = await fetch(`http://localhost:8000/api/v1/appointments/book/${patientId.replace("P", "")}`, {
+      const res = await fetch(`${BASE_URL}/appointments/book/${patientId.replace(`P", "")}`, {
         method: "POST",
         headers,
         body: JSON.stringify(payload)

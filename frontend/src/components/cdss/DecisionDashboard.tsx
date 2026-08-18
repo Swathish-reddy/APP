@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import { TopSection } from "./TopSection";
@@ -32,17 +33,17 @@ export const DecisionDashboard: React.FC<DecisionDashboardProps> = ({ patientId 
         const patient = await getPatient(patientId);
         setPatientData(patient);
         
-        const recRes = await fetch(`http://localhost:8000/api/v1/cdss/${pid}/recommendations`, { headers });
+        const recRes = await fetch(`${BASE_URL}/cdss/${pid}/recommendations`, { headers });
         if (recRes.ok) setRecommendations(await recRes.json());
         
-        const pathRes = await fetch(`http://localhost:8000/api/v1/cdss/pathways/diabetes`, { headers });
+        const pathRes = await fetch(`${BASE_URL}/cdss/pathways/diabetes`, { headers });
         if (pathRes.ok) setPathways(await pathRes.json());
         
-        const actionPlanRes = await fetch(`http://localhost:8000/api/v1/cdss/${pid}/action-plan`, { headers });
+        const actionPlanRes = await fetch(`${BASE_URL}/cdss/${pid}/action-plan`, { headers });
         if (actionPlanRes.ok) setActionPlan(await actionPlanRes.json());
         
       } catch (error) {
-        console.error("Error fetching CDSS data:", error);
+        console.error(`Error fetching CDSS data:", error);
       } finally {
         setLoading(false);
       }

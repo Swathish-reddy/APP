@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import { History, Activity, AlertCircle } from "lucide-react";
@@ -14,14 +15,14 @@ export default function PatientHistory({ params, patientId: propPatientId }: { p
       const token = localStorage.getItem("token");
       const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
-      fetch(`http://localhost:8000/api/v1/patients/${cleanId}`, { headers })
+      fetch(`${BASE_URL}/patients/${cleanId}`, { headers })
         .then(res => res.json())
         .then(data => {
           if (data && data.medical_history) {
             setHistory(data.medical_history);
           }
         })
-        .catch(err => console.error("Error fetching history:", err))
+        .catch(err => console.error(`Error fetching history:", err))
         .finally(() => setLoading(false));
     });
   }, [params]);

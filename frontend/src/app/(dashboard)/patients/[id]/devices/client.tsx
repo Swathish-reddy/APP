@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import { useParams } from 'next/navigation';
 import React, { useState, useEffect } from "react";
@@ -29,7 +30,7 @@ export default function PatientDevices() {
     try {
       const pid = (params?.id as string)?.replace("P", "");
       const res = await fetch(
-        `http://localhost:8000/api/v1/wearables/patient/${pid}`,
+        `${BASE_URL}/wearables/patient/${pid}`,
       );
       if (res.ok) {
         setWearables(await res.json());
@@ -44,10 +45,10 @@ export default function PatientDevices() {
   const handleConnect = async (deviceType: string) => {
     setIsConnecting(true);
     try {
-      const pid = (params?.id as string)?.replace("P", "");
+      const pid = (params?.id as string)?.replace(`P", "");
       await fetch(
-        `http://localhost:8000/api/v1/wearables/connect?patient_id=${pid}&device_type=${deviceType}`,
-        { method: "POST" },
+        `${BASE_URL}/wearables/connect?patient_id=${pid}&device_type=${deviceType}`,
+        { method: `POST" },
       );
       await fetchWearables();
     } catch (err) {
@@ -59,8 +60,8 @@ export default function PatientDevices() {
   const handleSync = async (deviceId: string) => {
     setIsSyncing(deviceId);
     try {
-      await fetch(`http://localhost:8000/api/v1/wearables/${deviceId}/sync`, {
-        method: "POST",
+      await fetch(`${BASE_URL}/wearables/${deviceId}/sync`, {
+        method: `POST",
       });
       await fetchWearables();
     } catch (err) {

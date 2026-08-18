@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../services/api";
 "use client";
 
 import { useState } from "react";
@@ -19,8 +20,7 @@ export default function ForgotPasswordPage() {
     setSuccess("");
 
     try {
-      const _envUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
-      const apiUrl = `${_envUrl}/api/v1/auth/forgot-password`;
+      const apiUrl = `${BASE_URL}/auth/forgot-password`;
       
       let response;
       try {

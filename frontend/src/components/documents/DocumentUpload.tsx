@@ -122,7 +122,7 @@ export default function DocumentUpload({
           type="file"
           ref={fileInputRef}
           onChange={handleFileChange}
-          accept="*/*"
+          accept="*"
           className="hidden"
           multiple
         />

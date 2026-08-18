@@ -150,8 +150,8 @@ async def chat_with_assistant(patient_id: str, payload: ChatPayload, db: AsyncSe
         import json
         if isinstance(response, str) and response.strip().startswith("{") and response.strip().endswith("}"):
             parsed = json.loads(response)
-            return {"response": parsed.get("message", response), "action": parsed.get("action", None), "mode": payload.mode}
+            return {"reply": parsed.get("message", response), "action": parsed.get("action", None), "mode": payload.mode}
     except Exception:
         pass
         
-    return {"response": response, "mode": payload.mode}
+    return {"reply": response, "mode": payload.mode}

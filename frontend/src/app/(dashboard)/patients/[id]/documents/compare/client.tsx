@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import {
@@ -32,7 +33,7 @@ export default function DocumentCompare() {
       try {
         if (!patientId) return;
         const res = await fetch(
-          `http://localhost:8000/api/v1/documents/patient/${patientId.replace("P", "")}`,
+          `${BASE_URL}/documents/patient/${patientId.replace(`P", "")}`,
         );
         if (res.ok) {
           const data = await res.json();

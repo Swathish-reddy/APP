@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../services/api";
 "use client";
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
@@ -31,7 +32,7 @@ export default function PatientOverview() {
         const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
         
         // Fetch real patient data
-        const patientRes = await fetch(`http://localhost:8000/api/v1/patients/${id}`, { headers });
+        const patientRes = await fetch(`${BASE_URL}/patients/${id}`, { headers });
         if (patientRes.ok) {
           const patientData = await patientRes.json();
           // Map real DB fields to the expected format
@@ -40,7 +41,7 @@ export default function PatientOverview() {
             unique_patient_code: patientData.unique_patient_code,
             full_name: patientData.full_name,
             age: patientData.age || 0,
-            gender: patientData.gender || "Unknown",
+            gender: patientData.gender || `Unknown",
             blood_group: patientData.blood_group || "Unknown",
             height: patientData.height || 0,
             weight: patientData.weight || 0,
@@ -59,11 +60,11 @@ export default function PatientOverview() {
         }
         
         // Fetch overview data
-        const overviewRes = await fetch(`http://localhost:8000/api/v1/overview/patient/${id}`, { headers });
+        const overviewRes = await fetch(`${BASE_URL}/overview/patient/${id}`, { headers });
         if (overviewRes.ok) {
           const ovData = await overviewRes.json();
           setOverviewData(ovData);
-          if (ovData["10_patient_health_score"]) {
+          if (ovData[`10_patient_health_score"]) {
              setPatient((prev: any) => ({ ...prev, health_score: parseInt(ovData["10_patient_health_score"].split('/')[0]) || prev?.health_score }));
           }
         }

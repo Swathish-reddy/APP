@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../services/api";
 import React, { useState, useEffect } from 'react';
 import { Building2, Bed, Stethoscope, Droplets, Wind, Activity, Users } from 'lucide-react';
 
@@ -7,7 +8,7 @@ export default function RightPanelCapacity() {
   useEffect(() => {
     const fetchCapacity = async () => {
       try {
-        const res = await fetch("http://localhost:8000/api/v1/emergency/capacity");
+        const res = await fetch(`${BASE_URL}/emergency/capacity`);
         const data = await res.json();
         setCapacity(data);
       } catch (err) {

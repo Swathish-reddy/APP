@@ -1,3 +1,4 @@
+import { BASE_URL } from "../../../../../services/api";
 "use client";
 import { useParams } from 'next/navigation';
 import React, { useState, useEffect } from "react";
@@ -21,15 +22,15 @@ export default function UnifiedHealthIntelligence() {
     try {
       const pid = (params?.id as string)?.replace("P", "") || "";
       const stateRes = await fetch(
-        `http://localhost:8000/api/v1/uhie/patient/${pid}/state`,
+        `${BASE_URL}/uhie/patient/${pid}/state`,
       );
       if (stateRes.ok) setHealthState(await stateRes.json());
       const eventsRes = await fetch(
-        `http://localhost:8000/api/v1/uhie/patient/${pid}/events`,
+        `${BASE_URL}/uhie/patient/${pid}/events`,
       );
       if (eventsRes.ok) setEvents(await eventsRes.json());
       const corrRes = await fetch(
-        `http://localhost:8000/api/v1/uhie/patient/${pid}/correlations`,
+        `${BASE_URL}/uhie/patient/${pid}/correlations`,
       );
       if (corrRes.ok) setCorrelations(await corrRes.json());
     } catch (err) {
@@ -42,9 +43,9 @@ export default function UnifiedHealthIntelligence() {
   const triggerFusion = async () => {
     setIsFusing(true);
     try {
-      const pid = (params?.id as string)?.replace("P", "") || "";
-      await fetch(`http://localhost:8000/api/v1/uhie/patient/${pid}/fuse`, {
-        method: "POST",
+      const pid = (params?.id as string)?.replace(`P", "") || "";
+      await fetch(`${BASE_URL}/uhie/patient/${pid}/fuse`, {
+        method: `POST",
       });
       await fetchUHIEData();
     } catch (err) {
