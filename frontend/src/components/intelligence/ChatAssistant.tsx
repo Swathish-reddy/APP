@@ -34,9 +34,9 @@ const MarkdownRenderer = ({ content }: { content: string }) => {
     // Inline code
     html = html.replace(/`([^`]+)`/g, '<code class="bg-background/30 px-1.5 py-0.5 rounded text-indigo-200 text-[0.9em] font-mono">$1</code>');
     // Bold
-    html = html.replace(/\*\*(.*?)\*\g, '<strong class="font-bold text-emerald-300">$1</strong>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-emerald-300">$1</strong>');
     // Italic
-    html = html.replace(/\*(.*?)\g, '<em class="italic text-foreground">$1</em>');
+    html = html.replace(/\*(.*?)\*/g, '<em class="italic text-foreground">$1</em>');
     // Headers
     html = html.replace(/^### (.*$)/gim, '<h3 class="text-lg font-bold mt-4 mb-2 text-foreground">$1</h3>');
     html = html.replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-5 mb-2 text-foreground border-b border-white/10 pb-1">$1</h2>');

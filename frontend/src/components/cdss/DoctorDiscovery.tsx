@@ -33,7 +33,7 @@ export const DoctorDiscovery = ({ patientId }: { patientId: string }) => {
     fetchData();
   }, []);
 
-  if (loading) return <div className=`p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
+  if (loading) return <div className="p-4 md:p-4 md:p-4 md:p-8 text-center text-muted-foreground animate-pulse">Finding top specialists near you...</div>;
 
   if (selectedDoctor) {
     return <AppointmentBooking doctor={selectedDoctor} patientId={patientId} onBack={() => setSelectedDoctor(null)} />;

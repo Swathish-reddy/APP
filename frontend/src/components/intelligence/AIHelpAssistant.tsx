@@ -42,9 +42,9 @@ const MarkdownRenderer = ({ content }: { content: string }) => {
     // Inline code
     html = html.replace(/`([^`]+)`/g, '<code class="bg-slate-200 dark:bg-slate-700 px-1.5 py-0.5 rounded text-[0.9em] font-mono">$1</code>');
     // Bold
-    html = html.replace(/\*\*(.*?)\*\g, '<strong class="font-bold">$1</strong>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold">$1</strong>');
     // Italic
-    html = html.replace(/\*(.*?)\g, '<em class="italic">$1</em>');
+    html = html.replace(/\*(.*?)\*/g, '<em class="italic">$1</em>');
     // Headers
     html = html.replace(/^### (.*$)/gim, '<h3 class="text-lg font-bold mt-3 mb-1">$1</h3>');
     html = html.replace(/^## (.*$)/gim, '<h2 class="text-xl font-bold mt-4 mb-2">$1</h2>');

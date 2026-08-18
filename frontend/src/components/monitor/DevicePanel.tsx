@@ -61,7 +61,7 @@ export const DevicePanel: React.FC<DevicePanelProps> = ({ devices, patientId, on
         method: "POST"
       });
       // A quick reload to sync state since we don't have a specific `onDeviceRemoved` callback
-       fetch the updated list
+      // fetch the updated list
     } catch (e) {
       console.error(e);
     }
